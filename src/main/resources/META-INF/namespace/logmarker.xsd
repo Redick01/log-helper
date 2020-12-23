@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:logmarker="http://www.ruubypay.com/schema/logmarker"
+        xmlns:tool="http://www.springframework.org/schema/tool"
+        targetNamespace="http://www.ruubypay.com/schema/logmarker"
+        elementFormDefault="qualified">
+
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+    <xsd:import namespace="http://www.springframework.org/schema/tool" />
+
+    <xsd:simpleType name="handlerBean">
+        <xsd:annotation>
+            <xsd:appinfo>
+                <tool:annotation kind="ref">
+                    <tool:assignable-to type="com.ruubypay.log.aop.AopInterceptor" />
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:union memberTypes="xsd:string" />
+    </xsd:simpleType>
+    <xsd:element name="handler" type="logmarker:handler"/>
+    <xsd:element name="interceptor" type="logmarker:interceptor"/>
+
+    <xsd:complexType name="handler">
+        <xsd:attribute name="id" type="xsd:string" default="aroundLogHandler"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="interceptor">
+        <xsd:attribute name="id" type="xsd:string" default="logMarkerInterceptor"/>
+        <xsd:attribute name="handler" type="logmarker:handlerBean" default="aroundLogHandler"/>
+    </xsd:complexType>
+
+</xsd:schema>
