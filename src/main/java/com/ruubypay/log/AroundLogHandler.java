@@ -21,8 +21,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @Author liu_penghui
- * @Date 2018/10/16.
+ * @author liu_penghui
+ * @date 2018/10/16.
  */
 public class AroundLogHandler {
 
@@ -32,7 +32,7 @@ public class AroundLogHandler {
      * @return
      * @throws Throwable
      */
-    public Object around(AroundLogProxyChain aroundLogProxyChain) throws Throwable {
+    public Object around(final AroundLogProxyChain aroundLogProxyChain) throws Throwable {
         Logger logger = RealLoggerPathUtil.getRealLogger(aroundLogProxyChain);
         MDC.put(LogUtil.kLOG_KEY_REQUEST_TYPE, LogEntryNameResolver.getBusinessDescription(aroundLogProxyChain));
         if (StringUtils.isEmpty(MDC.get(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY))) {
@@ -75,7 +75,7 @@ public class AroundLogHandler {
      * @param object
      * @return
      */
-    private static HashMap<String, Object> getParamHashMapReturnForObject(Object object) {
+    private static HashMap<String, Object> getParamHashMapReturnForObject(final Object object) {
         if (null == object) {
             return null;
         }
@@ -130,7 +130,7 @@ public class AroundLogHandler {
      * @param obj
      * @return
      */
-    private static String getParamReturnForCollection(Object obj) {
+    private static String getParamReturnForCollection(final Object obj) {
         // 脱敏后的参数
         return SensitiveDataConverter.invokeMsg(obj.toString());
     }
@@ -140,7 +140,7 @@ public class AroundLogHandler {
      * @param aroundLogProxyChain 切点
      * @return
      */
-    private static HashMap<String, Object> getParamHashMapForObject(AroundLogProxyChain aroundLogProxyChain) {
+    private static HashMap<String, Object> getParamHashMapForObject(final AroundLogProxyChain aroundLogProxyChain) {
         CodeSignature codeSignature = (CodeSignature) aroundLogProxyChain.getSignature();
         String[] names = codeSignature.getParameterNames();
         HashMap<String, Object> result = new HashMap<>(names.length);
@@ -178,7 +178,7 @@ public class AroundLogHandler {
      * @param aroundLogProxyChain 切点
      * @return
      */
-    private static String getParamHashMapForMap(AroundLogProxyChain aroundLogProxyChain) throws Exception {
+    private static String getParamHashMapForMap(final AroundLogProxyChain aroundLogProxyChain) throws Exception {
         Object[] args = aroundLogProxyChain.getArgs();
         // 脱敏后的参数
         return SensitiveDataConverter.invokeMsg(args[0].toString());
@@ -189,7 +189,7 @@ public class AroundLogHandler {
      * @param aroundLogProxyChain
      * @return
      */
-    private static Map<String, String[]> getParamHashMapHttpServletRequest(AroundLogProxyChain aroundLogProxyChain) throws Exception {
+    private static Map<String, String[]> getParamHashMapHttpServletRequest(final AroundLogProxyChain aroundLogProxyChain) throws Exception {
         Object[] args = aroundLogProxyChain.getArgs();
         Map<String, String[]> map = new ConcurrentHashMap<>();
         for (Object arg : args) {
@@ -212,7 +212,7 @@ public class AroundLogHandler {
      * @param aroundLogProxyChain
      * @return
      */
-    private static String getParameterType(AroundLogProxyChain aroundLogProxyChain) {
+    private static String getParameterType(final AroundLogProxyChain aroundLogProxyChain) {
         Method method = aroundLogProxyChain.getMethod();
         Class[] clazz = method.getParameterTypes();
         return clazz.length < 1 ? "" : clazz[0].getName();

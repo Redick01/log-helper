@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 日志打印内容敏感信息处理
- * @Author liu_penghui
- * @Date 2018/10/19.
+ * @author liu_penghui
+ * @date 2018/10/19.
  */
 public class SensitiveInfoConvertUtil {
 

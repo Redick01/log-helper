@@ -10,23 +10,23 @@ import java.util.regex.Pattern;
 
 /**
  * 脱敏信息处理
- * @Author liu_penghui
- * @Date 2018/10/22.
+ * @author liu_penghui
+ * @date 2018/10/22.
  */
 public class SensitiveDataConverter extends MessageConverter {
 
     /**
      * 日志脱敏开关
      */
-    private static boolean converterCanRun = true;
+    private static final boolean CONVERTER_CAN_RUN = true;
     /**
      * 日志脱敏关键字
      */
-    private static String sensitiveDataKeys = "idCard,realName,bankCard,mobile,mac,macKey";
+    private static final String SENSITIVE_DATA_KEYS = "idCard,realName,bankCard,mobile,mac,macKey";
     /**
      * 脱敏正则
      */
-    private static Pattern pattern = Pattern.compile("[0-9a-zA-Z]");
+    private static final Pattern PATTERN = Pattern.compile("[0-9a-zA-Z]");
 
     @Override
     public String convert(ILoggingEvent event) {
@@ -45,33 +45,31 @@ public class SensitiveDataConverter extends MessageConverter {
      */
     public static String invokeMsg(final String oriLogMsg) {
         String tempMsg = oriLogMsg;
-        if(converterCanRun){
+        if(CONVERTER_CAN_RUN){
             // 处理字符串
-            if(sensitiveDataKeys != null && sensitiveDataKeys.length() > 0){
-                String[] keysArray = sensitiveDataKeys.split(",");
-                for(String key: keysArray){
-                    int index= -1;
-                    do{
-                        index = tempMsg.indexOf(key, index+1);
-                        if(index != -1){
-                            // 判断key是否为单词字符
-                            if(isWordChar(tempMsg, key, index)){
-                                continue;
-                            }
-                            // 寻找值的开始位置
-                            int valueStart = getValueStartIndex(tempMsg, index + key.length());
-
-                            // 查找值的结束位置（逗号，分号）........................
-                            int valueEnd = getValuEndEIndex(tempMsg, valueStart);
-
-                            // 对获取的值进行脱敏
-                            String subStr = tempMsg.substring(valueStart, valueEnd);
-                            subStr = sensitiveConvert(subStr, key);
-                            ///////////////////////////
-                            tempMsg = tempMsg.substring(0,valueStart) + subStr + tempMsg.substring(valueEnd);
+            String[] keysArray = SENSITIVE_DATA_KEYS.split(",");
+            for(String key: keysArray){
+                int index= -1;
+                do{
+                    index = tempMsg.indexOf(key, index+1);
+                    if(index != -1){
+                        // 判断key是否为单词字符
+                        if(isWordChar(tempMsg, key, index)){
+                            continue;
                         }
-                    }while(index != -1);
-                }
+                        // 寻找值的开始位置
+                        int valueStart = getValueStartIndex(tempMsg, index + key.length());
+
+                        // 查找值的结束位置（逗号，分号）........................
+                        int valueEnd = getValuEndEIndex(tempMsg, valueStart);
+
+                        // 对获取的值进行脱敏
+                        String subStr = tempMsg.substring(valueStart, valueEnd);
+                        subStr = sensitiveConvert(subStr, key);
+                        ///////////////////////////
+                        tempMsg = tempMsg.substring(0,valueStart) + subStr + tempMsg.substring(valueEnd);
+                    }
+                }while(index != -1);
             }
         }
         return tempMsg;
@@ -90,14 +88,14 @@ public class SensitiveDataConverter extends MessageConverter {
         // 判断key前面一个字符
         if(index != 0){
             char preCh = msg.charAt(index-1);
-            Matcher match = pattern.matcher(preCh + "");
+            Matcher match = PATTERN.matcher(preCh + "");
             if(match.matches()){
                 return true;
             }
         }
         // 判断key后面一个字符
         char nextCh = msg.charAt(index + key.length());
-        Matcher match = pattern.matcher(nextCh + "");
+        Matcher match = PATTERN.matcher(nextCh + "");
         if(match.matches()){
             return true;
         }

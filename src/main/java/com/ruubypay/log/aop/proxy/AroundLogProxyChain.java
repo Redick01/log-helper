@@ -6,8 +6,8 @@ import java.lang.reflect.Method;
 
 /**
  * 获取切面信息接口
- * @Author liu_penghui
- * @Date 2018/10/16.
+ * @auth or liu_penghui
+ * @date 2018/10/16.
  */
 public interface AroundLogProxyChain {
     /**
@@ -32,7 +32,7 @@ public interface AroundLogProxyChain {
      * 获取目标Class
      * @return
      */
-    Class getClazz();
+    Class<?> getClazz();
 
     /**
      * 获取切点

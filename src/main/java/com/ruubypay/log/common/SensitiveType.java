@@ -2,8 +2,8 @@ package com.ruubypay.log.common;
 
 /**
  * 脱敏类型
- * @Author liu_penghui
- * @Date 2018/10/24.
+ * @author liu_penghui
+ * @date 2018/10/24.
  */
 public class SensitiveType {
     /**

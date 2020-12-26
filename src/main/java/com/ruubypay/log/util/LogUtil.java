@@ -13,8 +13,8 @@ import static net.logstash.logback.marker.Markers.*;
 
 /**
  * 打印日志模版工具类
- * @Author liu_penghui
- * @Date 2018/10/15.
+ * @author liu_penghui
+ * @date 2018/10/15.
  */
 public class LogUtil {
     public static final String kLOG_KEY_TYPE = "log_pos";
@@ -35,8 +35,8 @@ public class LogUtil {
     public static final String kRESULT_FAILED = "失败";
     public static final String kTYPE_SENSITIVE = "脱敏处理";
 
-    private static final LogstashMarker defaultMarker = append(kLOG_KEY_TYPE, kTYPE_PROCESSING);
-    private static final LogstashMarker exceptionMarker = append(kLOG_KEY_TYPE, kTYPE_EXCEPTION);
+    private static final LogstashMarker DEFAULT_MARKER = append(kLOG_KEY_TYPE, kTYPE_PROCESSING);
+    private static final LogstashMarker EXCEPTION_MARKER = append(kLOG_KEY_TYPE, kTYPE_EXCEPTION);
     /**
      * 打印日志模版
      * @param type 类型
@@ -138,14 +138,14 @@ public class LogUtil {
      * @return
      */
     public static LogstashMarker marker() {
-        return defaultMarker;
+        return DEFAULT_MARKER;
     }
     /**
      * 异常日志打印模版
      * @return
      */
     public static LogstashMarker exceptionMarker() {
-        return exceptionMarker;
+        return EXCEPTION_MARKER;
     }
     /**
      * 需要自定义request_type打印日志时调用

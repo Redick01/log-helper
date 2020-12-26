@@ -4,8 +4,8 @@ import java.lang.annotation.*;
 
 /**
  * 日志模版注解
- * @Author liu_penghui
- * @Date 2018/10/15.
+ * @author liu_penghui
+ * @date 2018/10/15.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -13,14 +13,12 @@ import java.lang.annotation.*;
 @Documented
 public @interface LogMarker {
     /**
-     * 接口名
-     * @return
+     * @return interface name
      */
     String interfaceName() default "";
 
     /**
-     * 业务描述
-     * @return
+     * @return business description
      */
     String businessDescription() default "";
 }

@@ -17,12 +17,12 @@ public class LogMarkerInterceptorHandlerParser extends AbstractSingleBeanDefinit
     private static final String HANDLER_REF="handler";
 
     @Override
-    protected Class<?> getBeanClass(Element element) {
+    protected Class<?> getBeanClass(final Element element) {
         return AopInterceptor.class;
     }
 
     @Override
-    protected void doParse(Element element, BeanDefinitionBuilder builder) {
+    protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
         String handlerBean = element.getAttribute(HANDLER_REF);
         builder.addConstructorArgReference(handlerBean);
     }

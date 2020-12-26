@@ -5,8 +5,8 @@ import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.w3c.dom.Element;
 
 /**
- * @Author liu_penghui
- * @Date 2018/10/17.
+ * @author liu_penghui
+ * @date 2018/10/17.
  */
 public class LogMarkerHandlerParser extends AbstractSingleBeanDefinitionParser {
     @Override
