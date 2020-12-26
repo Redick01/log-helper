@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 获取实际打印日志包路径
- * @Author liu_penghui
- * @Date 2018/10/19.
+ * @author liu_penghui
+ * @date 2018/10/19.
  */
 public class RealLoggerPathUtil {
 
@@ -16,7 +16,7 @@ public class RealLoggerPathUtil {
      * @param aroundLogProxyChain 切点
      * @return
      */
-    public static Logger getRealLogger(AroundLogProxyChain aroundLogProxyChain) {
+    public static Logger getRealLogger(final AroundLogProxyChain aroundLogProxyChain) {
         return LoggerFactory.getLogger(aroundLogProxyChain.getClazz().getCanonicalName());
     }
 }

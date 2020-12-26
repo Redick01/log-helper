@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Author liu_penghui
- * @Date 2019/5/27.
+ * @author liu_penghui
+ * @date 2019/5/27.
  */
 public class SensitiveFieldUtil {
 
@@ -24,7 +24,7 @@ public class SensitiveFieldUtil {
      * @param obj
      * @return
      */
-    public static Object getSensitiveArgument(Field field, Object obj) {
+    public static Object getSensitiveArgument(final Field field, Object obj) {
         // 注解实体不为空代表可能需要相应的脱敏操作
         if (null != field.getAnnotation(Sensitive.class)) {
             // 获取注解值
@@ -41,7 +41,7 @@ public class SensitiveFieldUtil {
         return obj;
     }
 
-    public static Map<String, Object> getSensitiveArgs(Field field, Object object) {
+    public static Map<String, Object> getSensitiveArgs(final Field field, final Object object) {
         try {
             Field[] fields1 = FieldUtils.getAllFields(field.get(object).getClass());
             HashMap<String, Object> result = new HashMap<>(fields1.length);

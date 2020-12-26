@@ -34,6 +34,11 @@
         </repository>
     </distributionManagement>
     <dependencies>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.7.5</version>
+        </dependency>
         <!-- 日志API-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -49,11 +54,6 @@
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
             <version>5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ruubypay.common</groupId>
-            <artifactId>global-session-id-filter</artifactId>
-            <version>1.0.2</version>
         </dependency>
         <!--spring-context -->
         <dependency>

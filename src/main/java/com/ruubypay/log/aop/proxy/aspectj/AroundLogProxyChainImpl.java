@@ -8,8 +8,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import java.lang.reflect.Method;
 
 /**
- * @Author liu_penghui
- * @Date 2018/10/16.
+ * @author liu_penghui
+ * @date 2018/10/16.
  */
 public class AroundLogProxyChainImpl implements AroundLogProxyChain {
 
@@ -62,7 +62,7 @@ public class AroundLogProxyChainImpl implements AroundLogProxyChain {
      * @return
      */
     @Override
-    public Class getClazz() {
+    public Class<?> getClazz() {
         return proceedingJoinPoint.getSignature().getDeclaringType();
     }
 

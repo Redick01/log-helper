@@ -3,8 +3,8 @@ package com.ruubypay.log.annotation;
 import java.lang.annotation.*;
 
 /**
- * @Author liu_penghui
- * @Date 2018/10/23.
+ * @author liu_penghui
+ * @date 2018/10/23.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -13,13 +13,13 @@ import java.lang.annotation.*;
 public @interface Sensitive {
     /**
      * 参数脱敏类型
-     * @return
+     * @return 参数脱敏类型
      */
     String paramSensitiveType() default "";
 
     /**
      * 是否脱敏
-     * @return
+     * @return 是否脱敏
      */
     boolean isSensitive() default false;
 }

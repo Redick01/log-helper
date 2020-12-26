@@ -2,8 +2,8 @@ package com.ruubypay.log.common;
 
 /**
  * 参数类型
- * @Author liu_penghui
- * @Date 2018/10/31.
+ * @author liu_penghui
+ * @date 2018/10/31.
  */
 public class ParameterType {
 
