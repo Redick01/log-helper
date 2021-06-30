@@ -1,9 +1,9 @@
 package com.ruubypay.log;
 
-import com.ruubypay.common.dubbo.filter.GlobalSessionIdDefine;
 import com.ruubypay.log.annotation.FieldIgnore;
 import com.ruubypay.log.annotation.Sensitive;
 import com.ruubypay.log.aop.proxy.AroundLogProxyChain;
+import com.ruubypay.log.common.GlobalSessionIdDefine;
 import com.ruubypay.log.common.ParameterType;
 import com.ruubypay.log.resolver.LogEntryNameResolver;
 import com.ruubypay.log.util.LogUtil;
@@ -38,18 +38,30 @@ public class AroundLogHandler {
         if (StringUtils.isEmpty(MDC.get(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY))) {
             MDC.put(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY, UUID.randomUUID().toString());
         }
-        String parameterType = getParameterType(aroundLogProxyChain);
-        switch (parameterType) {
-            case ParameterType.MAP :
-            case ParameterType.SET :
-            case ParameterType.LIST :
-                logger.info(LogUtil.processBeginMarker(getParamHashMapForMap(aroundLogProxyChain)), "开始处理");
-                break;
-            case ParameterType.HTTP_SERVLET_REQUEST :
-                logger.info(LogUtil.processBeginMarker(getParamHashMapHttpServletRequest(aroundLogProxyChain)), "开始处理");
-                break;
-            default :
-                logger.info(LogUtil.processBeginMarker(getParamHashMapForObject(aroundLogProxyChain)), "开始处理");
+        String[] parameterTypes = getParameterType(aroundLogProxyChain);
+        CodeSignature codeSignature = (CodeSignature) aroundLogProxyChain.getSignature();
+        String[] names = codeSignature.getParameterNames();
+        if (names == null || names.length == 0) {
+            return null;
+        }
+        Object[] args = aroundLogProxyChain.getArgs();
+        if (args == null) {
+            return null;
+        }
+        for (int i = 0; i < names.length; i++) {
+            String parameterType = parameterTypes[i];
+            switch (parameterType) {
+                case ParameterType.MAP :
+                case ParameterType.SET :
+                case ParameterType.LIST :
+                    logger.info(LogUtil.processBeginMarker(getParamHashMapForMap(args[i])), "开始处理");
+                    break;
+                case ParameterType.HTTP_SERVLET_REQUEST :
+                    logger.info(LogUtil.processBeginMarker(getParamHashMapHttpServletRequest(args[i])), "开始处理");
+                    break;
+                default :
+                    logger.info(LogUtil.processBeginMarker(getParamHashMapForObject(args[i])), "开始处理");
+            }
         }
         long start = System.currentTimeMillis();
         Object o = null;
@@ -61,7 +73,7 @@ public class AroundLogHandler {
             long end = System.currentTimeMillis();
             long elapsedTime = end - start;
             if (o instanceof Map || o instanceof List || o instanceof Set) {
-                logger.info(LogUtil.processSuccessDoneMarker(o == null ? o : getParamReturnForCollection(o), elapsedTime), "处理完毕");
+                logger.info(LogUtil.processSuccessDoneMarker(getParamReturnForCollection(o), elapsedTime), "处理完毕");
             } else {
                 logger.info(LogUtil.processSuccessDoneMarker(o == null ? o : getParamHashMapReturnForObject(o), elapsedTime), "处理完毕");
             }
@@ -137,37 +149,26 @@ public class AroundLogHandler {
 
     /**
      * 获取请求参数 参数类型为实体类
-     * @param aroundLogProxyChain 切点
+     * @param arg
      * @return
      */
-    private static HashMap<String, Object> getParamHashMapForObject(final AroundLogProxyChain aroundLogProxyChain) {
-        CodeSignature codeSignature = (CodeSignature) aroundLogProxyChain.getSignature();
-        String[] names = codeSignature.getParameterNames();
-        HashMap<String, Object> result = new HashMap<>(names.length);
-        if (names == null || names.length == 0) {
-            return null;
-        }
-        Object[] args = aroundLogProxyChain.getArgs();
-        if (args == null) {
-            return null;
-        }
-        for (int i = 0; i < names.length; i++) {
-            Field[] fields = FieldUtils.getAllFields(args[i].getClass());
-            for (Field field : fields) {
-                field.setAccessible(true);
-                try {
-                    Object argument = field.get(args[i]);
-                    String name = field.getName();
-                    // 如果FieldOperate注解ignore值为true则不打印该字段内容
-                    if (null != field.getAnnotation(FieldIgnore.class)) {
-                        continue;
-                    }
-                    argument = SensitiveFieldUtil.getSensitiveArgument(field, argument);
-                    // 将处理后的请求参数放到map中
-                    result.put(name, argument);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+    private static HashMap<String, Object> getParamHashMapForObject(final Object arg) {
+        Field[] fields = FieldUtils.getAllFields(arg.getClass());
+        HashMap<String, Object> result = new HashMap<>(fields.length);
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Object argument = field.get(arg);
+                String name = field.getName();
+                // 如果FieldOperate注解ignore值为true则不打印该字段内容
+                if (null != field.getAnnotation(FieldIgnore.class)) {
+                    continue;
                 }
+                argument = SensitiveFieldUtil.getSensitiveArgument(field, argument);
+                // 将处理后的请求参数放到map中
+                result.put(name, argument);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
         return result;
@@ -175,34 +176,30 @@ public class AroundLogHandler {
 
     /**
      * 获取请求参数 参数类型为Map
-     * @param aroundLogProxyChain 切点
+     * @param arg 切点
      * @return
      */
-    private static String getParamHashMapForMap(final AroundLogProxyChain aroundLogProxyChain) throws Exception {
-        Object[] args = aroundLogProxyChain.getArgs();
+    private static String getParamHashMapForMap(final Object arg) throws Exception {
         // 脱敏后的参数
-        return SensitiveDataConverter.invokeMsg(args[0].toString());
+        return SensitiveDataConverter.invokeMsg(arg.toString());
     }
 
     /**
      * 获取请求参数 参数类型为HttpServletRequest
-     * @param aroundLogProxyChain
+     * @param arg
      * @return
      */
-    private static Map<String, String[]> getParamHashMapHttpServletRequest(final AroundLogProxyChain aroundLogProxyChain) throws Exception {
-        Object[] args = aroundLogProxyChain.getArgs();
+    private static Map<String, String[]> getParamHashMapHttpServletRequest(final Object arg) throws Exception {
         Map<String, String[]> map = new ConcurrentHashMap<>();
-        for (Object arg : args) {
-            if (arg instanceof HttpServletRequest) {
-                ((HttpServletRequest) arg).setCharacterEncoding("UTF-8");
-                Enumeration<String> names = ((HttpServletRequest) arg).getParameterNames();
-                while (names.hasMoreElements()) {
-                    String name = names.nextElement();
-                    String [] value = ((HttpServletRequest) arg).getParameterValues(name);
-                    map.put(name, value);
-                }
-                return map;
+        if (arg instanceof HttpServletRequest) {
+            ((HttpServletRequest) arg).setCharacterEncoding("UTF-8");
+            Enumeration<String> names = ((HttpServletRequest) arg).getParameterNames();
+            while (names.hasMoreElements()) {
+                String name = names.nextElement();
+                String [] value = ((HttpServletRequest) arg).getParameterValues(name);
+                map.put(name, value);
             }
+            return map;
         }
         return null;
     }
@@ -212,9 +209,16 @@ public class AroundLogHandler {
      * @param aroundLogProxyChain
      * @return
      */
-    private static String getParameterType(final AroundLogProxyChain aroundLogProxyChain) {
+    private static String[] getParameterType(final AroundLogProxyChain aroundLogProxyChain) {
         Method method = aroundLogProxyChain.getMethod();
-        Class[] clazz = method.getParameterTypes();
-        return clazz.length < 1 ? "" : clazz[0].getName();
+        Class[] clazzs = method.getParameterTypes();
+        String[] paramTypes = new String[clazzs.length];
+        if (clazzs.length < 1) {
+            return paramTypes;
+        }
+        for (int i = 0; i < clazzs.length; i++) {
+            paramTypes[i] = clazzs[i].getName();
+        }
+        return paramTypes;
     }
 }

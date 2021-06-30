@@ -1,20 +1,12 @@
-import com.ruubypay.log.AroundLogHandler;
 import com.ruubypay.log.annotation.FieldIgnore;
 import com.ruubypay.log.annotation.Sensitive;
-import com.ruubypay.log.aop.proxy.AroundLogProxyChain;
 import com.ruubypay.log.util.SensitiveFieldUtil;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author liu_penghui
@@ -22,37 +14,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Test {
     public static void main(String[] args) throws Exception {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setRealname("dsds");
-        userInfo.setMobile("177");
-        userInfo.setIdcard("2222");
-        userInfo.setBankcard("3322");
-        Map<String, String> map = new ConcurrentHashMap<>();
-        map.put("222", "111");
-        List list = new ArrayList();
-        list.add(1);
-        list.add(2);
-        ModelsReturnT<UserInfo> modelsReturnT = new ModelsReturnT<UserInfo>();
-        modelsReturnT.setResCode("0000");
-        modelsReturnT.setResMessage("success");
-        modelsReturnT.setResData(null);
-        //System.out.println(AroundLogHandler.getParamHashMapReturnForObject(modelsReturnT));
-        Class clazz = modelsReturnT.getClass();
-        Type t = clazz.getGenericSuperclass();
-        //System.out.println(AroundLogHandler.getParamHashMapReturnForObject(modelsReturnT));
-        //modelsReturnT.printObjectValue(modelsReturnT, clazz.getName());
-        if (t instanceof ParameterizedType) {
-//          System.out.println("in if");
-            Type[] p = ((ParameterizedType) t).getActualTypeArguments();
-//          System.out.println(Arrays.toString(p));
-            System.out.println(p);
-        }
-
-        Field[] fields = FieldUtils.getAllFields(modelsReturnT.getClass());
-        for (Field field : fields) {
-            Class cl = field.getType();//这个方法获取到了类型，但是不带泛型信息
-            //System.out.println(cl);
-        }
+        ClassPool cp = ClassPool.getDefault();
+        CtClass ctClass = cp.getCtClass("com.ruubypay.log.Base");
+        CtMethod m = ctClass.getDeclaredMethod("process");
+        m.insertBefore("{ System.out.println(\"start\"); }");
+        m.insertAfter("{ System.out.println(\"end\"); }");
+        Class c = ctClass.toClass();
     }
 }
 
