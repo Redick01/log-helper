@@ -1,27 +1,10 @@
-1.依赖：
+1. 依赖：
 ```
         <!--日志模版依赖-->
         <dependency>
             <groupId>com.ruubypay.miss</groupId>
             <artifactId>ruubypay-log-helper</artifactId>
-            <version>1.0.7-SNAPSHOT</version>
-        </dependency>
-        <!--使用开源logstash-logback-encoder，必须依赖以下两个包，否则打印中文日志乱码-->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-access</artifactId>
-            <version>1.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>1.2.3</version>
-        </dependency>
-        <!--aspectj支持-->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.8.10</version>
+            <version>2.0-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -29,8 +12,10 @@
             <version>1.8.9</version>
         </dependency>
 ```
+
+
        
-2.logback修改：
+2. logback修改：
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
@@ -110,7 +95,7 @@
 </configuration>
 
 ```
-3.标准字段及自定义
+3. 标准字段及自定义
 
 （1）标准字段
 
@@ -170,7 +155,9 @@
 ```
 <timestampPattern>yyyy-MM-dd HH：mm：ss.SSS</timestampPattern>
 ```
-4.配置aop：用于打印通用的日志，如，接口调用时间、请求参数、返回参数、全局会话ID、request_type，使用该日志插件不需要自己打请求参数和返回值，插件会自动打印.
+4. 配置
+
+配置aop：用于打印通用的日志，如，接口调用时间、请求参数、返回参数、全局会话ID、request_type，使用该日志插件不需要自己打请求参数和返回值，插件会自动打印.
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -194,7 +181,17 @@ http://www.ruubypay.com/schema/logmarker http://www.ruubypay.com/schema/logmarke
     </aop:config>
 </beans>
 ```
-5.日志模版介绍：该插件提供了一个打印日志模版类，aop只提供了打印接口中的通用信息，接口内部详细日志还需要程序员自行打印，打印日志（结合logback）就需要用到工具中提供的日志模版，打印日志模版内容及打印方式如下：
+
+非SpringBoot程序配置支持异步线程链路追踪，需要在程序启动时加载一个MDCAdapter，建议使用@PostConstruct的方式，代码如下：
+
+```java
+@PostConstruct
+public void init() throws Exception {
+    TtlMDCAdapter.getInstance();
+}
+```
+
+5. 日志模版介绍：该插件提供了一个打印日志模版类，aop只提供了打印接口中的通用信息，接口内部详细日志还需要程序员自行打印，打印日志（结合logback）就需要用到工具中提供的日志模版，打印日志模版内容及打印方式如下：
 ```
 （1）日志模版工具类LogUtil.java
 public class LogUtil {
@@ -366,7 +363,7 @@ public class LogUtil {
     }
 }
 ```
-6.打印日志模版的使用，如下：
+6. 打印日志模版的使用，如下：
 ```
 (1)在接口方法上添加@LogMarker注解，aop会处理标有该注解的接口方法，打印接口调用时间、请求参数、返回参数、全局会话ID、request_type等信息；该注解有两个参数interfaceName（接口名称,可以不写），businessDescription（处理业务类型，必须写，且是汉字说明）这两个注解会在日志的request_type中体现。注解例如：
 @LogMarker(businessDescription = "根据业务获取支付渠道列表")
@@ -374,7 +371,7 @@ public class LogUtil {
 （3）request_type说明：request_type字段中包含最少两个内容，例如："request_type":"根据业务获取支付渠道列表.获取已签约支付渠道", 这里的“根据业务获取支付渠道列表”是整个接口的业务描述，通过注解businessDescription来配置，“获取已签约支付渠道”这部分的内容是只大业务中包含的小业务，如：“调用户中心验mac”、“下发黑名单”、“连接支付平台”等等，这部分需要自己去在打日志过程中手动写，通过此模版可设置大业务接口的子业务描述public static LogstashMarker requestTypeMarker(String processDescription, Object data, String type)，注：只有调用第三方或小业务变更需要填写子业务描述，其他日志可自选模版打印。
 
 ```
-7.日志记录规则
+7. 日志记录规则
 ```
 1.	日志应该准确清晰，禁止使用模糊的字眼表述或封装原本清晰的异常提示。
 2.	禁止输出装饰字符如 “------start process------”。
@@ -431,7 +428,7 @@ logback.debug(LogUtil.bizMarker(signPayChannelList), "业务状态变更描述")
 （5）分支日志打印：
 logback.debug(LogUtil.branchMarker(signPayChannelList), "分支描述");
 ```
-9.日志内容操作
+9. 日志内容操作
 ```
 （1）接口请求参数脱敏：
    由于接口传入参数可能会传入用户信息或者是密钥等敏感信息，所以打印日志时应该针对这部分敏感信息进行脱敏，此插件提供了一个@Sensitive注解，该注解作用于传入参数实体的具体属性上；该注解有两个参数paramSensitiveType（参数脱敏类型）表明该字段是针对身份证或银行卡或其它的类型进行脱敏，插件提供的SensitiveType类是脱敏类型定义类，isSensitive（是否需要脱敏），默认为false不脱敏，要脱敏时应设置为true，如果字段不需要脱敏不使用该注解即可。使用方法如下：
