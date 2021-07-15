@@ -32,8 +32,8 @@ public class SensitiveFieldUtil {
             // 获取注解值
             boolean isSensitive = field.getAnnotation(Sensitive.class).isSensitive();
             if (isSensitive) {
-                if (null != paramSensitiveType) {
-                    // 脱敏
+                // 脱敏
+                if (null != obj) {
                     obj = SensitiveDataConverter.sensitiveConvert(obj.toString(), paramSensitiveType);
                 }
             }

@@ -144,7 +144,12 @@ public class AroundLogHandler {
      */
     private static String getParamReturnForCollection(final Object obj) {
         // 脱敏后的参数
-        return SensitiveDataConverter.invokeMsg(obj.toString());
+        try {
+            return SensitiveDataConverter.invokeMsg(obj.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "parameter is null!";
     }
 
     /**
@@ -179,9 +184,14 @@ public class AroundLogHandler {
      * @param arg 切点
      * @return
      */
-    private static String getParamHashMapForMap(final Object arg) throws Exception {
+    private static String getParamHashMapForMap(final Object arg) {
         // 脱敏后的参数
-        return SensitiveDataConverter.invokeMsg(arg.toString());
+        try {
+            return SensitiveDataConverter.invokeMsg(arg.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "parameter is null!";
     }
 
     /**
