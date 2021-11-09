@@ -9,6 +9,7 @@ import com.ruubypay.log.resolver.LogEntryNameResolver;
 import com.ruubypay.log.util.LogUtil;
 import com.ruubypay.log.util.RealLoggerPathUtil;
 import com.ruubypay.log.util.SensitiveFieldUtil;
+import com.web.validation.core.annotation.valid.ValidChild;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.aspectj.lang.reflect.CodeSignature;
@@ -157,7 +158,7 @@ public class AroundLogHandler {
      * @param arg
      * @return
      */
-    private static HashMap<String, Object> getParamHashMapForObject(final Object arg) {
+    public static HashMap<String, Object> getParamHashMapForObject(final Object arg) {
         Field[] fields = FieldUtils.getAllFields(arg.getClass());
         HashMap<String, Object> result = new HashMap<>(fields.length);
         for (Field field : fields) {
@@ -165,6 +166,9 @@ public class AroundLogHandler {
             try {
                 Object argument = field.get(arg);
                 String name = field.getName();
+                if (null != field.getAnnotation(ValidChild.class)) {
+                    argument = getParamHashMapForObject(argument);
+                }
                 // 如果FieldOperate注解ignore值为true则不打印该字段内容
                 if (null != field.getAnnotation(FieldIgnore.class)) {
                     continue;
