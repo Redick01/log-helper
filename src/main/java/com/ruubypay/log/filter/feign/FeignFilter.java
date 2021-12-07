@@ -23,11 +23,9 @@ public class FeignFilter implements RequestInterceptor {
         stopWatch.start();
         try {
             String sessionId = MDC.get(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY);
-            if (StringUtils.isBlank(sessionId)) {
-                sessionId = UUID.randomUUID().toString();
-                MDC.put(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);
+            if (StringUtils.isNotBlank(sessionId)) {
+                requestTemplate.header(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);
             }
-            requestTemplate.header(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(LogUtil.exceptionMarker(), "openfeign log filter exception.", e);

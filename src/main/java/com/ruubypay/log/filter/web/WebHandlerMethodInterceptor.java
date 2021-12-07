@@ -24,7 +24,7 @@ public class WebHandlerMethodInterceptor implements HandlerInterceptor {
             if (StringUtils.isBlank(sessionId)) {
                 sessionId = UUID.randomUUID().toString();
             }
-            response.setHeader(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY, sessionId);
+            response.addHeader(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY, sessionId);
             MDC.put(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);
         } finally {
             MDC.remove(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY);
