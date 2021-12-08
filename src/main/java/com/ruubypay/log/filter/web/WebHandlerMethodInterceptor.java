@@ -19,16 +19,12 @@ public class WebHandlerMethodInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        try {
-            String sessionId = request.getHeader(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY);
-            if (StringUtils.isBlank(sessionId)) {
-                sessionId = UUID.randomUUID().toString();
-            }
-            response.addHeader(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY, sessionId);
-            MDC.put(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);
-        } finally {
-            MDC.remove(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY);
+        String sessionId = request.getHeader(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY);
+        if (StringUtils.isBlank(sessionId)) {
+            sessionId = UUID.randomUUID().toString();
         }
+        response.addHeader(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY, sessionId);
+        MDC.put(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);
         return true;
     }
 
@@ -39,6 +35,6 @@ public class WebHandlerMethodInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        MDC.remove(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY);
+        MDC.clear();
     }
 }

@@ -182,12 +182,27 @@ http://www.ruubypay.com/schema/logmarker http://www.ruubypay.com/schema/logmarke
 </beans>
 ```
 
-非SpringBoot程序配置支持异步线程链路追踪，需要在程序启动时加载一个MDCAdapter，建议使用@PostConstruct的方式，代码如下：
+### 非SpringBoot程序配置支持异步线程链路追踪，需要在程序启动时加载一个MDCAdapter，建议使用@PostConstruct的方式，代码如下：
 
 ```java
 @PostConstruct
 public void init() throws Exception {
     TtlMDCAdapter.getInstance();
+}
+```
+
+### 非SpringBoot程序支持Web MVC拦截器配置
+
+```java
+@Configuration
+@ConditionalOnClass({DispatcherServlet.class, WebMvcConfigurer.class})
+public class WebInterceptorConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean(name = "webConfiguration")
+    public WebConfiguration webConfiguration() {
+        return new WebConfiguration();
+    }
 }
 ```
 

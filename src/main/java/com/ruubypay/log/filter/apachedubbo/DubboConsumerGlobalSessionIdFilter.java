@@ -5,6 +5,7 @@ import com.ruubypay.log.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.*;
 import org.slf4j.MDC;
 
@@ -13,6 +14,7 @@ import org.slf4j.MDC;
  * @date 2020/12/26 11:47 下午
  */
 @Slf4j
+@Activate("consumer")
 public class DubboConsumerGlobalSessionIdFilter implements Filter {
 
     @Override

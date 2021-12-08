@@ -1,5 +1,6 @@
 package com.ruubypay.log.filter.alibabadubbo;
 
+import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.rpc.Filter;
 import com.ruubypay.log.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +11,7 @@ import org.slf4j.MDC;
  * @author liupenghui
  * @date 2021/6/24 11:08 下午
  */
+@Activate(group = "consumer")
 public class DubboxConsumerGlobalSessionIdFilter implements Filter {
 
     @Override
