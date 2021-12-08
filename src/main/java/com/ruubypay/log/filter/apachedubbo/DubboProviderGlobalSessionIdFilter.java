@@ -4,6 +4,7 @@ import com.ruubypay.log.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.*;
 import org.slf4j.MDC;
 
@@ -14,11 +15,11 @@ import java.util.UUID;
  * @date 2020/12/26 11:47 下午
  */
 @Slf4j
+@Activate("provider")
 public class DubboProviderGlobalSessionIdFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        Result result;
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         // get sessionId from dubbo context attachment
@@ -37,8 +38,6 @@ public class DubboProviderGlobalSessionIdFilter implements Filter {
             log.info(LogUtil.marker(), "结束接口[{}]中方法[{}]的调用,耗时为:[{}]毫秒", invoker.getInterface().getSimpleName(),
                     invocation.getMethodName(),
                     stopWatch.getTime());
-            MDC.remove(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY);
         }
-
     }
 }
