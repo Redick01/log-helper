@@ -3,6 +3,8 @@ package com.ruubypay.log.filter.web;
 import com.ruubypay.log.common.GlobalSessionIdDefine;
 import com.ruubypay.log.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.skywalking.apm.toolkit.trace.Trace;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,11 +19,16 @@ import java.util.UUID;
  */
 public class WebHandlerMethodInterceptor implements HandlerInterceptor {
 
+    @Trace
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String sessionId = request.getHeader(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY);
         if (StringUtils.isBlank(sessionId)) {
-            sessionId = UUID.randomUUID().toString();
+            if (StringUtils.isNotBlank(TraceContext.traceId())) {
+                sessionId = TraceContext.traceId();
+            } else {
+                sessionId = UUID.randomUUID().toString();
+            }
         }
         response.addHeader(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY, sessionId);
         MDC.put(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);

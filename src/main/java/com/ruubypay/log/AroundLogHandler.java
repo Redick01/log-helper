@@ -12,6 +12,8 @@ import com.ruubypay.log.util.SensitiveFieldUtil;
 import com.web.validation.core.annotation.valid.ValidChild;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.skywalking.apm.toolkit.trace.Trace;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.aspectj.lang.reflect.CodeSignature;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
@@ -33,11 +35,16 @@ public class AroundLogHandler {
      * @return
      * @throws Throwable
      */
+    @Trace
     public Object around(final AroundLogProxyChain aroundLogProxyChain) throws Throwable {
         Logger logger = RealLoggerPathUtil.getRealLogger(aroundLogProxyChain);
         MDC.put(LogUtil.kLOG_KEY_REQUEST_TYPE, LogEntryNameResolver.getBusinessDescription(aroundLogProxyChain));
         if (StringUtils.isEmpty(MDC.get(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY))) {
-            MDC.put(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY, UUID.randomUUID().toString());
+            if (StringUtils.isNotBlank(TraceContext.traceId())) {
+                MDC.put(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY, TraceContext.traceId());
+            } else {
+                MDC.put(GlobalSessionIdDefine.kGLOBAL_SESSION_ID_KEY, UUID.randomUUID().toString());
+            }
         }
         String[] parameterTypes = getParameterType(aroundLogProxyChain);
         CodeSignature codeSignature = (CodeSignature) aroundLogProxyChain.getSignature();

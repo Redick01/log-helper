@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ruubypay.miss</groupId>
     <artifactId>ruubypay-log-helper</artifactId>
-    <version>2.0.5-RELEASE</version>
+    <version>2.0.6-RELEASE</version>
     <packaging>jar</packaging>
     <name>ruubypay-log-helper</name>
     <properties>
@@ -159,6 +159,11 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.skywalking</groupId>
+            <artifactId>apm-toolkit-trace</artifactId>
+            <version>8.3.0</version>
         </dependency>
     </dependencies>
     <build>
