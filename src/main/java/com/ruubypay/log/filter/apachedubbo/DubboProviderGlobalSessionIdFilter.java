@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.*;
+import org.apache.skywalking.apm.toolkit.trace.Trace;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.MDC;
 
 import java.util.UUID;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @Activate("provider")
 public class DubboProviderGlobalSessionIdFilter implements Filter {
 
+    @Trace
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         StopWatch stopWatch = new StopWatch();
@@ -28,7 +31,11 @@ public class DubboProviderGlobalSessionIdFilter implements Filter {
                     invocation.getMethodName());
             String sessionId = RpcContext.getContext().getAttachment(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY);
             if (StringUtils.isBlank(sessionId)) {
-                sessionId = UUID.randomUUID().toString();
+                if (StringUtils.isNotBlank(TraceContext.traceId())) {
+                    sessionId = TraceContext.traceId();
+                } else {
+                    sessionId = UUID.randomUUID().toString();
+                }
                 RpcContext.getContext().setAttachment(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);
             }
             MDC.put(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);
