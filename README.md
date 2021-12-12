@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.ruubypay.miss</groupId>
             <artifactId>ruubypay-log-helper</artifactId>
-            <version>2.0-RELEASE</version>
+            <version>2.6-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -144,6 +144,20 @@ http://www.ruubypay.com/schema/logmarker http://www.ruubypay.com/schema/logmarke
 </beans>
 ```
 
+-  **在任意要拦截的接口添加@LogMarker注解**
+
+一般都是在controller或者rpc调用的入口处统计。
+
+```java
+    @LogMarker(businessDescription = "用户注册的接口")
+    @RequestMapping(value = "/user/user1")
+    public CommonResponse getBy(@RequestBody @Valid CommonRequest<User> user){
+        return new CommonResponse<>("ok","成功");
+    }  
+```
+
+## 异步线程链路追踪支持
+
 - **非SpringBoot程序配置支持异步线程链路追踪，需要在程序启动时加载一个MDCAdapter，建议使用@PostConstruct的方式，代码如下：**
 
 ```java
@@ -153,7 +167,63 @@ public void init() throws Exception {
 }
 ```
 
-- **非SpringBoot程序支持Web MVC拦截器配置**
+- **使用线程支持异步线程链路追踪**
+
+使用线程池的程序想要支持链路追踪，不仅需要增强`MDCAdapter`还需要对线程池进行一定的修饰，使用的是`TransmittableThreadLocal`的API进行的线程池修饰；日志工具包提供了线程池修饰的实现，如下：
+
+1. 对JUC线程池ThreadPoolExecutor的修饰类是：TtlThreadPoolExecutor
+2. 对Spring的ThreadPoolTaskExecutor的修饰类是：TtlThreadPoolTaskExecutor
+
+使用实例如下：
+
+```java
+    public static void main(String[] args) {
+        TtlThreadPoolTaskExecutor paymentThreadPool = new TtlThreadPoolTaskExecutor();
+        paymentThreadPool.setCorePoolSize(5);
+        paymentThreadPool.setMaxPoolSize(10);
+        paymentThreadPool.setKeepAliveSeconds(60);
+        paymentThreadPool.setQueueCapacity(1000);
+        paymentThreadPool.setThreadFactory(new ThreadFactoryBuilder().setNameFormat("trans-dispose-%d").build());
+        paymentThreadPool.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+        paymentThreadPool.initialize();
+        paymentThreadPool.execute(() -> {
+            System.out.println("异步线程执行");
+        });
+    }
+```
+
+## SpringCloud OpenFeign支持
+
+### SpringBoot程序直接使用Starter即可
+
+### 非SpringBoot程序配置
+
+RPC调用使用OpenFeign需要进行以下配置：
+
+- **Producer端配置，使用java配置或XML配置均可**
+
+ java配置
+
+```java
+@Configuration
+@ConditionalOnClass(RequestTemplate.class)
+public class FeignFilterConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean(name = "feignRequestFilter")
+    public FeignRequestFilter feignRequestFilter() {
+        return new FeignRequestFilter();
+    }
+}
+```
+
+ 或XML配置
+
+```xml
+<bean class="com.ruubypay.log.filter.feign.FeignRequestFilter"/>
+```
+
+- **Consumer端配置**
 
 ```java
 @Configuration
@@ -168,14 +238,145 @@ public class WebInterceptorConfiguration {
 }
 ```
 
--  **在任意要拦截的接口添加@LogMarker注解**
+或XML配置
 
-一般都是在controller或者rpc调用的入口处统计。
+```xml
+<bean class="com.ruubypay.log.filter.web.WebConfiguration"/>
+```
+
+## MQ消息队列支持
+
+ 对MQ消息队列的支持需要对应用程序的业务代码入侵，方案是对业务的Bean进行装饰，日志工具包提供了一个MqWrapperBean用于包装业务Bean，具体使用代码如下：
+
+- **Producer端**
 
 ```java
-    @LogMarker(businessDescription = "用户注册的接口")
-    @RequestMapping(value = "/user/user1")
-    public CommonResponse getBy(@RequestBody @Valid CommonRequest<User> user){
-        return new CommonResponse<>("ok","成功");
-    }  
+    @Override
+    public void submitOrder(Long productId, Integer payCount) {
+        // 发送事务消息
+        TxMessage txMessage = new TxMessage();
+        // 全局事务编号
+        String txNo = UUID.randomUUID().toString();
+        txMessage.setProductId(productId);
+        txMessage.setPayCount(payCount);
+        txMessage.setTxNo(txNo);
+        txMessage.setOrderNo(UUID.randomUUID().toString());
+        MqWrapperBean<TxMessage> mqWrapperBean = new MqWrapperBean<>(txMessage);
+        String jsonString = JSONObject.toJSONString(mqWrapperBean);
+        Message<String> msg = MessageBuilder.withPayload(jsonString).build();
+        rocketMQTemplate.sendMessageInTransaction("tx_order_group", "topic_txmsg", msg, null);
+    }
+```
+
+- **Consumer端**
+
+ 示例使用的是RocketMq的事务消息，MqConsumer接口提供了消费事务消息和普通消息的方法，业务代码自己实现消费业务数据。非事务消息使用`consume`，事务消息使用`localTransactionConsume`
+
+```java
+            MqConsumerProcessor.processLocalTransaction(getMqWrapperBean(message), new MqConsumer<TxMessage>() {
+                @Override
+                public void consume(TxMessage o) {
+
+                }
+
+                @Override
+                public RocketMQLocalTransactionState localTransactionConsume(TxMessage txMessage) {
+                    orderService.submitOrderAndSaveTxNo(txMessage);
+                    // 返回commit
+                    return RocketMQLocalTransactionState.COMMIT;
+                }
+            });
+```
+
+ 工具包提供了阿里云RocketMq的消费这支持`AliyunMqConsumer`
+ 
+## HttpClient支持
+
+ 工具包支持HttpClient4和HttpClient5，HttpClient支持x-global-session-id需要代码入侵，具体实现方案是对HttpClient添加拦截器，拦截器的作用是将traceId放到Http Header中。
+
+HttpClient4示例代码：
+
+```java
+public class HttpClientExample {
+
+    public static void main(String[] args) {
+        String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
+        CloseableHttpClient client = HttpClientBuilder.create()
+                .addInterceptorFirst(new SessionIdHttpClientInterceptor())
+                .build();
+        HttpGet get = new HttpGet(url);
+        try {
+            CloseableHttpResponse response = client.execute(get);
+            HttpEntity entity  = response.getEntity();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+HttpClient5示例代码：
+
+```java
+public class HttpClient5Example {
+
+    public static void main(String[] args) {
+        String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
+        CloseableHttpClient client = HttpClientBuilder.create()
+                .addRequestInterceptorFirst(new SessionIdHttpClient5Interceptor())
+                .build();
+        HttpGet get = new HttpGet(url);
+        try {
+            CloseableHttpResponse response = client.execute(get);
+            HttpEntity entity  = response.getEntity();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+## OkHttp支持
+
+ 工具包提供OkHttp客户端支持，实现方法与HttpClient类似，均以拦截器形式实现
+ 
+OkHttp示例代码：
+
+```java
+public class OkHttpExample {
+
+    public static void main(String[] args) throws IOException {
+        String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.interceptors().add(new SessionIdOkhttpInterceptor());
+        Request request = new Request.Builder().url(url).build();
+        Call call = okHttpClient.newCall(request);
+        Response response = call.execute();
+    }
+}
+```
+
+OkHttp3示例代码：
+
+```java
+public class OkHttp3Example {
+
+    public static void main(String[] args) throws IOException {
+        String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .addInterceptor(new SessionIdOkhttp3Interceptor())
+                .build();
+        Request request = new Request.Builder().url(url).build();
+        Call call = okHttpClient.newCall(request);
+        Response response = call.execute();
+    }
+}
+```
+
+## Spring Web RestTemplate支持
+
+ 工具包提供了，RestTemplate支持，实现方案也是以拦截器的方式，只需要在使用RestTemplate时添加如下代码即可；
+ 
+```java
+restTemplate.setInterceptors(Collections.singletonList(new SessionIdRestTemplateInterceptor()));
 ```

@@ -1,4 +1,6 @@
-package com.ruubypay.log.filter.mq;
+package com.ruubypay.log.filter.mq.apacherocketmq;
+
+import org.apache.rocketmq.spring.core.RocketMQLocalTransactionState;
 
 /**
  * @author liupenghui
@@ -11,4 +13,11 @@ public interface MqConsumer<T> {
      * @param t 业务数据
      */
     void consume(T t);
+
+    /**
+     * rocketmq 本地事务消费
+     * @param t 业务数据
+     * @return {@link RocketMQLocalTransactionState}
+     */
+    RocketMQLocalTransactionState localTransactionConsume(T t);
 }
