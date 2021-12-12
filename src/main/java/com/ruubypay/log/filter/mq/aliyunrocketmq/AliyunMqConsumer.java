@@ -1,4 +1,4 @@
-package com.ruubypay.log.filter.mq;
+package com.ruubypay.log.filter.mq.aliyunrocketmq;
 
 import com.aliyun.openservices.ons.api.Action;
 
@@ -13,5 +13,5 @@ public interface AliyunMqConsumer<T> {
      * @param t 业务数据
      * @return {@link Action}
      */
-    Action aliConsume(T t);
+    Action consume(T t);
 }
