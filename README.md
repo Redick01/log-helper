@@ -21,7 +21,7 @@
 
 ## SpringBoot程序集成
 
-参考：http://gitlab.ruubypay.net/MISS-2.0/BasicPlatform/middleware/ruubypay-log-spring-boot-starter
+参考：https://github.com/Redick01/log-helper-spring-boot-starter
 
 
 ## 传统Spring程序集成
