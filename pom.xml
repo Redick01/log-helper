@@ -3,11 +3,24 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ruubypay.miss</groupId>
-    <artifactId>ruubypay-log-helper</artifactId>
+    <groupId>com.redick</groupId>
+    <artifactId>log-trace-helper</artifactId>
     <version>2.0.7-RELEASE</version>
-    <packaging>jar</packaging>
-    <name>ruubypay-log-helper</name>
+    <modules>
+        <module>log-helper-core</module>
+        <module>log-helper-common</module>
+        <module>log-helper.example</module>
+        <module>log-helper-spring</module>
+        <module>log-helper-spring-boot-starter</module>
+        <module>log-helper-apachedubbo</module>
+        <module>log-helper-alibabadubbo</module>
+        <module>log-helper-openfeign</module>
+        <module>log-helper-web</module>
+        <module>log-helper-httpclient</module>
+        <module>log-helper-mq</module>
+    </modules>
+    <packaging>pom</packaging>
+    <name>log-trace-helper</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -16,36 +29,14 @@
     <repositories>
         <repository>
             <id>internal-snapshot</id>
-            <url>http://nexus.ruubypay.net/repository/public/</url>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
             <snapshots>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
     </repositories>
-    <!-- 将项目发布到私服的方式  -->
-    <distributionManagement>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <url>http://nexus.ruubypay.net/repository/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>releases</id>
-            <url>http://nexus.ruubypay.net/repository/releases/</url>
-        </repository>
-    </distributionManagement>
+
     <dependencies>
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo</artifactId>
-            <version>2.7.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo</artifactId>
-            <version>2.8.4</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- 日志API-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -131,57 +122,16 @@
             <version>3.24.0-GA</version>
             <scope>provided</scope>
         </dependency>
-        <!--对app和第三方，通用的请求和响应格式-->
-        <dependency>
-            <groupId>com.ruubypay.miss</groupId>
-            <artifactId>ruubypay-dto-facade</artifactId>
-            <version>1.3-RELEASE</version>
-        </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
             <version>5.7.16</version>
-        </dependency>
-        <!-- openfeign 组件 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>2.0.0.RELEASE</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.github.openfeign</groupId>
-                    <artifactId>feign-hystrix</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-netflix-archaius</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!--skywalking traceId获取组件-->
         <dependency>
             <groupId>org.apache.skywalking</groupId>
             <artifactId>apm-toolkit-trace</artifactId>
             <version>8.3.0</version>
-        </dependency>
-        <!-- rocketMq 阿里云自带的-->
-        <dependency>
-            <groupId>com.aliyun.openservices</groupId>
-            <artifactId>ons-client</artifactId>
-            <version>1.8.0.Final</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--apache rocketmq 客户端支持-->
-        <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-spring-boot-starter</artifactId>
-            <version>2.0.2</version>
-            <scope>provided</scope>
         </dependency>
         <!--单元测试相关-->
         <dependency>
@@ -195,34 +145,6 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
-        </dependency>
-        <!--httpclient 4-->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--httpclient 5-->
-        <dependency>
-            <groupId>org.apache.httpcomponents.client5</groupId>
-            <artifactId>httpclient5</artifactId>
-            <version>5.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--okhttp -->
-        <dependency>
-            <groupId>com.squareup.okhttp</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>2.7.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--okhttp3 -->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.9.0</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
