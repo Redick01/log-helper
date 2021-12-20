@@ -76,7 +76,7 @@ public class LogUtil {
     public static final String kLOG_KEY_TYPE = "type";
     public static final String kLOG_KEY_DATA = "data";
     public static final String kLOG_KEY_DURATION = "duration";
-    public static final String kLOG_KEY_GLOBAL_SESSION_ID_KEY = "x_global_session_id";
+    public static final String kLOG_KEY_GLOBAL_SESSION_ID_KEY = "traceId";
     public static final String kLOG_KEY_REQUEST_TYPE = "request_type";
     public static final String kLOG_KEY_RESULT = "result";
     public static final String kTYPE_BEGIN = "开始处理";
@@ -278,14 +278,14 @@ e)	thread_name
 f)	level
 g)	level_value（级别数值）
 h)	request_type（请求类型，详见下文）
-i)	x_global_session_id（会话ID，详见下文）
+i)	traceId（会话ID，详见下文）
 j)	type（日志类型，详见下文）
 k)	data（与该日志相关的数据，可以为空，详见下文）
 l)	duration（处理该请求消耗的时间）
 m)	result（请求处理结果，“成功”或“失败”）
 19.	日志必须用中文清晰描述请求类型，在不违背其他规范的前提下尽量打印调用参数和返回结果。
-20.	对于dubbo服务提供者，必须引用global-session-id-filter（com.ruubypay.common:global-session-id-filter:1.0.2），并在日志配置中中要求打印MDC的“x_global_session_id”变量，为日志提供全局会话id便于排查问题。
-21.	对于dubbo的消费者，必须引用global-session-id-filter（com.ruubypay.common:global-session-id-filter:1.0.2），并在进行业务处理之前自行生成session id（建议使用随机uuid），将session id设置到MDC的“x_global_session_id”变量，后续调用其他dubbo服务时插件会自动传递全局会话id。
+20.	对于dubbo服务提供者，必须引用global-session-id-filter（com.ruubypay.common:global-session-id-filter:1.0.2），并在日志配置中中要求打印MDC的“traceId”变量，为日志提供全局会话id便于排查问题。
+21.	对于dubbo的消费者，必须引用global-session-id-filter（com.ruubypay.common:global-session-id-filter:1.0.2），并在进行业务处理之前自行生成session id（建议使用随机uuid），将session id设置到MDC的“traceId”变量，后续调用其他dubbo服务时插件会自动传递全局会话id。
 22.	日志中应该包含类型字段(type)，日志信息类型包括：“开始处理”、“处理完毕”、“过程”、“异常”、“调用第三方开始”、“调用第三方结束”、“业务状态变更”，常量均已定义在LogHelper类中。每个业务请求必须输出仅一条“开始处理”及“处理完毕”日志；在必要的调用第三方类库或服务的场景时输出“调用第三方开始”、“调用第三方结束”日志；“过程”、“业务状态变更”及“异常”日志按需输出。
 23.	“业务开始处理”、“业务处理完毕”这两条日志应当使用INFO级别，业务处理完毕日志应包含业务处理消耗的时间，输出到duration字段，时间为数值类型，单位统一为毫秒；在业务处理消耗的时间大于预期时，应该将业务处理完毕日志等级提高到WARN甚至更高。
 24.	业务处理中发生的异常必须使用INFO或更高级别。

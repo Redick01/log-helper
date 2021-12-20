@@ -1,50 +1,29 @@
 # 日志工具集成
 
-- **1.0.X-RELEASE**
+## 1 支持内容
 
-1. 支持参数脱敏
-2. 支持接口请求/响应参数统一打印，支持接口执行时间计算
-3. 支持java object参数，支持Java集合参数，支持Servlet的HttpServletRequest参数
-4. 支持Alibaba Dubbo的调用链路追踪
+3.0.0-RELEASE版本
 
-- **2.0.X-RELEASE**
-
-1. 修复接口参数列表多个，处理HttpServletRequest参数错误导致OOM的BUG
-2. 支持Apache Dubbo的调用链路追踪
-3. 支持异步线程的调用链路追踪
-4. 提供基于SpringMVC的Http接口调用链路追踪方案
-
-- **2.0.6-RELEASE**
-
-1. 支持SpringCloud框架下，Openfeign组件链路支持
-2. 支持Skywalking traceId作为日志x-global-sessionid打印日志
-
-## SpringBoot程序集成
-
-参考：http://gitlab.ruubypay.net/MISS-2.0/BasicPlatform/middleware/ruubypay-log-spring-boot-starter
+- 日志json格式打印
+- 统一切面，提供切面注解打印切面入口输入参数和输出参数以及执行时间
+- 支持以MDC的方式打印traceId以及切面业务描述
+- 支持java bean，集合类型，HttpServletRequest等参数类型的日志打印
+- 异步线程日志链路追踪，支持java线程池和spring线程池的异步日志链路追踪
+- 支持Alibaba Dubbo和Apache Dubbo分布式日志链路追踪
+- 支持Spring Cloud OpenFeign分布式日志链路追踪
+- 提供HttpClient，OkHttp，RestTemplate日志链路追踪解决方案
+- 提供Apache RocketMQ，Aliyun RocketMQ日志链路追踪解决方案
+- 支持Spring Web日志链路追踪处理
+- 支持以SkyWalking traceId作为日志traceId
+- 提供Spring命名空间和SpringBoot两种接入方式
+- 提供简单的字段脱敏解决方案
 
 
-## 传统Spring程序集成
+## 2 快速开始
 
-- **pom**
+### 2.1 logback.xml配置
 
-```xml
-        <!--日志模版依赖-->
-        <dependency>
-            <groupId>com.ruubypay.miss</groupId>
-            <artifactId>ruubypay-log-helper</artifactId>
-            <version>2.6-RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.8.9</version>
-        </dependency>
-```
-     
-- **logback修改：**
-
-更多详细参考[详细使用文档](/use-detail.md)
+由于该日志工具集成了logstash，用于将日志格式化成json，所以在logback配置文件中指定日志格式配置是先决条件，配置如下：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -59,7 +38,7 @@
         </filter>
         <!--json格式化输出日志-->
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <includeMdcKeyName>x_global_session_id</includeMdcKeyName>
+            <includeMdcKeyName>traceId</includeMdcKeyName>
             <includeMdcKeyName>request_type</includeMdcKeyName>
         </encoder>
     </appender>
@@ -79,7 +58,7 @@
         </rollingPolicy>
         <!--json格式化输出日志-->
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <includeMdcKeyName>x_global_session_id</includeMdcKeyName>
+            <includeMdcKeyName>traceId</includeMdcKeyName>
             <includeMdcKeyName>request_type</includeMdcKeyName>
         </encoder>
         <prudent>false</prudent>
@@ -101,7 +80,7 @@
         </rollingPolicy>
         <!--json格式化输出日志-->
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <includeMdcKeyName>x_global_session_id</includeMdcKeyName>
+            <includeMdcKeyName>traceId</includeMdcKeyName>
             <includeMdcKeyName>request_type</includeMdcKeyName>
         </encoder>
         <prudent>false</prudent>
@@ -116,6 +95,126 @@
 </configuration>
 ```
 
+### 2.2 SpringBoot程序接入
+
+- **pom依赖**
+
+```xml
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-spring-boot-starter</artifactId>
+    <version>3.0.0-RELEASE</version>
+</dependency>
+```
+
+- **应用程序启动开启日志自动装配**
+
+在程序启动类上添加`@LogHelperEnable`注解即可完成自动装配
+
+```java
+@SpringBootApplication
+@LogHelperEnable
+public class Server {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Server.class, args);
+    }
+}
+```
+
+- **使用方式**
+
+使用`@LogMarker`注解标注切面，示例如下：
+
+```java
+@RestController
+@Slf4j
+public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
+
+    @PostMapping("/sc-tcc/submitOrder")
+    @LogMarker(businessDescription = "提交订单", interfaceName = "/sc-tcc/submitOrder")
+    public String submitOrder(@RequestBody SubmitOrderDTO dto) {
+        String orderNo = UUID.randomUUID().toString();
+        try {
+            orderService.saveOrder(new StockDTO(orderNo, dto.getProductId(), dto.getPayCount(), UUID.randomUUID().toString()));
+            return "SUCCESS";
+        } catch (Exception e) {
+            log.error(LogUtil.exceptionMarker(), "异常", e);
+            return "ERROR";
+        }
+    }
+}
+```
+
+日志内容：
+
+```json
+{
+    "@timestamp":"2021-12-20T17:45:05.101+08:00",
+    "@version":"1",
+    "message":"开始处理",
+    "logger_name":"org.transaction.tcc.order.controller.OrderController",
+    "thread_name":"http-nio-9109-exec-2",
+    "level":"INFO",
+    "level_value":20000,
+    "request_type":"提交订单",
+    "x_global_session_id":"82e56e5a-ea27-4cf5-bf49-e5ae9965f65c",
+    "log_pos":"开始处理",
+    "data":{
+        "productId":1,
+        "payCount":100
+    }
+}
+.....
+{
+    "@timestamp":"2021-12-20T17:45:06.522+08:00",
+    "@version":"1",
+    "message":"处理完毕",
+    "logger_name":"org.transaction.tcc.order.controller.OrderController",
+    "thread_name":"http-nio-9109-exec-2",
+    "level":"INFO",
+    "level_value":20000,
+    "request_type":"提交订单",
+    "x_global_session_id":"82e56e5a-ea27-4cf5-bf49-e5ae9965f65c",
+    "log_pos":"处理完毕",
+    "data":{
+        "serialPersistentFields":[
+
+        ],
+        "CASE_INSENSITIVE_ORDER":{
+
+        },
+        "serialVersionUID":-6849794470754667710,
+        "value":"SUCCESS",
+        "hash":0
+    },
+    "duration":1410,
+    "result":"成功"
+}
+```
+
+
+### 2.3 Spring Namespce接入
+
+- **pom**
+
+```xml
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-core</artifactId>
+    <version>3.0.0-RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-spring</artifactId>
+    <version>2.0.7-RELEASE</version>
+</dependency>
+```
+
+
 
 - **Spring AOP配置**
 
@@ -125,40 +224,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xmlns:logmarker="http://www.ruubypay.com/schema/logmarker"
+     xmlns:logmarker="http://www.redick.com/schema/logmarker"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-http://www.ruubypay.com/schema/logmarker http://www.ruubypay.com/schema/logmarker/logmarker.xsd">
-    <!--日志模版aop，处理com.ruubypay.service.impl包下的类中@LogMarker注解标注的方法-->
-    <logmarker:handler />
+http://www.redick.com/schema/logmarker http://www.redick.com/schema/logmarker/logmarker.xsd">
+    <!--日志模版aop，处理@LogMarker注解标注的方法-->
+    <logmarker:handler/>
     <logmarker:interceptor/>
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <aop:config proxy-target-class="true">
         <aop:aspect ref="logMarkerInterceptor">
             <aop:pointcut id="logCut"
-                          expression="execution(* com.ruubypay.service.impl.*.*(..)) &amp;&amp;@annotation(com.ruubypay.log.annotation.LogMarker)"/>
+                          expression="execution(* com.XXX.XXX.XXX.*.*(..)) &amp;&amp;@annotation(com.redick.annotation.LogMarker)"/>
             <aop:around pointcut-ref="logCut" method="proceed"/>
         </aop:aspect>
     </aop:config>
 </beans>
 ```
 
--  **在任意要拦截的接口添加@LogMarker注解**
+- **使用方式**
 
-一般都是在controller或者rpc调用的入口处统计。
+同SpringBoot接入方式
 
-```java
-    @LogMarker(businessDescription = "用户注册的接口")
-    @RequestMapping(value = "/user/user1")
-    public CommonResponse getBy(@RequestBody @Valid CommonRequest<User> user){
-        return new CommonResponse<>("ok","成功");
-    }  
-```
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
 
-## 异步线程链路追踪支持
+### 2.4 总结
 
-- **非SpringBoot程序配置支持异步线程链路追踪，需要在程序启动时加载一个MDCAdapter，建议使用@PostConstruct的方式，代码如下：**
+基础的接入方式就这么多，下面了解下一些特殊场景支持的接入方式
+
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+
+## 3 异步线程链路追踪支持
+
+### 3.1 SpringBoot接入
+
+**SpringBoot通过自动装配已经支持，无需多余配置。**
+
+
+### 3.2 Spring Namespace接入
+
+**非SpringBoot程序配置支持异步线程链路追踪，需要在程序启动时加载一个MDCAdapter，建议使用@PostConstruct的方式，代码如下：**
 
 ```java
 @PostConstruct
@@ -167,9 +277,9 @@ public void init() throws Exception {
 }
 ```
 
-- **使用线程支持异步线程链路追踪**
+### 3.3 使用线程支持异步线程链路追踪
 
-使用线程池的程序想要支持链路追踪，不仅需要增强`MDCAdapter`还需要对线程池进行一定的修饰，使用的是`TransmittableThreadLocal`的API进行的线程池修饰；日志工具包提供了线程池修饰的实现，如下：
+**使用线程池的程序想要支持链路追踪，不仅需要增强`MDCAdapter`还需要对线程池进行一定的修饰，使用的是`TransmittableThreadLocal`的API进行的线程池修饰；日志工具包提供了线程池修饰的实现，如下：**
 
 1. 对JUC线程池ThreadPoolExecutor的修饰类是：TtlThreadPoolExecutor
 2. 对Spring的ThreadPoolTaskExecutor的修饰类是：TtlThreadPoolTaskExecutor
@@ -192,13 +302,19 @@ public void init() throws Exception {
     }
 ```
 
-## SpringCloud OpenFeign支持
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
 
-### SpringBoot程序直接使用Starter即可
+## 4 SpringCloud OpenFeign支持
 
-### 非SpringBoot程序配置
+### 4.1 SpringBoot接入
 
-RPC调用使用OpenFeign需要进行以下配置：
+**SpringBoot通过自动装配已经支持，无需多余配置。**
+
+### 4.2 Spring Namespace接入
+
+**RPC调用使用OpenFeign需要进行以下配置：**
 
 - **Producer端配置，使用java配置或XML配置均可**
 
@@ -244,9 +360,54 @@ public class WebInterceptorConfiguration {
 <bean class="com.ruubypay.log.filter.web.WebConfiguration"/>
 ```
 
-## MQ消息队列支持
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+
+## 5 Apache Dubbo支持和Alibaba Dubbo支持
+
+### 5.1 Apache Dubbo支持
+
+无论SpringBoot还是传统Spring Namespace只要需要引入依赖即可：
+
+```xml
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-apachedubbo</artifactId>
+    <version>3.0.0-RELEASE</version>
+</dependency>
+```
+
+### 5.2 Alibaba Dubbo支持
+
+类似`5.1 Apache Dubbo支持`
+
+```xml
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-alibabadubbo</artifactId>
+    <version>3.0.0-RELEASE</version>
+</dependency>
+```
+
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+
+## 6 MQ消息队列解决方案
+
+无论SpringBoot还是传统Spring Namespace只要需要引入依赖即可：
+
+```xml
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-mq</artifactId>
+    <version>3.0.0-RELEASE</version>
+</dependency>
+```
 
  对MQ消息队列的支持需要对应用程序的业务代码入侵，方案是对业务的Bean进行装饰，日志工具包提供了一个MqWrapperBean用于包装业务Bean，具体使用代码如下：
+
 
 - **Producer端**
 
@@ -290,11 +451,27 @@ public class WebInterceptorConfiguration {
 
  工具包提供了阿里云RocketMq的消费这支持`AliyunMqConsumer`
  
-## HttpClient支持
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
 
- 工具包支持HttpClient4和HttpClient5，HttpClient支持x-global-session-id需要代码入侵，具体实现方案是对HttpClient添加拦截器，拦截器的作用是将traceId放到Http Header中。
+## 7 HttpClient支持
 
-HttpClient4示例代码：
+工具包支持HttpClient4和HttpClient5，HttpClient支持traceId需要代码入侵，具体实现方案是对HttpClient添加拦截器，拦截器的作用是将traceId放到Http Header中。
+
+无论SpringBoot还是传统Spring Namespace只要需要引入依赖即可：
+
+```xml
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-httpclient</artifactId>
+    <version>3.0.0-RELEASE</version>
+</dependency>
+```
+
+
+
+### 7.1 HttpClient4示例代码：
 
 ```java
 public class HttpClientExample {
@@ -315,7 +492,7 @@ public class HttpClientExample {
 }
 ```
 
-HttpClient5示例代码：
+### 7.2 HttpClient5示例代码：
 
 ```java
 public class HttpClient5Example {
@@ -336,11 +513,25 @@ public class HttpClient5Example {
 }
 ```
 
-## OkHttp支持
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+
+## 8 OkHttp支持
 
  工具包提供OkHttp客户端支持，实现方法与HttpClient类似，均以拦截器形式实现
+
+ 无论SpringBoot还是传统Spring Namespace只要需要引入依赖即可：
+
+```xml
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-httpclient</artifactId>
+    <version>3.0.0-RELEASE</version>
+</dependency>
+```
  
-OkHttp示例代码：
+### 8.1 OkHttp示例代码：
 
 ```java
 public class OkHttpExample {
@@ -356,7 +547,7 @@ public class OkHttpExample {
 }
 ```
 
-OkHttp3示例代码：
+### 8.2 OkHttp3示例代码：
 
 ```java
 public class OkHttp3Example {
@@ -373,10 +564,28 @@ public class OkHttp3Example {
 }
 ```
 
-## Spring Web RestTemplate支持
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp;
+
+## 9 Spring Web RestTemplate支持
+
+ 无论SpringBoot还是传统Spring Namespace只要需要引入依赖即可：
+
+```xml
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-httpclient</artifactId>
+    <version>3.0.0-RELEASE</version>
+</dependency>
+```
 
  工具包提供了，RestTemplate支持，实现方案也是以拦截器的方式，只需要在使用RestTemplate时添加如下代码即可；
  
 ```java
 restTemplate.setInterceptors(Collections.singletonList(new SessionIdRestTemplateInterceptor()));
 ```
+
+## 10 日志打印自定义操作及建议规范
+
+参考：[日志打印自定义操作及建议规范](/use-detail.md)

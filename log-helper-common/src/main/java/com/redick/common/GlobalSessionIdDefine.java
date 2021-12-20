@@ -6,5 +6,5 @@ package com.redick.common;
  */
 public class GlobalSessionIdDefine {
 
-    public static final String GLOBAL_SESSION_ID_KEY = "x_global_session_id";
+    public static final String GLOBAL_SESSION_ID_KEY = "traceId";
 }
