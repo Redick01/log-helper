@@ -1,7 +1,7 @@
 package com.redick.alibabadubbo.filter;
 
 import com.alibaba.dubbo.common.extension.Activate;
-import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.dubbo.rpc.*;
 import com.redick.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.Trace;
@@ -15,11 +15,11 @@ import java.util.UUID;
  * @date 2020/12/26 11:47 下午
  */
 @Activate(group = "provider")
-public class DubboxProviderGlobalSessionIdFilter implements com.alibaba.dubbo.rpc.Filter {
+public class DubboxProviderGlobalSessionIdFilter implements Filter {
 
     @Trace
     @Override
-    public com.alibaba.dubbo.rpc.Result invoke(com.alibaba.dubbo.rpc.Invoker<?> invoker, com.alibaba.dubbo.rpc.Invocation invocation) throws com.alibaba.dubbo.rpc.RpcException {
+    public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         // get sessionId from dubbo context attachment
         String sessionId = RpcContext.getContext().getAttachment(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY);
         if (StringUtils.isBlank(sessionId)) {

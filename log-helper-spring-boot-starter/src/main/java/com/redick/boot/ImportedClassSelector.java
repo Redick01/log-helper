@@ -16,8 +16,8 @@ public class ImportedClassSelector implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
         List<String> imports = new ArrayList<>();
-        imports.add("com.log.helper.interceptor.LoggerSessionIdInterceptor");
-        imports.add("com.log.helper.interceptor.LoggerAnnotationInterceptor");
+        imports.add("com.redick.boot.interceptor.LoggerSessionIdInterceptor");
+        imports.add("com.redick.boot.interceptor.LoggerAnnotationInterceptor");
         return imports.toArray(new String[0]);
     }
 }
