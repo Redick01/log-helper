@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 
 /**
  * 获取切面信息接口
- * @auth or liu_penghui
+ * @author penghuiliu
  * @date 2018/10/16.
  */
 public interface AroundLogProxyChain {
