@@ -18,6 +18,7 @@
         <module>log-helper-web</module>
         <module>log-helper-httpclient</module>
         <module>log-helper-mq</module>
+        <module>log-helper-spi</module>
     </modules>
     <packaging>pom</packaging>
     <name>log-trace-helper</name>
