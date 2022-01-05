@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("all")
 public class ExtensionLoader<T> {
 
-    private static final String DEFAULT_DIRECTORY = "/META-INF/log-helper/";
+    private static final String DEFAULT_DIRECTORY = "META-INF/log-helper/";
 
     private final Class<T> tClass;
 
@@ -139,9 +139,10 @@ public class ExtensionLoader<T> {
 
     private void loadDirectory(final Map<String, Class<?>> classes) {
         String fileName = DEFAULT_DIRECTORY + tClass.getName();
-        ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
         try {
-            Enumeration<URL> urls = null != classLoader ? classLoader.getResources(fileName) : classLoader.getSystemResources(fileName);
+            ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
+            Enumeration<URL> urls = classLoader != null ? classLoader.getResources(fileName)
+                    : ClassLoader.getSystemResources(fileName);
             if (urls != null) {
                 while (urls.hasMoreElements()) {
                     URL url = urls.nextElement();
