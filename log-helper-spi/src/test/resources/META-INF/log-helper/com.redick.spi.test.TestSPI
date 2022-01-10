@@ -1,1 +1,2 @@
 testSPI1=com.redick.spi.test.TestSPI1Impl
+testSPI2=com.redick.spi.test.TestSPI2Impl

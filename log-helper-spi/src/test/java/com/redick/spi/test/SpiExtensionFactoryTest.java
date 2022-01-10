@@ -14,7 +14,7 @@ public class SpiExtensionFactoryTest {
 
     @Test
     public void getExtensionTest() {
-        TestSPI testSPI = ExtensionLoader.getExtensionLoader(TestSPI.class).getJoin("testSPI1");
+        TestSPI testSPI = ExtensionLoader.getExtensionLoader(TestSPI.class).getJoin("testSPI2");
         testSPI.test();
     }
 }
