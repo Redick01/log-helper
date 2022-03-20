@@ -211,7 +211,7 @@ public class OrderController {
 <dependency>
     <groupId>com.redick</groupId>
     <artifactId>log-helper-spring</artifactId>
-    <version>2.0.7-RELEASE</version>
+    <version>3.0.0-RELEASE</version>
 </dependency>
 ```
 
