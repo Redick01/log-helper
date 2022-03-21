@@ -49,7 +49,7 @@ public class TtlThreadPoolExecutor extends ThreadPoolExecutor {
 
     @Override
     public <T> Future<T> submit(Callable<T> task) {
-        Callable command = TtlCallable.get(task);
+        Callable<T> command = TtlCallable.get(task);
         return super.submit(command);
     }
 
@@ -61,7 +61,7 @@ public class TtlThreadPoolExecutor extends ThreadPoolExecutor {
 
     @Override
     protected <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
-        Callable command = TtlCallable.get(callable);
+        Callable<T> command = TtlCallable.get(callable);
         return super.newTaskFor(command);
     }
 
