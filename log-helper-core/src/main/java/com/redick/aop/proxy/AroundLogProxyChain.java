@@ -5,52 +5,51 @@ import org.aspectj.lang.Signature;
 import java.lang.reflect.Method;
 
 /**
- * 获取切面信息接口
- * @author penghuiliu
- * @date 2018/10/16.
+ * JoinPoint Interface.
+ * @author Redick01
  */
 public interface AroundLogProxyChain {
     /**
-     * 获取参数
-     * @return 参数
+     * get parameters
+     * @return parameters
      */
     Object[] getArgs();
 
     /**
-     * 获取切点所在的目标对象
-     * @return
+     * get target object.
+     * @return target object.
      */
     Object getTarget();
 
     /**
-     * 获取方法
+     * get method.
      * @return Method
      */
     Method getMethod();
 
     /**
-     * 获取目标Class
-     * @return
+     * target class object.
+     * @return class object
      */
     Class<?> getClazz();
 
     /**
-     * 获取切点
-     * @return
-     * @throws Throwable
+     * exec JoinPoint
+     * @return JoinPoint result
      */
+    @SuppressWarnings("all")
     Object getProceed() throws Throwable;
 
     /**
-     * 获取切点方法签名对象
-     * @return
+     * Signature
+     * @return Signature.
      */
     Signature getSignature();
 
     /**
-     * 执行方法
-     * @param arguments 参数
-     * @return 执行结果
+     * exec proxy
+     * @param arguments parameter
+     * @return exec result
      * @throws Throwable Throwable
      */
     Object doProxyChain(Object[] arguments) throws Throwable;

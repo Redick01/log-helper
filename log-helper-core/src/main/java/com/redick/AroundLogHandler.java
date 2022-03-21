@@ -25,7 +25,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author liu_penghui
+ * @TODO 优化代码
+ * @author Redick01
  * @date 2018/10/16.
  */
 public class AroundLogHandler {
@@ -93,8 +94,7 @@ public class AroundLogHandler {
 
     /**
      * 处理java bean类型返回参数
-     * @param object
-     * @return
+     * @return {@link HashMap}
      */
     private static HashMap<String, Object> getParamHashMapReturnForObject(final Object object) {
         if (null == object) {
@@ -148,8 +148,8 @@ public class AroundLogHandler {
 
     /**
      * 处理集合类型返回参数
-     * @param obj
-     * @return
+     * @param obj param
+     * @return 字符串数据
      */
     private static String getParamReturnForCollection(final Object obj) {
         // 脱敏后的参数
@@ -163,8 +163,8 @@ public class AroundLogHandler {
 
     /**
      * 获取请求参数 参数类型为实体类
-     * @param arg
-     * @return
+     * @param arg param
+     * @return {@link HashMap}
      */
     public static HashMap<String, Object> getParamHashMapForObject(final Object arg) {
         Field[] fields = FieldUtils.getAllFields(arg.getClass());
@@ -193,8 +193,8 @@ public class AroundLogHandler {
 
     /**
      * 获取请求参数 参数类型为Map
-     * @param arg 切点
-     * @return
+     * @param arg param
+     * @return 字符串数据
      */
     private static String getParamHashMapForMap(final Object arg) {
         // 脱敏后的参数
