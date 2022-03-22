@@ -17,6 +17,7 @@ import static net.logstash.logback.marker.Markers.append;
  * @date 2018/10/15.
  */
 public class LogUtil {
+
     public static final String kLOG_KEY_TYPE = "log_pos";
     public static final String kLOG_KEY_DATA = "data";
     public static final String kLOG_KEY_DURATION = "duration";
