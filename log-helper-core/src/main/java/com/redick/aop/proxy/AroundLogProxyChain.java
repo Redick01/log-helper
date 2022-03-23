@@ -3,12 +3,20 @@ package com.redick.aop.proxy;
 import org.aspectj.lang.Signature;
 
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 /**
  * JoinPoint Interface.
  * @author Redick01
  */
 public interface AroundLogProxyChain {
+
+    /**
+     * parameter collections
+     * @return key - parameter class name  value - parameter object List
+     */
+    Map<String, List<Object>> parameter();
     /**
      * get parameters
      * @return parameters

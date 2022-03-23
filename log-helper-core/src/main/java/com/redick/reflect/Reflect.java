@@ -1,7 +1,5 @@
 package com.redick.reflect;
 
-import com.redick.aop.proxy.AroundLogProxyChain;
-
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -14,6 +12,7 @@ public interface Reflect {
      * reflect get parameter
      * @param obj parameter
      * @return format parameter
+     * @throws UnsupportedEncodingException see {@link UnsupportedEncodingException}
      */
-    Object reflect(final AroundLogProxyChain obj) throws UnsupportedEncodingException;
+    Object reflect(final Object obj) throws UnsupportedEncodingException;
 }

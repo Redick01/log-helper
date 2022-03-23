@@ -1,21 +1,28 @@
 package com.redick.reflect;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.redick.aop.proxy.AroundLogProxyChain;
 import com.redick.common.ParameterType;
 import com.redick.reflect.impl.CollectionParameterReflect;
 import com.redick.reflect.impl.HttpServletRequestReflect;
 import com.redick.reflect.impl.JavaBeanParameterReflect;
+import com.redick.util.LogUtil;
+import com.redick.util.RealLoggerPathUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Redick01
  * @date 2022/3/22 19:30
  */
+@Slf4j
 public class ReflectHandler {
 
     private static final Map<String, Reflect> REFLECTS = Maps.newConcurrentMap();
@@ -28,33 +35,18 @@ public class ReflectHandler {
         REFLECTS.put(ParameterType.MAP, new CollectionParameterReflect());
     }
 
-    public Object param(final AroundLogProxyChain chain) throws UnsupportedEncodingException {
-        String[] parameterTypes = getParameterType(chain);
-        Map<String, Object> map = new HashMap<>(parameterTypes.length);
-        for (String paramType : parameterTypes) {
-
-            Object ob = REFLECTS.get(paramType).reflect(chain);
-            map.put(ob.getClass().getName(), ob);
-        }
-        return map;
-    }
-
-    /**
-     * 获取参数类型
-     * @param aroundLogProxyChain 切面
-     * @return 参数类型数组
-     */
-    public static String[] getParameterType(final AroundLogProxyChain aroundLogProxyChain) {
-        Method method = aroundLogProxyChain.getMethod();
-        Class[] clazzs = method.getParameterTypes();
-        String[] paramTypes = new String[clazzs.length];
-        if (clazzs.length < 1) {
-            return paramTypes;
-        }
-        for (int i = 0; i < clazzs.length; i++) {
-            paramTypes[i] = clazzs[i].getName();
-        }
-        return paramTypes;
+    public Object getParameter(final AroundLogProxyChain chain) {
+        Map<String, List<Object>> result = Maps.newHashMap();
+        chain.parameter().forEach((k, v) -> {
+            v.forEach(o -> {
+                try {
+                    result.getOrDefault(k, Lists.newArrayList()).add(REFLECTS.get(k).reflect(o));
+                } catch (UnsupportedEncodingException e) {
+                    log.error(LogUtil.exceptionMarker(),"UnsupportedEncodingException", e);
+                }
+            });
+        });
+        return result;
     }
 
     public static ReflectHandler getInstance() {
