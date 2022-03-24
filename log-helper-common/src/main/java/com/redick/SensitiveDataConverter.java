@@ -32,16 +32,14 @@ public class SensitiveDataConverter extends MessageConverter {
     public String convert(ILoggingEvent event) {
         // 获取原始日志
         String oriLogMsg = event.getFormattedMessage();
-
         // 获取脱敏后的日志
-        String afterLogMsg = invokeMsg(oriLogMsg);
-        return afterLogMsg;
+        return invokeMsg(oriLogMsg);
     }
 
     /**
      * 处理日志字符串，返回脱敏后的字符串
-     * @param oriLogMsg
-     * @return
+     * @param oriLogMsg 原始字符串
+     * @return 脱敏后的字符串
      */
     public static String invokeMsg(final String oriLogMsg) {
         String tempMsg = oriLogMsg;
@@ -59,17 +57,15 @@ public class SensitiveDataConverter extends MessageConverter {
                         }
                         // 寻找值的开始位置
                         int valueStart = getValueStartIndex(tempMsg, index + key.length());
-
                         // 查找值的结束位置（逗号，分号）........................
-                        int valueEnd = getValuEndEIndex(tempMsg, valueStart);
-
+                        int valueEnd = getValueEndIndex(tempMsg, valueStart);
                         // 对获取的值进行脱敏
                         String subStr = tempMsg.substring(valueStart, valueEnd);
                         subStr = sensitiveConvert(subStr, key);
-                        ///////////////////////////
                         tempMsg = tempMsg.substring(0,valueStart) + subStr + tempMsg.substring(valueEnd);
                     }
-                }while(index != -1);
+                }
+                while(index != -1);
             }
         }
         return tempMsg;
@@ -83,8 +79,7 @@ public class SensitiveDataConverter extends MessageConverter {
      * @return
      */
     private static boolean isWordChar(String msg, String key, int index){
-
-        // 必须确定key是一个单词............................
+        // 必须确定key是一个单词
         // 判断key前面一个字符
         if(index != 0){
             char preCh = msg.charAt(index-1);
@@ -96,17 +91,14 @@ public class SensitiveDataConverter extends MessageConverter {
         // 判断key后面一个字符
         char nextCh = msg.charAt(index + key.length());
         Matcher match = PATTERN.matcher(nextCh + "");
-        if(match.matches()){
-            return true;
-        }
-        return false;
+        return match.matches();
     }
 
     /**
      * 获取value值的开始位置
      * @param msg 要查找的字符串
      * @param valueStart 查找的开始位置
-     * @return
+     * @return value起始位置
      */
     private static int getValueStartIndex(String msg, int valueStart ){
         // 寻找值的开始位置.................................
@@ -119,7 +111,8 @@ public class SensitiveDataConverter extends MessageConverter {
                 if(ch == '"'){
                     valueStart ++;
                 }
-                break;    // 找到值的开始位置
+                // 找到值的开始位置
+                break;
             }else{
                 valueStart ++;
             }
@@ -129,9 +122,9 @@ public class SensitiveDataConverter extends MessageConverter {
 
     /**
      * 获取value值的结束位置
-     * @return
+     * @return value值的结束位置
      */
-    private static int getValuEndEIndex(String msg,int valueEnd) {
+    private static int getValueEndIndex(String msg,int valueEnd) {
         do{
             if(valueEnd == msg.length()){
                 break;
@@ -167,7 +160,7 @@ public class SensitiveDataConverter extends MessageConverter {
     }
 
     /**
-     * 脱敏
+     * 对不同的敏感字段脱敏处理
      * @param submsg
      * @param key
      * @return

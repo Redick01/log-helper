@@ -23,6 +23,7 @@ public class AliyunMqConsumerProcessor {
      * @return {@link Action}
      */
     @Trace
+    @SuppressWarnings("all")
     public static Action process(MqWrapperBean mqWrapperBean, AliyunMqConsumer mqConsumer) {
         try {
             String traceId = mqWrapperBean.getTraceId();

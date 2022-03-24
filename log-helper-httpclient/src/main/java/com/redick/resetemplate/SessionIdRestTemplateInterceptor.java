@@ -30,7 +30,7 @@ public class SessionIdRestTemplateInterceptor implements ClientHttpRequestInterc
             if (StringUtils.isNotBlank(traceId)) {
                 httpHeaders.add(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY, traceId);
             } else {
-                log.info(LogUtil.marker(), "当前线程没有x-global-session-id");
+                log.info(LogUtil.marker(), "当前线程没有traceId");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -9,7 +9,6 @@ import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.HttpRequest;
 import org.apache.hc.core5.http.HttpRequestInterceptor;
 import org.apache.hc.core5.http.protocol.HttpContext;
-import org.slf4j.MDC;
 
 import java.io.IOException;
 
@@ -18,17 +17,16 @@ import java.io.IOException;
  * @date 2021/12/12 3:10 下午
  */
 @Slf4j
-public class SessionIdHttpClient5Interceptor implements HttpRequestInterceptor {
+public class SessionIdHttpClient5Interceptor extends AbstractInterceptor implements HttpRequestInterceptor {
 
     @Override
     public void process(HttpRequest httpRequest, EntityDetails entityDetails, HttpContext httpContext) throws HttpException, IOException {
-        String globalSessionId = MDC.get(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY);
         try {
-            if (StringUtils.isNotBlank(globalSessionId)) {
+            if (StringUtils.isNotBlank(traceId())) {
                 // 传递traceId
-                httpRequest.setHeader(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY, globalSessionId);
+                httpRequest.setHeader(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY, traceId());
             } else {
-                log.info(LogUtil.marker(), "当前线程没有x-global-session-id");
+                log.info(LogUtil.marker(), "当前线程没有traceId");
             }
         } catch (Exception e) {
             e.printStackTrace();

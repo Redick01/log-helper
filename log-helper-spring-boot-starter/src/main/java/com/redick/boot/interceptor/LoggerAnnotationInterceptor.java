@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @SuppressWarnings("all")
 public class LoggerAnnotationInterceptor {
 
-    private AroundLogHandler aroundLogHandler = new AroundLogHandler();
+    private final AroundLogHandler aroundLogHandler = new AroundLogHandler();
 
     @Pointcut("@annotation(com.redick.annotation.LogMarker)")
     public void matchWithLoMarker() {
