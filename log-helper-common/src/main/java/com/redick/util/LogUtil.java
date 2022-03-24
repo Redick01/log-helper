@@ -23,6 +23,7 @@ public class LogUtil {
     public static final String kLOG_KEY_DURATION = "duration";
     public static final String kLOG_KEY_GLOBAL_SESSION_ID_KEY = "traceId";
     public static final String kLOG_KEY_REQUEST_TYPE = "request_type";
+    public static final String kLOG_KEY_INTERFACE_NAME = "interface_name";
     public static final String kLOG_KEY_RESULT = "result";
     public static final String kTYPE_BEGIN = "开始处理";
     public static final String kTYPE_DONE = "处理完毕";
@@ -37,6 +38,7 @@ public class LogUtil {
     public static final String kTYPE_SENSITIVE = "脱敏处理";
 
     private static final LogstashMarker DEFAULT_MARKER = append(kLOG_KEY_TYPE, kTYPE_PROCESSING);
+
     private static final LogstashMarker EXCEPTION_MARKER = append(kLOG_KEY_TYPE, kTYPE_EXCEPTION);
     /**
      * 打印日志模版
@@ -59,9 +61,7 @@ public class LogUtil {
      */
     public static LogstashMarker processSuccessDoneMarker(Object data, long duration) {
         LogstashMarker result = marker(kTYPE_DONE, data).and(append(kLOG_KEY_DURATION, duration));
-
         result.and(append(kLOG_KEY_RESULT, kRESULT_SUCCESS));
-
         return result;
     }
     /**
@@ -72,9 +72,7 @@ public class LogUtil {
      */
     public static LogstashMarker processFailedDoneMarker(Object data, long duration) {
         LogstashMarker result = marker(kTYPE_DONE, data).and(append(kLOG_KEY_DURATION, duration));
-
         result.and(append(kLOG_KEY_RESULT, kRESULT_FAILED));
-
         return result;
     }
     /**

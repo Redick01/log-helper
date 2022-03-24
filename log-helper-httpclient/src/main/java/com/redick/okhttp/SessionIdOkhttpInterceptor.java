@@ -29,7 +29,7 @@ public class SessionIdOkhttpInterceptor implements Interceptor {
                         .addHeader(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY, traceId)
                         .build();
             } else {
-                log.info(LogUtil.marker(), "当前线程没有x-global-session-id");
+                log.info(LogUtil.marker(), "当前线程没有traceId");
             }
         } catch (Exception e) {
             e.printStackTrace();

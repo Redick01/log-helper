@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -107,8 +108,10 @@ public class AroundLogProxyChainImpl implements AroundLogProxyChain {
     public Map<String, List<Object>> parameter() {
         Map<String, List<Object>> map = Maps.newConcurrentMap();
         Object[] objects = this.getArgs();
-        List<Object> objectList = Arrays.stream(objects).collect(Collectors.toList());
-        objectList.forEach(o -> map.getOrDefault(o.getClass().getName(), Lists.newArrayList()).add(o));
+        if (!Objects.isNull(objects)) {
+            List<Object> objectList = Arrays.stream(objects).collect(Collectors.toList());
+            objectList.forEach(o -> map.getOrDefault(o.getClass().getName(), Lists.newArrayList()).add(o));
+        }
         return map;
     }
 }

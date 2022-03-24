@@ -1,5 +1,6 @@
 package com.redick.reflect.impl;
 
+import com.redick.SensitiveDataConverter;
 import com.redick.reflect.AbstractReflect;
 
 /**
@@ -10,6 +11,12 @@ public class CollectionParameterReflect extends AbstractReflect {
 
     @Override
     public Object doReflect(Object obj) {
-        return null;
+        // 脱敏后的参数
+        try {
+            return SensitiveDataConverter.invokeMsg(obj.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "parameter is null!";
     }
 }

@@ -8,13 +8,9 @@ import com.redick.reflect.impl.CollectionParameterReflect;
 import com.redick.reflect.impl.HttpServletRequestReflect;
 import com.redick.reflect.impl.JavaBeanParameterReflect;
 import com.redick.util.LogUtil;
-import com.redick.util.RealLoggerPathUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +31,7 @@ public class ReflectHandler {
         REFLECTS.put(ParameterType.MAP, new CollectionParameterReflect());
     }
 
-    public Object getParameter(final AroundLogProxyChain chain) {
+    public Object getRequestParameter(final AroundLogProxyChain chain) {
         Map<String, List<Object>> result = Maps.newHashMap();
         chain.parameter().forEach((k, v) -> {
             v.forEach(o -> {
@@ -46,6 +42,16 @@ public class ReflectHandler {
                 }
             });
         });
+        return result;
+    }
+
+    public Object getResponseParameter(final Object o) {
+        Object result = null;
+        try {
+            result = REFLECTS.get(o.getClass().getName()).reflect(o);
+        } catch (UnsupportedEncodingException e) {
+            log.error(LogUtil.exceptionMarker(),"UnsupportedEncodingException", e);
+        }
         return result;
     }
 
