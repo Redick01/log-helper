@@ -16,9 +16,9 @@ public class DubboxConsumerTraceIdFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         // get traceId from MDC
-        String traceId = MDC.get(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY);
+        String traceId = MDC.get(LogUtil.kLOG_KEY_TRACE_ID);
         if (StringUtils.isNotBlank(traceId)) {
-            RpcContext.getContext().setAttachment(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, traceId);
+            RpcContext.getContext().setAttachment(LogUtil.kLOG_KEY_TRACE_ID, traceId);
         }
         return invoker.invoke(invocation);
     }

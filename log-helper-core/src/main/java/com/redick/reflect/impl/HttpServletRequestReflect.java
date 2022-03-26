@@ -2,6 +2,7 @@ package com.redick.reflect.impl;
 
 import com.google.common.collect.Maps;
 import com.redick.reflect.AbstractReflect;
+import com.redick.spi.Join;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import java.util.Map;
  * @date 2022/3/22 13:55
  */
 @Slf4j
+@Join
 public class HttpServletRequestReflect extends AbstractReflect {
 
     @Override

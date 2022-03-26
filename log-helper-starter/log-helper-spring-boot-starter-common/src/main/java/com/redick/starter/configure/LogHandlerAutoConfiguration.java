@@ -1,9 +1,7 @@
 package com.redick.starter.configure;
 
 import com.redick.AroundLogHandler;
-import com.redick.starter.interceptor.FeignRequestInterceptor;
 import com.redick.starter.interceptor.SpringWebMvcInterceptor;
-import feign.RequestInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +17,6 @@ public class LogHandlerAutoConfiguration {
     @Bean
     public AroundLogHandler aroundLogHandler() {
         return new AroundLogHandler();
-    }
-
-    @Bean
-    @ConditionalOnClass(RequestInterceptor.class)
-    public FeignRequestInterceptor feignRequestInterceptor() {
-        return new FeignRequestInterceptor();
     }
 
     @Bean

@@ -2,11 +2,13 @@ package com.redick.reflect.impl;
 
 import com.redick.SensitiveDataConverter;
 import com.redick.reflect.AbstractReflect;
+import com.redick.spi.Join;
 
 /**
  * @author Redick01
  * @date 2022/3/22 19:43
  */
+@Join
 public class CollectionParameterReflect extends AbstractReflect {
 
     @Override

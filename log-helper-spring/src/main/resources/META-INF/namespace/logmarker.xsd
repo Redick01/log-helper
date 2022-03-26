@@ -13,7 +13,7 @@
         <xsd:annotation>
             <xsd:appinfo>
                 <tool:annotation kind="ref">
-                    <tool:assignable-to type="com.redick.aop.proxy.AopInterceptor" />
+                    <tool:assignable-to type="com.redick.proxy.AopInterceptor" />
                 </tool:annotation>
             </xsd:appinfo>
         </xsd:annotation>

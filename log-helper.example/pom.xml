@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.redick</groupId>
-            <artifactId>log-helper-httpclient</artifactId>
+            <artifactId>log-helper-spring</artifactId>
             <version>3.0.0-RELEASE</version>
         </dependency>
         <!--httpclient 4-->

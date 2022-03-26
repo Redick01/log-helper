@@ -1,6 +1,6 @@
 package com.redick.example.okhttp;
 
-import com.redick.okhttp.SessionIdOkhttpInterceptor;
+import com.redick.support.okhttp.TraceIdOkhttpInterceptor;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -17,7 +17,7 @@ public class OkHttpExample {
     public static void main(String[] args) throws IOException {
         String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.interceptors().add(new SessionIdOkhttpInterceptor());
+        okHttpClient.interceptors().add(new TraceIdOkhttpInterceptor());
         Request request = new Request.Builder().url(url).build();
         Call call = okHttpClient.newCall(request);
         Response response = call.execute();

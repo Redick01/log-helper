@@ -25,9 +25,9 @@ public class DubboConsumerTraceIdIdFilter implements Filter {
             log.info(LogUtil.marker(invocation.getArguments()), "开始调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
                     invocation.getMethodName());
             // get sessionId from MDC
-            String sessionId = MDC.get(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY);
+            String sessionId = MDC.get(LogUtil.kLOG_KEY_TRACE_ID);
             if (StringUtils.isNotBlank(sessionId)) {
-                RpcContext.getServiceContext().setAttachment(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, sessionId);
+                RpcContext.getServiceContext().setAttachment(LogUtil.kLOG_KEY_TRACE_ID, sessionId);
             }
             result = invoker.invoke(invocation);
         } finally {

@@ -1,11 +1,14 @@
 package com.redick.reflect;
 
+import com.redick.spi.SPI;
+
 import java.io.UnsupportedEncodingException;
 
 /**
  * @author Redick01
  * @date 2022/3/21 20:49
  */
+@SPI
 public interface Reflect {
 
     /**

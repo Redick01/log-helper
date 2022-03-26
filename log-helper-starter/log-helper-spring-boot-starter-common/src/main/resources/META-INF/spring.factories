@@ -1,6 +1,3 @@
 # SpringBoot程序添加自定义ApplicationContextInitializer，用以支持异步程序日志链路追踪
 org.springframework.context.ApplicationContextInitializer=\
   com.redick.TtlMDCAdapterInitializer
-# springboot 自动装配 web和feign拦截器配置
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.redick.starter.configure.LogHandlerAutoConfiguration

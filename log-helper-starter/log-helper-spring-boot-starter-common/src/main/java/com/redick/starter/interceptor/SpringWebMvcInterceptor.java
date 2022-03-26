@@ -1,6 +1,6 @@
 package com.redick.starter.interceptor;
 
-import com.redick.common.GlobalSessionIdDefine;
+import com.redick.common.TraceIdDefine;
 import com.redick.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.Trace;
@@ -23,7 +23,7 @@ public class SpringWebMvcInterceptor implements HandlerInterceptor {
     @Trace
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String traceId = request.getHeader(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY);
+        String traceId = request.getHeader(TraceIdDefine.TRACE_ID);
         if (StringUtils.isBlank(traceId)) {
             if (StringUtils.isNotBlank(TraceContext.traceId())) {
                 traceId = TraceContext.traceId();
@@ -31,8 +31,8 @@ public class SpringWebMvcInterceptor implements HandlerInterceptor {
                 traceId = UUID.randomUUID().toString();
             }
         }
-        response.addHeader(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY, traceId);
-        MDC.put(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, traceId);
+        response.addHeader(TraceIdDefine.TRACE_ID, traceId);
+        MDC.put(LogUtil.kLOG_KEY_TRACE_ID, traceId);
         return true;
     }
 

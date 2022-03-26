@@ -21,16 +21,16 @@ public class DubboxProviderTraceIdFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         // get traceId from dubbo context attachment
-        String traceId = RpcContext.getContext().getAttachment(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY);
+        String traceId = RpcContext.getContext().getAttachment(LogUtil.kLOG_KEY_TRACE_ID);
         if (StringUtils.isBlank(traceId)) {
             if (StringUtils.isNotBlank(TraceContext.traceId())) {
                 traceId = TraceContext.traceId();
             } else {
                 traceId = UUID.randomUUID().toString();
             }
-            RpcContext.getContext().setAttachment(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, traceId);
+            RpcContext.getContext().setAttachment(LogUtil.kLOG_KEY_TRACE_ID, traceId);
         }
-        MDC.put(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, traceId);
+        MDC.put(LogUtil.kLOG_KEY_TRACE_ID, traceId);
         return invoker.invoke(invocation);
     }
 }

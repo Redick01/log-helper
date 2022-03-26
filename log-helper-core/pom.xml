@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.redick</groupId>
-            <artifactId>log-helper-common</artifactId>
+            <artifactId>log-helper-spi</artifactId>
             <version>3.0.0-RELEASE</version>
         </dependency>
         <!--TTL 解决线程池，异步 无法做到全链路日志追踪问题-->
@@ -33,6 +33,54 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--httpclient 4-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--httpclient 5-->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--okhttp -->
+        <dependency>
+            <groupId>com.squareup.okhttp</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>2.7.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--okhttp3 -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.2.5.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- rocketMq 阿里云自带的-->
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-client</artifactId>
+            <version>1.8.0.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--apache rocketmq 客户端支持-->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+            <version>2.0.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

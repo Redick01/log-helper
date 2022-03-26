@@ -29,16 +29,16 @@ public class DubboProviderTraceIdFilter implements Filter {
         try {
             log.info(LogUtil.marker(invocation.getArguments()), "开始调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
                     invocation.getMethodName());
-            String traceId = RpcContext.getServiceContext().getAttachment(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY);
+            String traceId = RpcContext.getServiceContext().getAttachment(LogUtil.kLOG_KEY_TRACE_ID);
             if (StringUtils.isBlank(traceId)) {
                 if (StringUtils.isNotBlank(TraceContext.traceId())) {
                     traceId = TraceContext.traceId();
                 } else {
                     traceId = UUID.randomUUID().toString();
                 }
-                RpcContext.getServiceContext().setAttachment(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, traceId);
+                RpcContext.getServiceContext().setAttachment(LogUtil.kLOG_KEY_TRACE_ID, traceId);
             }
-            MDC.put(LogUtil.kLOG_KEY_GLOBAL_SESSION_ID_KEY, traceId);
+            MDC.put(LogUtil.kLOG_KEY_TRACE_ID, traceId);
             return invoker.invoke(invocation);
         } finally {
             stopWatch.stop();
