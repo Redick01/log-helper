@@ -76,7 +76,7 @@ public class LogUtil {
     public static final String kLOG_KEY_TYPE = "type";
     public static final String kLOG_KEY_DATA = "data";
     public static final String kLOG_KEY_DURATION = "duration";
-    public static final String kLOG_KEY_GLOBAL_SESSION_ID_KEY = "traceId";
+    public static final String kLOG_KEY_TRACE_ID = "traceId";
     public static final String kLOG_KEY_REQUEST_TYPE = "request_type";
     public static final String kLOG_KEY_RESULT = "result";
     public static final String kTYPE_BEGIN = "开始处理";

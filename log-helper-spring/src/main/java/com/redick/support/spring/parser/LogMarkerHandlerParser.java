@@ -5,9 +5,10 @@ import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.w3c.dom.Element;
 
 /**
- * @author liu_penghui
+ * @author Redick01
  * @date 2018/10/17.
  */
+@SuppressWarnings("all")
 public class LogMarkerHandlerParser extends AbstractSingleBeanDefinitionParser {
     @Override
     protected Class<?> getBeanClass(Element element) {

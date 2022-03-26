@@ -1,8 +1,8 @@
 package com.redick;
 
 import com.redick.annotation.LogMarker;
-import com.redick.aop.proxy.AroundLogProxyChain;
-import com.redick.common.GlobalSessionIdDefine;
+import com.redick.common.TraceIdDefine;
+import com.redick.proxy.AroundLogProxyChain;
 import com.redick.reflect.ReflectHandler;
 import com.redick.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -30,11 +30,11 @@ public class AroundLogHandler {
     public Object around(final AroundLogProxyChain chain) {
         Logger logger = getRealLogger(chain);
         mdcLogMarkerParam(chain);
-        if (StringUtils.isEmpty(MDC.get(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY))) {
+        if (StringUtils.isEmpty(MDC.get(TraceIdDefine.TRACE_ID))) {
             if (StringUtils.isNotBlank(TraceContext.traceId())) {
-                MDC.put(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY, TraceContext.traceId());
+                MDC.put(TraceIdDefine.TRACE_ID, TraceContext.traceId());
             } else {
-                MDC.put(GlobalSessionIdDefine.GLOBAL_SESSION_ID_KEY, UUID.randomUUID().toString());
+                MDC.put(TraceIdDefine.TRACE_ID, UUID.randomUUID().toString());
             }
         }
         logger.info(LogUtil.processBeginMarker(ReflectHandler.getInstance().getRequestParameter(chain)),

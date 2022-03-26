@@ -3,6 +3,7 @@ package com.redick.reflect.impl;
 import com.redick.annotation.FieldIgnore;
 import com.redick.annotation.ValidChild;
 import com.redick.reflect.AbstractReflect;
+import com.redick.spi.Join;
 import com.redick.util.SensitiveFieldUtil;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -13,6 +14,7 @@ import java.util.HashMap;
  * @author Redick01
  * @date 2022/3/22 19:44
  */
+@Join
 public class JavaBeanParameterReflect extends AbstractReflect {
 
     @Override

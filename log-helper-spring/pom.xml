@@ -22,6 +22,16 @@
             <artifactId>log-helper-core</artifactId>
             <version>3.0.0-RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.redick</groupId>
+            <artifactId>log-helper-spring-boot-starter-alibabadubbo</artifactId>
+            <version>3.0.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.redick</groupId>
+            <artifactId>log-helper-spring-boot-starter-apachedubbo</artifactId>
+            <version>3.0.0-RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>

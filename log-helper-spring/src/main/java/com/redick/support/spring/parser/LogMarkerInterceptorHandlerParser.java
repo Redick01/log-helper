@@ -1,14 +1,15 @@
 package com.redick.support.spring.parser;
 
-import com.redick.aop.proxy.AopInterceptor;
+import com.redick.proxy.AopInterceptor;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.w3c.dom.Element;
 
 /**
- * @Author liu_penghui
- * @Date 2018/10/17.
+ * @author Redick01
+ * @date 2018/10/17.
  */
+@SuppressWarnings("all")
 public class LogMarkerInterceptorHandlerParser extends AbstractSingleBeanDefinitionParser {
 
     /**

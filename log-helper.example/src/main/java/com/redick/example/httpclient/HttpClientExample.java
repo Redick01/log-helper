@@ -1,6 +1,6 @@
 package com.redick.example.httpclient;
 
-import com.redick.httpclient.SessionIdHttpClientInterceptor;
+import com.redick.support.httpclient.TraceIdHttpClientInterceptor;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -18,7 +18,7 @@ public class HttpClientExample {
     public static void main(String[] args) {
         String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
         CloseableHttpClient client = HttpClientBuilder.create()
-                .addInterceptorFirst(new SessionIdHttpClientInterceptor())
+                .addInterceptorFirst(new TraceIdHttpClientInterceptor())
                 .build();
         HttpGet get = new HttpGet(url);
         try {

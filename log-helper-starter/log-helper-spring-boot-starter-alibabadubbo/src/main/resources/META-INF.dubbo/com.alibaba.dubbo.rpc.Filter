@@ -1,0 +1,2 @@
+psid=com.redick.alibabadubbo.filter.DubboxProviderTraceIdFilter
+csid=com.redick.alibabadubbo.filter.DubboxConsumerTraceIdFilter

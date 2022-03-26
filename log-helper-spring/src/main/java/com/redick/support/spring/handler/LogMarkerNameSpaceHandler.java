@@ -6,7 +6,7 @@ import com.redick.support.spring.parser.LogMarkerInterceptorHandlerParser;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 /**
- * @author liu_penghui
+ * @author Redick01
  * @date 2018/10/17.
  */
 public class LogMarkerNameSpaceHandler extends NamespaceHandlerSupport {
