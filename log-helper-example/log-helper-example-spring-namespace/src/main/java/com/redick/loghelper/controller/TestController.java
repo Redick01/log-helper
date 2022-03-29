@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.concurrent.ExecutorService;
 
 /**
  * @author Redick01
@@ -18,9 +17,6 @@ import java.util.concurrent.ExecutorService;
 @RestController
 @Slf4j
 public class TestController {
-
-//    @Resource(name = "executorService")
-//    private ExecutorService executorService;
 
     @Resource(name = "ttlThreadPoolTaskExecutor")
     private TtlThreadPoolTaskExecutor ttlThreadPoolTaskExecutor;
@@ -31,10 +27,6 @@ public class TestController {
     @LogMarker(businessDescription = "say方法", interfaceName = "com.redick.loghelper.controller.TestController#say()")
     @GetMapping("/test")
     public String say(String content) {
-
-//        executorService.execute(() -> {
-//            log.info(LogUtil.marker("executorService"), content);
-//        });
 
         ttlThreadPoolExecutor.execute(() -> {
             log.info(LogUtil.marker("ttlThreadPoolExecutor"), content);
