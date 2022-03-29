@@ -502,7 +502,7 @@ public class OkHttp3Example {
 restTemplate.setInterceptors(Collections.singletonList(new TraceIdRestTemplateInterceptor()));
 ```
 
-## 10 接口参数脱敏支持
+## 8 接口参数脱敏支持
 
 - **接口请求参数脱敏：**
 
@@ -562,7 +562,11 @@ b.调用HTTP接口：在调用HTTP接口时因为请求参数是调用方自己�
 
 在接口参数java bean的字段上添加@FieldIgnore注解即可。
 
-## 11 日志打印自定义操作及建议规范
+## 9 日志打印自定义操作及建议规范
 
 参考：[日志打印自定义操作及建议规范](/use-detail.md)
+
+## 详细使用示例
+
+参考[示例](https://github.com/Redick01/log-helper/tree/master/log-helper-example)
 
