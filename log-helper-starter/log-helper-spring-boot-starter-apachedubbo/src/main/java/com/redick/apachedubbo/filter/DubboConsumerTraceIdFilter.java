@@ -13,8 +13,8 @@ import org.slf4j.MDC;
  * @date 2020/12/26 11:47 下午
  */
 @Slf4j
-@Activate("consumer")
-public class DubboConsumerTraceIdIdFilter implements Filter {
+@Activate(group = "consumer")
+public class DubboConsumerTraceIdFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
@@ -25,9 +25,9 @@ public class DubboConsumerTraceIdIdFilter implements Filter {
             log.info(LogUtil.marker(invocation.getArguments()), "开始调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
                     invocation.getMethodName());
             // get sessionId from MDC
-            String sessionId = MDC.get(LogUtil.kLOG_KEY_TRACE_ID);
-            if (StringUtils.isNotBlank(sessionId)) {
-                RpcContext.getServiceContext().setAttachment(LogUtil.kLOG_KEY_TRACE_ID, sessionId);
+            String traceId = MDC.get(LogUtil.kLOG_KEY_TRACE_ID);
+            if (StringUtils.isNotBlank(traceId)) {
+                RpcContext.getServiceContext().setAttachment(LogUtil.kLOG_KEY_TRACE_ID, traceId);
             }
             result = invoker.invoke(invocation);
         } finally {

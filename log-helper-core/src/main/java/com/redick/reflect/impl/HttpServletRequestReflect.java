@@ -1,7 +1,7 @@
 package com.redick.reflect.impl;
 
 import com.google.common.collect.Maps;
-import com.redick.reflect.AbstractReflect;
+import com.redick.reflect.Reflect;
 import com.redick.spi.Join;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,10 +16,10 @@ import java.util.Map;
  */
 @Slf4j
 @Join
-public class HttpServletRequestReflect extends AbstractReflect {
+public class HttpServletRequestReflect implements Reflect {
 
     @Override
-    public Object doReflect(Object obj) {
+    public Object reflect(Object obj) throws UnsupportedEncodingException {
         Map<String, String[]> result = Maps.newConcurrentMap();
         if (obj instanceof HttpServletRequest) {
             try {

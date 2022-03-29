@@ -110,7 +110,13 @@ public class AroundLogProxyChainImpl implements AroundLogProxyChain {
         Object[] objects = this.getArgs();
         if (!Objects.isNull(objects)) {
             List<Object> objectList = Arrays.stream(objects).collect(Collectors.toList());
-            objectList.forEach(o -> map.getOrDefault(o.getClass().getName(), Lists.newArrayList()).add(o));
+            objectList.forEach(o -> {
+                if (!Objects.isNull(o)){
+                    List<Object> list = map.getOrDefault(o.getClass().getName(), Lists.newArrayList());
+                    list.add(o);
+                    map.put(o.getClass().getName(), list);
+                }
+            });
         }
         return map;
     }

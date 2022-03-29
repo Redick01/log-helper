@@ -13,7 +13,7 @@ public class LogHelperImportSelector implements ImportSelector {
     @Override
     @SuppressWarnings("all")
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-        return Lists.newArrayList("com.redick.starter.configure.LogHandlerAutoConfiguration",
+        return Lists.newArrayList("com.redick.starter.configure.LogHelperAutoConfiguration",
                 "com.redick.starter.aop.LogHelperAspectJ")
                 .toArray(new String[0]);
     }

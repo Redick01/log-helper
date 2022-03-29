@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>log-trace-helper</artifactId>
+        <artifactId>log-trace-helper-all</artifactId>
         <groupId>com.redick</groupId>
-        <version>3.0.0-RELEASE</version>
+        <version>1.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>log-helper-core</artifactId>
-    <version>3.0.0-RELEASE</version>
+    <version>1.0-RELEASE</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.redick</groupId>
             <artifactId>log-helper-spi</artifactId>
-            <version>3.0.0-RELEASE</version>
+            <version>1.0-RELEASE</version>
         </dependency>
         <!--TTL 解决线程池，异步 无法做到全链路日志追踪问题-->
         <dependency>
@@ -66,7 +66,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.2.5.RELEASE</version>
+            <version>${spring.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- rocketMq 阿里云自带的-->
@@ -75,6 +75,7 @@
             <artifactId>ons-client</artifactId>
             <version>1.8.0.Final</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <!--apache rocketmq 客户端支持-->
         <dependency>
@@ -82,25 +83,29 @@
             <artifactId>rocketmq-spring-boot-starter</artifactId>
             <version>2.0.2</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
-                    <attach>true</attach>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>

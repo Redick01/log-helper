@@ -1,8 +1,10 @@
-# 日志工具集成
+# 基于Spring AOP的日志链路追踪工具
+
+
 
 ## 1 支持内容
 
-3.0.0-RELEASE版本
+1.0-RELEASE版本
 
 - 日志json格式打印
 - 统一切面，提供切面注解打印切面入口输入参数和输出参数以及执行时间
@@ -13,17 +15,18 @@
 - 支持Spring Cloud OpenFeign分布式日志链路追踪
 - 提供HttpClient，OkHttp，RestTemplate日志链路追踪解决方案
 - 提供Apache RocketMQ，Aliyun RocketMQ日志链路追踪解决方案
-- 支持Spring Web日志链路追踪处理
+- 支持Spring Web日志链路追踪处理，提供统一拦截器
 - 支持以SkyWalking traceId作为日志traceId
 - 提供Spring命名空间和SpringBoot两种接入方式
 - 提供简单的字段脱敏解决方案
+- 提供参数解析接口，支持自定义接口参数的解析，只需要按SPI规范实现即可
 
 
 ## 2 快速开始
 
 ### 2.1 logback.xml配置
 
-由于该日志工具集成了logstash，用于将日志格式化成json，所以在logback配置文件中指定日志格式配置是先决条件，配置如下：
+由于该日志工具集成了logstash-encoder，用于将日志格式化成json，所以在logback配置文件中指定日志格式配置是先决条件，配置如下：
 
 
 ```xml
@@ -103,8 +106,8 @@
 ```xml
 <dependency>
     <groupId>com.redick</groupId>
-    <artifactId>log-helper-spring-boot-starter</artifactId>
-    <version>3.0.0-RELEASE</version>
+    <artifactId>log-helper-spring-boot-starter-common</artifactId>
+    <version>1.0-RELEASE</version>
 </dependency>
 ```
 
@@ -205,13 +208,8 @@ public class OrderController {
 ```xml
 <dependency>
     <groupId>com.redick</groupId>
-    <artifactId>log-helper-core</artifactId>
-    <version>3.0.0-RELEASE</version>
-</dependency>
-<dependency>
-    <groupId>com.redick</groupId>
     <artifactId>log-helper-spring</artifactId>
-    <version>3.0.0-RELEASE</version>
+    <version>1.0-RELEASE</version>
 </dependency>
 ```
 
@@ -311,55 +309,18 @@ public void init() throws Exception {
 
 ### 4.1 SpringBoot接入
 
++ POM
+
+```xml
+<dependency>
+    <groupId>com.redick</groupId>
+    <artifactId>log-helper-spring-boot-starter-openfeign</artifactId>
+    <version>1.0-RELEASE</version>
+</dependency>
+```
+
 **SpringBoot通过自动装配已经支持，无需多余配置。**
 
-### 4.2 Spring Namespace接入
-
-**RPC调用使用OpenFeign需要进行以下配置：**
-
-- **Producer端配置，使用java配置或XML配置均可**
-
- java配置
-
-```java
-@Configuration
-@ConditionalOnClass(RequestTemplate.class)
-public class FeignFilterConfiguration {
-
-    @Bean
-    @ConditionalOnMissingBean(name = "feignRequestFilter")
-    public FeignRequestFilter feignRequestFilter() {
-        return new FeignRequestFilter();
-    }
-}
-```
-
- 或XML配置
-
-```xml
-<bean class="com.ruubypay.log.filter.feign.FeignRequestFilter"/>
-```
-
-- **Consumer端配置**
-
-```java
-@Configuration
-@ConditionalOnClass({DispatcherServlet.class, WebMvcConfigurer.class})
-public class WebInterceptorConfiguration {
-
-    @Bean
-    @ConditionalOnMissingBean(name = "webConfiguration")
-    public WebConfiguration webConfiguration() {
-        return new WebConfiguration();
-    }
-}
-```
-
-或XML配置
-
-```xml
-<bean class="com.ruubypay.log.filter.web.WebConfiguration"/>
-```
 
 &nbsp; &nbsp; 
 &nbsp; &nbsp; 
@@ -374,8 +335,8 @@ public class WebInterceptorConfiguration {
 ```xml
 <dependency>
     <groupId>com.redick</groupId>
-    <artifactId>log-helper-apachedubbo</artifactId>
-    <version>3.0.0-RELEASE</version>
+    <artifactId>log-helper-spring-boot-starter-apachedubbo</artifactId>
+    <version>1.0-RELEASE</version>
 </dependency>
 ```
 
@@ -386,8 +347,8 @@ public class WebInterceptorConfiguration {
 ```xml
 <dependency>
     <groupId>com.redick</groupId>
-    <artifactId>log-helper-alibabadubbo</artifactId>
-    <version>3.0.0-RELEASE</version>
+    <artifactId>log-helper-spring-boot-starter-alibabadubbo</artifactId>
+    <version>1.0-RELEASE</version>
 </dependency>
 ```
 
@@ -397,15 +358,7 @@ public class WebInterceptorConfiguration {
 
 ## 6 MQ消息队列解决方案
 
-无论SpringBoot还是传统Spring Namespace只要需要引入依赖即可：
-
-```xml
-<dependency>
-    <groupId>com.redick</groupId>
-    <artifactId>log-helper-mq</artifactId>
-    <version>3.0.0-RELEASE</version>
-</dependency>
-```
+ `log-helper-core`提供了对分布式消息队列MQ的`traceId`传递解决方案。
 
  对MQ消息队列的支持需要对应用程序的业务代码入侵，方案是对业务的Bean进行装饰，日志工具包提供了一个MqWrapperBean用于包装业务Bean，具体使用代码如下：
 
@@ -458,19 +411,9 @@ public class WebInterceptorConfiguration {
 
 ## 7 HttpClient支持
 
+`log-helper-core`提供了多种对`HttpClient`工具`traceId`传递的解决方案。
+
 工具包支持HttpClient4和HttpClient5，HttpClient支持traceId需要代码入侵，具体实现方案是对HttpClient添加拦截器，拦截器的作用是将traceId放到Http Header中。
-
-无论SpringBoot还是传统Spring Namespace只要需要引入依赖即可：
-
-```xml
-<dependency>
-    <groupId>com.redick</groupId>
-    <artifactId>log-helper-httpclient</artifactId>
-    <version>3.0.0-RELEASE</version>
-</dependency>
-```
-
-
 
 ### 7.1 HttpClient4示例代码：
 
@@ -480,7 +423,7 @@ public class HttpClientExample {
     public static void main(String[] args) {
         String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
         CloseableHttpClient client = HttpClientBuilder.create()
-                .addInterceptorFirst(new SessionIdHttpClientInterceptor())
+                .addInterceptorFirst(new TraceIdHttpClientInterceptor())
                 .build();
         HttpGet get = new HttpGet(url);
         try {
@@ -501,7 +444,7 @@ public class HttpClient5Example {
     public static void main(String[] args) {
         String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
         CloseableHttpClient client = HttpClientBuilder.create()
-                .addRequestInterceptorFirst(new SessionIdHttpClient5Interceptor())
+                .addRequestInterceptorFirst(new TraceIdHttpClient5Interceptor())
                 .build();
         HttpGet get = new HttpGet(url);
         try {
@@ -513,26 +456,8 @@ public class HttpClient5Example {
     }
 }
 ```
-
-&nbsp; &nbsp; 
-&nbsp; &nbsp; 
-&nbsp; &nbsp; 
-
-## 8 OkHttp支持
-
- 工具包提供OkHttp客户端支持，实现方法与HttpClient类似，均以拦截器形式实现
-
- 无论SpringBoot还是传统Spring Namespace只要需要引入依赖即可：
-
-```xml
-<dependency>
-    <groupId>com.redick</groupId>
-    <artifactId>log-helper-httpclient</artifactId>
-    <version>3.0.0-RELEASE</version>
-</dependency>
-```
  
-### 8.1 OkHttp示例代码：
+### 7.3 OkHttp示例代码：
 
 ```java
 public class OkHttpExample {
@@ -540,7 +465,7 @@ public class OkHttpExample {
     public static void main(String[] args) throws IOException {
         String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.interceptors().add(new SessionIdOkhttpInterceptor());
+        okHttpClient.interceptors().add(new TraceIdOkhttpInterceptor());
         Request request = new Request.Builder().url(url).build();
         Call call = okHttpClient.newCall(request);
         Response response = call.execute();
@@ -548,7 +473,7 @@ public class OkHttpExample {
 }
 ```
 
-### 8.2 OkHttp3示例代码：
+### 7.4 OkHttp3示例代码：
 
 ```java
 public class OkHttp3Example {
@@ -556,7 +481,7 @@ public class OkHttp3Example {
     public static void main(String[] args) throws IOException {
         String url = "http://127.0.0.1:8081/order/getPayCount?orderNo=1";
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                .addInterceptor(new SessionIdOkhttp3Interceptor())
+                .addInterceptor(new TraceIdOkhttp3Interceptor())
                 .build();
         Request request = new Request.Builder().url(url).build();
         Call call = okHttpClient.newCall(request);
@@ -569,25 +494,15 @@ public class OkHttp3Example {
 &nbsp; &nbsp; 
 &nbsp; &nbsp;
 
-## 9 Spring Web RestTemplate支持
+### 7.5 RestTemplate示例代码：
 
- 无论SpringBoot还是传统Spring Namespace只要需要引入依赖即可：
-
-```xml
-<dependency>
-    <groupId>com.redick</groupId>
-    <artifactId>log-helper-httpclient</artifactId>
-    <version>3.0.0-RELEASE</version>
-</dependency>
-```
-
- 工具包提供了，RestTemplate支持，实现方案也是以拦截器的方式，只需要在使用RestTemplate时添加如下代码即可；
+ RestTemplate支持，实现方案也是以拦截器的方式，只需要在使用RestTemplate时添加如下代码即可；
  
 ```java
-restTemplate.setInterceptors(Collections.singletonList(new SessionIdRestTemplateInterceptor()));
+restTemplate.setInterceptors(Collections.singletonList(new TraceIdRestTemplateInterceptor()));
 ```
 
-## 10 接口参数脱敏支持
+## 8 接口参数脱敏支持
 
 - **接口请求参数脱敏：**
 
@@ -647,7 +562,11 @@ b.调用HTTP接口：在调用HTTP接口时因为请求参数是调用方自己�
 
 在接口参数java bean的字段上添加@FieldIgnore注解即可。
 
-## 11 日志打印自定义操作及建议规范
+## 9 日志打印自定义操作及建议规范
 
 参考：[日志打印自定义操作及建议规范](/use-detail.md)
+
+## 详细使用示例
+
+参考[示例](https://github.com/Redick01/log-helper/tree/master/log-helper-example)
 

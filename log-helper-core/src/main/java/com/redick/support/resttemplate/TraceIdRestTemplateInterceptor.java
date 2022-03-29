@@ -19,7 +19,7 @@ import java.io.IOException;
  * @date 2021/12/12 3:32 下午
  */
 @Slf4j
-public class SessionIdRestTemplateInterceptor implements ClientHttpRequestInterceptor {
+public class TraceIdRestTemplateInterceptor implements ClientHttpRequestInterceptor {
 
     @NotNull
     @Override

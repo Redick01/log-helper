@@ -2,4 +2,4 @@ java.util.Map=com.redick.reflect.impl.CollectionParameterReflect
 java.util.List=com.redick.reflect.impl.CollectionParameterReflect
 java.util.Set=com.redick.reflect.impl.CollectionParameterReflect
 javax.servlet.http.HttpServletRequest=com.redick.reflect.impl.HttpServletRequestReflect
-java_bean=com.redick.reflect.impl.JavaBeanParameterReflect
+default=com.redick.reflect.impl.JavaBeanParameterReflect

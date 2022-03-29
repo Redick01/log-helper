@@ -4,22 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.redick</groupId>
-    <artifactId>log-trace-helper</artifactId>
-    <version>3.0.0-RELEASE</version>
+    <artifactId>log-trace-helper-all</artifactId>
+    <version>1.0-RELEASE</version>
     <modules>
         <module>log-helper-core</module>
-        <module>log-helper.example</module>
+        <module>log-helper-example</module>
         <module>log-helper-spring</module>
         <module>log-helper-spi</module>
         <module>log-helper-starter</module>
     </modules>
     <packaging>pom</packaging>
-    <name>log-trace-helper</name>
+    <name>log-trace-helper-all</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <logback.version>1.2.3</logback.version>
         <hutool.version>5.7.16</hutool.version>
-        <spring.version>5.2.5.RELEASE</spring.version>
+        <spring.version>5.3.14</spring.version>
         <skywalking.trace.version>8.3.0</skywalking.trace.version>
         <logstash.encoder.version>5.2</logstash.encoder.version>
         <aspect.version>1.8.10</aspect.version>
@@ -31,7 +31,7 @@
         <guava.version>31.0.1-jre</guava.version>
         <spring.boot.version>2.5.8</spring.boot.version>
         <alibaba.dubbo.version>2.8.4</alibaba.dubbo.version>
-        <apache.dubbo.version>3.0.0</apache.dubbo.version>
+        <apache.dubbo.version>3.0.1</apache.dubbo.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -99,12 +99,14 @@
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.javassist</groupId>
