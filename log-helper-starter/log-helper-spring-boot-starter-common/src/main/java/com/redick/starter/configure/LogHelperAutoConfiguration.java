@@ -12,7 +12,7 @@ import org.springframework.web.servlet.DispatcherServlet;
  * @date 2022/3/25 14:42
  */
 @Configuration
-public class LogHandlerAutoConfiguration {
+public class LogHelperAutoConfiguration {
 
     @Bean
     public AroundLogHandler aroundLogHandler() {

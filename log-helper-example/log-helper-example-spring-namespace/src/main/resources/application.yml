@@ -1,0 +1,8 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /spring-namespace-example
+
+spring:
+  application:
+    name: spring-namespace-example

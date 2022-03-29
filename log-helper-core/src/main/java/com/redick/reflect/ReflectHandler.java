@@ -1,7 +1,7 @@
 package com.redick.reflect;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.redick.proxy.AroundLogProxyChain;
 import com.redick.spi.ExtensionLoader;
 import com.redick.util.LogUtil;
@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Redick01
@@ -18,16 +18,22 @@ import java.util.Map;
 @Slf4j
 public class ReflectHandler {
 
+    private final Set<String> SPI_NAME = Sets.newHashSet();
+
 
     private ReflectHandler() {
+        SPI_NAME.add("java.util.Map");
+        SPI_NAME.add("java.util.List");
+        SPI_NAME.add("java.util.Set");
+        SPI_NAME.add("javax.servlet.http.HttpServletRequest");
     }
 
     public Object getRequestParameter(final AroundLogProxyChain chain) {
-        Map<String, List<Object>> result = Maps.newHashMap();
+        List<Object> result = Lists.newArrayList();
         chain.parameter().forEach((k, v) -> {
             v.forEach(o -> {
                 try {
-                    result.getOrDefault(k, Lists.newArrayList()).add(ExtensionLoader.getExtensionLoader(Reflect.class).getJoin(k).reflect(o));
+                    result.add(ExtensionLoader.getExtensionLoader(Reflect.class).getJoin(SPI_NAME.contains(k) ? k : "default").reflect(o));
                 } catch (UnsupportedEncodingException e) {
                     log.error(LogUtil.exceptionMarker(),"UnsupportedEncodingException", e);
                 }
@@ -39,7 +45,7 @@ public class ReflectHandler {
     public Object getResponseParameter(final Object o) {
         Object result = null;
         try {
-            result = ExtensionLoader.getExtensionLoader(Reflect.class).getJoin(o.getClass().getName()).reflect(o);
+            result = ExtensionLoader.getExtensionLoader(Reflect.class).getJoin(SPI_NAME.contains(o.getClass().getName()) ? o.getClass().getName() : "default").reflect(o);
         } catch (UnsupportedEncodingException e) {
             log.error(LogUtil.exceptionMarker(),"UnsupportedEncodingException", e);
         }

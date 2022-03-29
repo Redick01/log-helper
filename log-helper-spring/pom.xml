@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>log-trace-helper</artifactId>
+        <artifactId>log-trace-helper-all</artifactId>
         <groupId>com.redick</groupId>
         <version>3.0.0-RELEASE</version>
     </parent>
@@ -22,35 +22,5 @@
             <artifactId>log-helper-core</artifactId>
             <version>3.0.0-RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>com.redick</groupId>
-            <artifactId>log-helper-spring-boot-starter-alibabadubbo</artifactId>
-            <version>3.0.0-RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.redick</groupId>
-            <artifactId>log-helper-spring-boot-starter-apachedubbo</artifactId>
-            <version>3.0.0-RELEASE</version>
-        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <attach>true</attach>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>
