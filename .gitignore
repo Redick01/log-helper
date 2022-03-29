@@ -11,3 +11,4 @@ target/
 *.iml
 *.iws
 .DS_Store
+logs/*

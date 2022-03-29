@@ -17,7 +17,7 @@ import java.util.UUID;
  * @date 2020/12/26 11:47 下午
  */
 @Slf4j
-@Activate("provider")
+@Activate(group = "provider")
 public class DubboProviderTraceIdFilter implements Filter {
 
     @Trace
@@ -27,8 +27,6 @@ public class DubboProviderTraceIdFilter implements Filter {
         stopWatch.start();
         // get traceId from dubbo context attachment
         try {
-            log.info(LogUtil.marker(invocation.getArguments()), "开始调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
-                    invocation.getMethodName());
             String traceId = RpcContext.getServiceContext().getAttachment(LogUtil.kLOG_KEY_TRACE_ID);
             if (StringUtils.isBlank(traceId)) {
                 if (StringUtils.isNotBlank(TraceContext.traceId())) {
@@ -39,6 +37,8 @@ public class DubboProviderTraceIdFilter implements Filter {
                 RpcContext.getServiceContext().setAttachment(LogUtil.kLOG_KEY_TRACE_ID, traceId);
             }
             MDC.put(LogUtil.kLOG_KEY_TRACE_ID, traceId);
+            log.info(LogUtil.marker(invocation.getArguments()), "开始调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
+                    invocation.getMethodName());
             return invoker.invoke(invocation);
         } finally {
             stopWatch.stop();

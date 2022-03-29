@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
  * @author Redick01
  * @date 2022/3/21 20:49
  */
-@SPI
+@SPI("default")
 public interface Reflect {
 
     /**
