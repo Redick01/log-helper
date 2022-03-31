@@ -1,0 +1,8 @@
+server:
+  port: 8783
+  servlet:
+    context-path: /producer
+
+spring:
+  application:
+    name: httpclient-producer-demo

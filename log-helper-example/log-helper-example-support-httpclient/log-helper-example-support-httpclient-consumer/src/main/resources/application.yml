@@ -1,0 +1,8 @@
+server:
+  port: 1743
+  servlet:
+    context-path: /consumer
+
+spring:
+  application:
+    name: httpclient-consumer-demo
