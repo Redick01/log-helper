@@ -62,7 +62,7 @@
 </encoder>
 ```
 > 自定义时间戳
-默认情况下，时间戳以格式yyyy-MM-dd'T'HH:mm:ss.SSSZZ（例如2018-04-28T22:23:59.164-07:00）在主机Java平台的默认TimeZone 中写为字符串值。
+默认情况下，时间戳以格调用第三方接口日志打印式yyyy-MM-dd'T'HH:mm:ss.SSSZZ（例如2018-04-28T22:23:59.164-07:00）在主机Java平台的默认TimeZone 中写为字符串值。
 ```xml
 <timestampPattern>yyyy-MM-dd HH：mm：ss.SSS</timestampPattern>
 ```
@@ -305,7 +305,9 @@ logback.debug(LogUtil.requestTypeMarker("获取已签约支付渠道", signPayCh
 ```
 3. 调用第三方接口日志打印：
 ```java 
-logback.debug(LogUtil.funcStartMarker(signPayChannelList), "调用第三方开始"); logback.debug(LogUtil.funcEndMarker(signPayChannelList), "调用第三方结束");
+logback.debug(LogUtil.funcStartMarker(signPayChannelList), "调用第三方开始"); 
+
+logback.debug(LogUtil.funcEndMarker(signPayChannelList), "调用第三方结束");
 ```
 4. 业务状态变更：
 ```java 
@@ -314,45 +316,4 @@ logback.debug(LogUtil.bizMarker(signPayChannelList), "业务状态变更描述")
 5. 分支日志打印：
 ```java 
 logback.debug(LogUtil.branchMarker(signPayChannelList), "分支描述");
-```
-
-## 日志内容操作
-
-```
-（1）接口请求参数脱敏：
-   由于接口传入参数可能会传入用户信息或者是密钥等敏感信息，所以打印日志时应该针对这部分敏感信息进行脱敏，此插件提供了一个@Sensitive注解，该注解作用于传入参数实体的具体属性上；该注解有两个参数paramSensitiveType（参数脱敏类型）表明该字段是针对身份证或银行卡或其它的类型进行脱敏，插件提供的SensitiveType类是脱敏类型定义类，isSensitive（是否需要脱敏），默认为false不脱敏，要脱敏时应设置为true，如果字段不需要脱敏不使用该注解即可。使用方法如下：
-   a.@Sensitive注解使用方法：
-@Sensitive(paramSensitiveType = SensitiveType.MAC, isSensitive = true)
-private String mac;
-   b.集合数据脱敏：
-   有的服务接口传入参数不是以实体类的形式接收，而是以Map或List等数据结构，这样注解参数字段的方式已经不能实现参数脱敏，例如map，对此就需要规定需要规定死需要脱敏的参数key的命名，如下：
-   idCard,realName,bankCard,mobile,mac,macKey，分别是身份证号、姓名、银行卡号、电话号码、mac、mac
-（2）接口返回参数脱敏：
-   接口返回参数脱敏与接口传入参数脱敏方式相似，当返回值参数为java bean的时候正常使用@Sensitive注解；当java bean中存在范型的时候，并且范型类型也是java bean，范型类中字段内容中有需要脱敏的内容，要在范型类的字段上添加@Sensitive注解并且在具体的范型类型的java bean中的字段上也要正常使用@Sensitive字段。例如：
-@Data
-public class ModelsReturnT<T> {
-    /**
-     * 返回数据
-     */
-    @Sensitive
-    private T resData;
-    /**
-     * 错误代码
-     */
-    private String resCode;
-    /**
-     * 错误信息
-     */
-    private String resMessage;
-}
-resData需要加脱敏注解，在实际业务中T实际的类要脱敏的字段也需要添加脱敏注解
-（3）方法内部参数脱敏：
-   接口实现方法的参数脱敏可以使用AOP统一进行处理，但是在方法内部AOP无法做到灵活的处理，为了方便业务开发过程中能够更灵活地进行日志脱敏，在打印模版中提供了两个用于打印日志的模版方法：
-   commonSensitiveMarker：打印脱敏数据日志模版--支持传入参数类型为java bean，且java bean中不存在泛型参数；
-   genericSensitiveMarker：打印脱敏数据日志模版--支持传入参数类型为java bean，且java bean中存在需要脱敏的泛型参数，例如：ModelsReturn中的resData参数。
-   针对调用其他服务的接口如：dubbo和http接口，能更方便使用日志脱敏模版打印，在设计API和使用日志模版的时候提以下两点建议。
-   a.设计支持脱敏的API：在设计API之初就考虑日志字段脱敏问题，例如服务提供方设计的API的java bean要做参数脱敏，即在java bean的字段上添加@Sensitive注解，这样当服务消费方在调用服务提供方提供的服务时服务消费方就能够很好的进行传入参数和响应参数的脱敏，此种方式特别是和dubbo接口；
-   b.调用HTTP接口：在调用HTTP接口时因为请求参数是调用方自己定义的java bean，所以接口请求参数的脱敏非常灵活，只需要按要求使用@Sensitive注解即可，但是接口的响应参数会根据HTTP客户端的不同参数的包裹层级可能很多，建议序列化后进行参数脱敏。
-（4）接口参数忽略不打印：
-    在接口参数java bean的字段上添加@FieldIgnore注解即可。
 ```
