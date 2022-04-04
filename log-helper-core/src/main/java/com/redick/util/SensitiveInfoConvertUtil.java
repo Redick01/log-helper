@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author liu_penghui
  * @date 2018/10/19.
  */
+@SuppressWarnings("all")
 public class SensitiveInfoConvertUtil {
 
     /**

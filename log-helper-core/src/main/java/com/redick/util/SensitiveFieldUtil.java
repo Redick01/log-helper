@@ -1,13 +1,8 @@
 package com.redick.util;
 
-import com.redick.SensitiveDataConverter;
-import com.redick.annotation.FieldIgnore;
 import com.redick.annotation.Sensitive;
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author liu_penghui
@@ -15,55 +10,37 @@ import java.util.Map;
  */
 public class SensitiveFieldUtil {
 
-    private SensitiveFieldUtil() {
-
-    }
     /**
      * 参数脱敏
-     * @param field
-     * @param obj
-     * @return
+     * @param field Field
+     * @param obj parameter
+     * @return sensitive parameter
      */
     public static Object getSensitiveArgument(final Field field, Object obj) {
         // 注解实体不为空代表可能需要相应的脱敏操作
-        if (null != field.getAnnotation(Sensitive.class)) {
-            // 获取注解值
-            String paramSensitiveType = field.getAnnotation(Sensitive.class).paramSensitiveType();
-            // 获取注解值
-            boolean isSensitive = field.getAnnotation(Sensitive.class).isSensitive();
-            if (isSensitive) {
-                // 脱敏
-                if (null != obj) {
-                    obj = SensitiveDataConverter.sensitiveConvert(obj.toString(), paramSensitiveType);
+        Sensitive sensitive = field.getAnnotation(Sensitive.class);
+        if (null != sensitive) {
+            // 脱敏
+            if (null != obj) {
+                int len = obj.toString().length();
+                int start = sensitive.start();
+                int end = sensitive.end();
+                if (start <= 0 || end <= 0 || start >= len - 1 || end >= len - 1) {
+                    return obj;
                 }
+                obj = strReplace(obj.toString(), start, end);
             }
         }
         return obj;
     }
 
-    public static Map<String, Object> getSensitiveArgs(final Field field, final Object object) {
-        try {
-            Field[] fields1 = FieldUtils.getAllFields(field.get(object).getClass());
-            HashMap<String, Object> result = new HashMap<>(fields1.length);
-            for (Field field1 : fields1) {
-                field1.setAccessible(true);
-                try {
-                    String name1 = field1.getName();
-                    Object argument1 = field1.get(field.get(object));
-                    // 如果存在FieldOperate注解则不打印该字段内容
-                    if (null != field1.getAnnotation(FieldIgnore.class)) {
-                        continue;
-                    }
-                    argument1 = getSensitiveArgument(field1, argument1);
-                    result.put(name1, argument1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    private static String strReplace(final String str, int start, int end) {
+        char[] chars = str.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (i >= start && i <= end) {
+                chars[i] = '*';
             }
-            return result;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
         }
-        return null;
+        return new String(chars);
     }
 }

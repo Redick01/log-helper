@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  * @author liu_penghui
  * @date 2018/10/16.
  */
+@SuppressWarnings("all")
 public class AroundLogProxyChainImpl implements AroundLogProxyChain {
 
     /**

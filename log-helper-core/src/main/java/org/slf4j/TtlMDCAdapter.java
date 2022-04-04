@@ -11,10 +11,11 @@ import java.util.Set;
 
 /**
  * 重写logback的LogbackMDCAdapter，注意MDC是MDCAdapter是包级私有，所以重写的报名应该是org.slf4j
- * 用TransmittableThreadLocal替换ThreadLocal，解决多线程，异步情况x-glabal-sessionId无法传递问题
+ * 用TransmittableThreadLocal替换ThreadLocal，解决多线程，异步情况traceId无法传递问题
  *
  * @author Redick01
  */
+@SuppressWarnings("all")
 public class TtlMDCAdapter implements MDCAdapter {
 
     private final ThreadLocal<Map<String, String>> copyOnInheritThreadLocal = new TransmittableThreadLocal<>();

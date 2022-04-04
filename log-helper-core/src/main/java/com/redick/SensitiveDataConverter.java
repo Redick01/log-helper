@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  * @author liu_penghui
  * @date 2018/10/22.
  */
+@SuppressWarnings("all")
 public class SensitiveDataConverter extends MessageConverter {
 
     /**

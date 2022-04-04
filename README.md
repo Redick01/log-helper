@@ -511,7 +511,7 @@ HttpClient，OkHttp，RestTemplate支持traceId需要代码入侵，具体实现
 - `@Sensitive`注解使用方法：
 
 ```java
-@Sensitive(paramSensitiveType = SensitiveType.MAC, isSensitive = true)
+@Sensitive(start = 3, end = 10)
 private String mac;
 ```
 

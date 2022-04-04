@@ -10,16 +10,18 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Inherited
 @Documented
+@SuppressWarnings("all")
 public @interface Sensitive {
-    /**
-     * 参数脱敏类型
-     * @return 参数脱敏类型
-     */
-    String paramSensitiveType() default "";
 
     /**
-     * 是否脱敏
-     * @return 是否脱敏
+     * 数据脱敏起始位置
+     * @return
      */
-    boolean isSensitive() default false;
+    int start() default Integer.MIN_VALUE;
+
+    /**
+     * 数据脱敏终止位置
+     * @return
+     */
+    int end() default Integer.MIN_VALUE;
 }
