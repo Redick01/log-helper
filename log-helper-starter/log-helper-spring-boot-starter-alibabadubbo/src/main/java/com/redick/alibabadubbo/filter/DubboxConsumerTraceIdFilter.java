@@ -8,7 +8,7 @@ import org.slf4j.MDC;
 
 /**
  * @author liupenghui
- * @date 2021/6/24 11:08 下午
+ *  2021/6/24 11:08 下午
  */
 @Activate(group = "consumer")
 public class DubboxConsumerTraceIdFilter implements Filter {

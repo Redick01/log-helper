@@ -44,6 +44,7 @@ public interface AroundLogProxyChain {
     /**
      * exec JoinPoint
      * @return JoinPoint result
+     * @throws Throwable 异常
      */
     @SuppressWarnings("all")
     Object getProceed() throws Throwable;

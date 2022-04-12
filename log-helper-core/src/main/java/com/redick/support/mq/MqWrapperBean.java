@@ -11,7 +11,7 @@ import org.slf4j.MDC;
 /**
  * MQ消息Bean的包装Bean
  * @author liupenghui
- * @date 2021/12/10 1:22 下午
+ *  2021/12/10 1:22 下午
  */
 @Data
 @Slf4j

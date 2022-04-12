@@ -3,7 +3,7 @@ package com.redick.common;
 /**
  * 脱敏类型
  * @author liu_penghui
- * @date 2018/10/24.
+ *  2018/10/24.
  */
 public class SensitiveType {
     /**

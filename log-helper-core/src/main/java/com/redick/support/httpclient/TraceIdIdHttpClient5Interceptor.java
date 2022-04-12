@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /**
  * @author liupenghui
- * @date 2021/12/12 3:10 下午
+ *  2021/12/12 3:10 下午
  */
 @Slf4j
 public class TraceIdIdHttpClient5Interceptor extends AbstractInterceptor implements HttpRequestInterceptor {

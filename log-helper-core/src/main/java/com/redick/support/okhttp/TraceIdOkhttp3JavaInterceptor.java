@@ -2,24 +2,25 @@ package com.redick.support.okhttp;
 
 import com.redick.common.TraceIdDefine;
 import com.redick.util.LogUtil;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.MDC;
 
 import java.io.IOException;
 
 /**
- * @author liupenghui
- *  2021/12/12 3:13 下午
+ * @author Redick01
  */
 @Slf4j
-public class TraceIdOkhttpInterceptor implements Interceptor {
+public class TraceIdOkhttp3JavaInterceptor implements Interceptor {
 
+    @NotNull
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NotNull Chain chain) throws IOException {
         Request request = chain.request();
         try {
             String traceId = MDC.get(TraceIdDefine.TRACE_ID);

@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 /**
  * 脱敏信息处理
  * @author liu_penghui
- * @date 2018/10/22.
  */
 @SuppressWarnings("all")
 public class SensitiveDataConverter extends MessageConverter {
@@ -162,9 +161,9 @@ public class SensitiveDataConverter extends MessageConverter {
 
     /**
      * 对不同的敏感字段脱敏处理
-     * @param submsg
-     * @param key
-     * @return
+     * @param submsg 待脱敏字符串
+     * @param key 字段名
+     * @return 脱敏后数据
      */
     public static String sensitiveConvert(String submsg, String key){
         // idCard：身份证号, realName：姓名, bankCard：银行卡号, mobile：手机号, mac/macKey：密钥

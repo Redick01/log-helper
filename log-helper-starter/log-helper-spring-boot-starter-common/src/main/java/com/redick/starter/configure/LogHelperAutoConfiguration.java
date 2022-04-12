@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * @author Redick01
- * @date 2022/3/25 14:42
+ *  2022/3/25 14:42
  */
 @Configuration
 public class LogHelperAutoConfiguration {

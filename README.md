@@ -52,7 +52,7 @@
 
 ```xml
 <dependency>
-    <groupId>com.redick</groupId>
+    <groupId>io.github.redick01</groupId>
     <artifactId>log-helper-spring-boot-starter-common</artifactId>
     <version>1.0-RELEASE</version>
 </dependency>
@@ -79,7 +79,7 @@ public class Server {
 
 ```xml
 <dependency>
-    <groupId>com.redick</groupId>
+    <groupId>io.github.redick01</groupId>
     <artifactId>log-helper-spring</artifactId>
     <version>1.0-RELEASE</version>
 </dependency>
@@ -369,7 +369,7 @@ public class TestController {
 
 ```xml
         <dependency>
-            <groupId>com.redick</groupId>
+            <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-apachedubbo</artifactId>
             <version>1.0-RELEASE</version>
         </dependency>
@@ -379,12 +379,12 @@ public class TestController {
 
 ```xml
         <dependency>
-            <groupId>com.redick</groupId>
+            <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring</artifactId>
             <version>1.0-RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>com.redick</groupId>
+            <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-apachedubbo</artifactId>
             <version>1.0-RELEASE</version>
         </dependency>
@@ -397,7 +397,7 @@ public class TestController {
 
 ```xml
         <dependency>
-            <groupId>com.redick</groupId>
+            <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-alibabadubbo</artifactId>
             <version>1.0-RELEASE</version>
         </dependency>
@@ -407,12 +407,12 @@ public class TestController {
 
 ```xml
         <dependency>
-            <groupId>com.redick</groupId>
+            <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring</artifactId>
             <version>1.0-RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>com.redick</groupId>
+            <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-alibabadubbo</artifactId>
             <version>1.0-RELEASE</version>
         </dependency>
@@ -428,7 +428,7 @@ public class TestController {
 
 ```xml
         <dependency>
-            <groupId>com.redick</groupId>
+            <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-openfeign</artifactId>
             <version>1.0-RELEASE</version>
         </dependency>

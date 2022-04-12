@@ -12,7 +12,7 @@ import java.util.UUID;
 
 /**
  * @author liupenghui
- * @date 2020/12/26 11:47 下午
+ *  2020/12/26 11:47 下午
  */
 @Activate(group = "provider")
 public class DubboxProviderTraceIdFilter implements Filter {

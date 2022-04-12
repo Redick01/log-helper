@@ -60,17 +60,6 @@ public class TtlMDCAdapter implements MDCAdapter {
         return newMap;
     }
 
-    /**
-     * Put a context value (the <code>val</code> parameter) as identified with the
-     * <code>key</code> parameter into the current thread's context map. Note that
-     * contrary to log4j, the <code>val</code> parameter can be null.
-     * <p/>
-     * <p/>
-     * If the current thread does not have a context map it is created as a side
-     * effect of this call.
-     *
-     * @throws IllegalArgumentException in case the "key" parameter is null
-     */
     @Override
     public void put(String key, String val) throws IllegalArgumentException {
         if (key == null) {
@@ -88,10 +77,6 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
-    /**
-     * Remove the the context identified by the <code>key</code> parameter.
-     * <p/>
-     */
     @Override
     public void remove(String key) {
         if (key == null) {
@@ -111,19 +96,12 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
-    /**
-     * Clear all entries in the MDC.
-     */
     @Override
     public void clear() {
         lastOperation.set(WRITE_OPERATION);
         copyOnInheritThreadLocal.remove();
     }
 
-    /**
-     * Get the context identified by the <code>key</code> parameter.
-     * <p/>
-     */
     @Override
     public String get(String key) {
         final Map<String, String> map = copyOnInheritThreadLocal.get();
@@ -134,19 +112,11 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
-    /**
-     * Get the current thread's MDC as a map. This method is intended to be used
-     * internally.
-     */
     public Map<String, String> getPropertyMap() {
         lastOperation.set(MAP_COPY_OPERATION);
         return copyOnInheritThreadLocal.get();
     }
 
-    /**
-     * Returns the keys in the MDC as a {@link Set}. The returned value can be
-     * null.
-     */
     public Set<String> getKeys() {
         Map<String, String> map = getPropertyMap();
 
@@ -157,10 +127,6 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
-    /**
-     * Return a copy of the current thread's context map. Returned value may be
-     * null.
-     */
     @Override
     public Map<String, String> getCopyOfContextMap() {
         Map<String, String> hashMap = copyOnInheritThreadLocal.get();

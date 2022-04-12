@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Redick01
- * @date 2022/3/29 00:14
+ *  2022/3/29 00:14
  */
 @RestController
 public class TestController {

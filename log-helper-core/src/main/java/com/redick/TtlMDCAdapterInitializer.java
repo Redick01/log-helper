@@ -7,7 +7,6 @@ import org.springframework.lang.NonNull;
 
 /**
  * @author Redick01
- * @date 2021/6/30 3:37 下午
  */
 public class TtlMDCAdapterInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 

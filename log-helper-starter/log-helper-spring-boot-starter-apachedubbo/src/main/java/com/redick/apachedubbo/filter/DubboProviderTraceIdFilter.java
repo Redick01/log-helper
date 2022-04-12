@@ -14,7 +14,7 @@ import java.util.UUID;
 
 /**
  * @author liupenghui
- * @date 2020/12/26 11:47 下午
+ *  2020/12/26 11:47 下午
  */
 @Slf4j
 @Activate(group = "provider")

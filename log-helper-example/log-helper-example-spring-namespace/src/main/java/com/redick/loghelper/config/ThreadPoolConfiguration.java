@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Redick01
- * @date 2022/3/29 17:36
+ *  2022/3/29 17:36
  */
 @Configuration
 public class ThreadPoolConfiguration {

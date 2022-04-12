@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author liu_penghui
- * @date 2018/10/16.
+ *  2018/10/16.
  */
 @SuppressWarnings("all")
 public class AroundLogProxyChainImpl implements AroundLogProxyChain {
@@ -37,7 +37,7 @@ public class AroundLogProxyChainImpl implements AroundLogProxyChain {
     /**
      * 获取切点所在的目标对象
      *
-     * @return
+     * @return Object
      */
     @Override
     public Object[] getArgs() {
@@ -47,7 +47,7 @@ public class AroundLogProxyChainImpl implements AroundLogProxyChain {
     /**
      * 实例
      *
-     * @return
+     * @return Object
      */
     @Override
     public Object getTarget() {
@@ -72,7 +72,7 @@ public class AroundLogProxyChainImpl implements AroundLogProxyChain {
     /**
      * 获取目标Class
      *
-     * @return
+     * @return 目标Class
      */
     @Override
     public Class<?> getClazz() {
@@ -82,8 +82,8 @@ public class AroundLogProxyChainImpl implements AroundLogProxyChain {
     /**
      * 获取切点
      *
-     * @return
-     * @throws Throwable
+     * @return 切面执行结果
+     * @throws Throwable 异常
      */
     @Override
     public Object getProceed() throws Throwable {
@@ -93,7 +93,7 @@ public class AroundLogProxyChainImpl implements AroundLogProxyChain {
     /**
      * 获取切点方法签名对象
      *
-     * @return
+     * @return 方法签名
      */
     @Override
     public Signature getSignature() {

@@ -10,7 +10,7 @@ import org.slf4j.MDC
 
 /**
  * @author Redick01
- * @date 2022/3/31 18:36
+ *  2022/3/31 18:36
  */
 @Slf4j
 class TraceIdOkhttp3Interceptor : Interceptor {

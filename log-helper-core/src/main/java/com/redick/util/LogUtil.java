@@ -14,7 +14,7 @@ import static net.logstash.logback.marker.Markers.append;
 /**
  * 打印日志模版工具类
  * @author liu_penghui
- * @date 2018/10/15.
+ *  2018/10/15.
  */
 @SuppressWarnings("all")
 public class LogUtil {
@@ -45,7 +45,7 @@ public class LogUtil {
      * 打印日志模版
      * @param type 类型
      * @param data 数据
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker marker(String type, Object data) {
         LogstashMarker result = append(kLOG_KEY_TYPE, type);
@@ -58,7 +58,7 @@ public class LogUtil {
      * 接口处理成功日志打印模版
      * @param data 数据
      * @param duration 时长
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker processSuccessDoneMarker(Object data, long duration) {
         LogstashMarker result = marker(kTYPE_DONE, data).and(append(kLOG_KEY_DURATION, duration));
@@ -69,7 +69,7 @@ public class LogUtil {
      * 接口处理失败日志打印模版
      * @param data 数据
      * @param duration 时长
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker processFailedDoneMarker(Object data, long duration) {
         LogstashMarker result = marker(kTYPE_DONE, data).and(append(kLOG_KEY_DURATION, duration));
@@ -79,7 +79,7 @@ public class LogUtil {
     /**
      * 处理完毕日志打印模版
      * @param duration 时长
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker processDoneMarker(long duration) {
         LogstashMarker result = marker(kTYPE_DONE).and(append(kLOG_KEY_DURATION, duration));
@@ -87,8 +87,8 @@ public class LogUtil {
     }
     /**
      * 接口过程开始日志打印模版
-     * @param data
-     * @return
+     * @param data 数据
+     * @return Logstash日支模板
      */
     public static LogstashMarker processBeginMarker(Object data) {
         return marker(kTYPE_BEGIN, data);
@@ -96,7 +96,7 @@ public class LogUtil {
     /**
      * 接口执行过程日志打印模版
      * @param data 数据
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker marker(Object data) {
         return marker(kTYPE_PROCESSING, data);
@@ -104,7 +104,7 @@ public class LogUtil {
     /**
      * 开始调用第三方接口日志打印模版
      * @param data 数据
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker funcStartMarker(Object data) {
         return marker(kTYPE_FUNC_START, data);
@@ -112,7 +112,7 @@ public class LogUtil {
     /**
      * 结束调用第三方接口日志打印模版
      * @param data 数据
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker funcEndMarker(Object data) {
         return marker(kTYPE_FUNC_END, data);
@@ -120,7 +120,7 @@ public class LogUtil {
     /**
      * 业务状态变更日志打印模版
      * @param data 数据
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker bizMarker(Object data) {
         return marker(kTYPE_BIZ, data);
@@ -128,21 +128,21 @@ public class LogUtil {
     /**
      * 分之日志打印模版
      * @param data 数据
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker branchMarker(Object data) {
         return marker(kTYPE_BRANCH, data);
     }
     /**
      * 打印日志默认模版
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker marker() {
         return DEFAULT_MARKER;
     }
     /**
      * 异常日志打印模版
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker exceptionMarker() {
         return EXCEPTION_MARKER;
@@ -152,7 +152,7 @@ public class LogUtil {
      * @param processDescription 过程描述（文字描述）
      * @param data 打印数据（可以为null）
      * @param type 日志类型 （如：kTYPE_BEGIN）
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker requestTypeMarker(String processDescription, Object data, String type) {
         LogstashMarker result = marker(type, data);
@@ -163,7 +163,7 @@ public class LogUtil {
     /**
      * 打印脱敏数据日志模版--支持传入参数类型为java bean，且java bean中不存在泛型参数
      * @param data 数据
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker commonSensitiveMarker(Object data) {
         if (data == null) {
@@ -197,7 +197,7 @@ public class LogUtil {
      * 打印脱敏数据日志模版--支持传入参数类型为java bean，且java bean中存在需要脱敏的泛型参数
      * 例如：ModelsReturn中的resData参数
      * @param data 数据
-     * @return
+     * @return Logstash日支模板
      */
     public static LogstashMarker genericSensitiveMarker(Object data) {
         if (data == null) {

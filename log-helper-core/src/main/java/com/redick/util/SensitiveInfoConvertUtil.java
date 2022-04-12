@@ -5,16 +5,15 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * 日志打印内容敏感信息处理
  * @author liu_penghui
- * @date 2018/10/19.
+ *  2018/10/19.
  */
 @SuppressWarnings("all")
 public class SensitiveInfoConvertUtil {
 
     /**
-     * [姓名] 只显示第一个汉字，其他隐藏为星号<例子：李**>
-     *
-     * @param fullName
-     * @return
+     * 中文名脱敏
+     * @param fullName real name
+     * @return 脱敏后数据
      */
     public static String chineseName(String fullName) {
         if (StringUtils.isBlank(fullName)) {
@@ -24,10 +23,10 @@ public class SensitiveInfoConvertUtil {
         return StringUtils.rightPad(name, StringUtils.length(fullName.replaceAll("'", "")), "*");
     }
     /**
-     * [身份证号] 显示前三位最后四位，其他隐藏。共计18位或者15位。<例子：123**********5762>
+     * 显示前三位最后四位，其他隐藏。共计18位或者15位
      *
-     * @param idCardNum
-     * @return
+     * @param idCardNum 身份证
+     * @return 脱敏后数据
      */
     public static String idCardNum(String idCardNum) {
         if (StringUtils.isBlank(idCardNum)) {
@@ -37,10 +36,10 @@ public class SensitiveInfoConvertUtil {
     }
 
     /**
-     * [手机号码] 前三位，后四位，其他隐藏<例子:138******1234>
+     * 前三位，后四位，其他隐藏
      *
-     * @param num
-     * @return
+     * @param num 电话号码
+     * @return 脱敏后数据
      */
     public static String mobilePhone(String num) {
         if (StringUtils.isBlank(num)) {
@@ -48,10 +47,10 @@ public class SensitiveInfoConvertUtil {
         }
         return num.replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2");    }
     /**
-     * [银行卡号] 前六位，后四位，其他用星号隐藏每位1个星号<例子:6222600**********1234>
+     * 前六位，后四位，其他用星号隐藏每位1个星号
      *
-     * @param cardNum
-     * @return
+     * @param cardNum 银行卡号
+     * @return 脱敏后数据
      */
     public static String bankCard(String cardNum) {
         if (StringUtils.isBlank(cardNum)) {
@@ -62,8 +61,8 @@ public class SensitiveInfoConvertUtil {
 
     /**
      * macKey脱敏
-     * @param mac
-     * @return
+     * @param mac 鉴权值
+     * @return 脱敏后数据
      */
     public static String macKey(String mac) {
         if (StringUtils.isEmpty(mac)) {

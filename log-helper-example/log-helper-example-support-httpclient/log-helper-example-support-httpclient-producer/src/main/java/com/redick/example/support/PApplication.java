@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author Redick01
- * @date 2022/3/31 13:24
+ *  2022/3/31 13:24
  */
 @SpringBootApplication
 @LogHelperEnable

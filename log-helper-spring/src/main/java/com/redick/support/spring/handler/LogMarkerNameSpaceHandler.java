@@ -7,7 +7,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 /**
  * @author Redick01
- * @date 2018/10/17.
+ *  2018/10/17.
  */
 public class LogMarkerNameSpaceHandler extends NamespaceHandlerSupport {
     /**

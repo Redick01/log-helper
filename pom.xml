@@ -6,6 +6,10 @@
     <groupId>io.github.redick01</groupId>
     <artifactId>log-trace-helper-all</artifactId>
     <version>1.0-RELEASE</version>
+
+    <description>🔥🔥🔥轻量级日志链路追踪工具，结合logstash-logback-encoder实现日志输出json格式化s</description>
+    <url>https://github.com/Redick01/log-helper</url>
+
     <modules>
         <module>log-helper-core</module>
         <module>log-helper-example</module>
@@ -16,6 +20,8 @@
     <packaging>pom</packaging>
     <name>log-trace-helper-all</name>
     <properties>
+        <java.version>1.8</java.version>
+        <log-helper.version>1.0-RELEASE</log-helper.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <logback.version>1.2.3</logback.version>
         <hutool.version>5.7.16</hutool.version>
@@ -44,6 +50,31 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.redick01</groupId>
+                <artifactId>log-helper-core</artifactId>
+                <version>${log-helper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.redick01</groupId>
+                <artifactId>log-helper-starter</artifactId>
+                <version>${log-helper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.redick01</groupId>
+                <artifactId>log-helper-spring</artifactId>
+                <version>${log-helper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.redick01</groupId>
+                <artifactId>log-helper-spi</artifactId>
+                <version>${log-helper.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -144,22 +175,125 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/Redick01/log-helper.git</url>
+        <connection>scm:git:https://github.com/Redick01/log-helper-spring-cloud-starter.git</connection>
+        <developerConnection>scm:git:https://github.com/Redick01/log-helper-spring-cloud-starter.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>Redick01</id>
+            <name>Redick01</name>
+            <email>11090829@qq.com</email>
+            <url>https://github.com/Redick01</url>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <!-- 这个id需要在setting.xml中设置  -->
+            <id>maven_nexus_repo</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>maven_nexus_repo</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.1</version>
+                <version>2.4</version>
                 <configuration>
                     <attach>true</attach>
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>package</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Implementation-Title>${project.artifactId}</Implementation-Title>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Build-Time>${maven.build.timestamp}</Build-Time>
+                            <Built-By>yanhom</Built-By>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- Gpg Signature -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>maven_nexus_repo</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
         </plugins>
     </build>

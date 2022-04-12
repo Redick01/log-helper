@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 
 /**
  * @author Redick01
- * @date 2022/3/25 14:36
+ *  2022/3/25 14:36
  */
 @Aspect
 @Configuration

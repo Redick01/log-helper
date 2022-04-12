@@ -18,10 +18,7 @@
 
     <artifactId>log-helper-example-support-httpclient</artifactId>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
+
 
     <dependencies>
         <dependency>
@@ -79,11 +76,11 @@
             <version>4.9.0</version>
         </dependency>
         <!--okhttp3需要该包-->
-        <dependency>
-            <groupId>com.squareup.okio</groupId>
-            <artifactId>okio-parent</artifactId>
-            <version>1.17.0</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.squareup.okio</groupId>-->
+<!--            <artifactId>okio-parent</artifactId>-->
+<!--            <version>1.17.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

@@ -15,7 +15,7 @@ import java.util.UUID;
 
 /**
  * @author Redick01
- * @date 2022/3/25 17:47
+ *  2022/3/25 17:47
  */
 @SuppressWarnings("all")
 public class SpringWebMvcInterceptor implements HandlerInterceptor {

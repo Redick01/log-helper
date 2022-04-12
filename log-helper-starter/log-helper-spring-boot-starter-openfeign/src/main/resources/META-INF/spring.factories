@@ -1,3 +1,2 @@
-# springboot 自动装配 web和feign拦截器配置
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.redick.starter.configure.OpenFeignConfiguration

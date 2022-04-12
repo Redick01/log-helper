@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 
 /**
  * @author Redick01
- * @date 2022/3/29 00:11
+ *  2022/3/29 00:11
  */
 @SpringBootApplication
 @LogHelperEnable

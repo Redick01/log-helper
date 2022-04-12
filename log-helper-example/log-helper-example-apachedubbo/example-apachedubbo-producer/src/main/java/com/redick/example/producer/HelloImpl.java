@@ -7,7 +7,7 @@ import org.apache.dubbo.config.annotation.Method;
 
 /**
  * @author Redick01
- * @date 2022/3/28 13:50
+ *  2022/3/28 13:50
  */
 @DubboService(version = "1.0.0", methods = {@Method(name = "say", timeout = 120000, retries = 0)})
 public class HelloImpl implements HelloApi {

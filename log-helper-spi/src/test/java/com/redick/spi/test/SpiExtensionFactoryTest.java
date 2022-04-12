@@ -8,7 +8,6 @@ import org.junit.Test;
 
 /**
  * @author liupenghui
- * @date 2022/1/4 6:06 下午
  */
 public class SpiExtensionFactoryTest {
 

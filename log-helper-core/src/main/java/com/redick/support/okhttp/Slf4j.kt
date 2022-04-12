@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 
 /**
  * @author Redick01
- * @date 2022/3/31 18:40
+ *  2022/3/31 18:40
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)

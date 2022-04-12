@@ -1,6 +1,6 @@
 package com.redick.example.okhttp;
 
-import com.redick.support.okhttp.TraceIdOkhttp3Interceptor;
+import com.redick.support.okhttp.TraceIdOkhttp3JavaInterceptor;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author liupenghui
- * @date 2021/12/12 10:10 下午
+ *  2021/12/12 10:10 下午
  */
 public class OkHttp3Util {
 
@@ -29,7 +29,7 @@ public class OkHttp3Util {
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(new TraceIdOkhttp3Interceptor())
+                .addInterceptor(new TraceIdOkhttp3JavaInterceptor())
                 .build();
     }
 

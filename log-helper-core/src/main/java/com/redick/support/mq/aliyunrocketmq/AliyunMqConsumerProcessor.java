@@ -12,7 +12,7 @@ import java.util.UUID;
 
 /**
  * @author liupenghui
- * @date 2021/12/10 1:24 下午
+ *  2021/12/10 1:24 下午
  */
 public class AliyunMqConsumerProcessor {
 

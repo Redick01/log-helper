@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 /**
  * @author Redick01
- * @date 2022/3/22 19:44
+ *  2022/3/22 19:44
  */
 @Join
 public class JavaBeanParameterReflect implements Reflect {

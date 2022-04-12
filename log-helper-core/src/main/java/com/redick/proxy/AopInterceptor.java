@@ -7,7 +7,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 /**
  * 使用aspectj实现aop拦截器
  * @author liu_penghui
- * @date 2018/10/16.
+ *  2018/10/16.
  */
 public class AopInterceptor {
 
@@ -19,8 +19,9 @@ public class AopInterceptor {
 
     /**
      * 拦截方法
-     * @param joinPoint 切点
+     * @param joinPoint joinPoint 切点
      * @return object
+     * @throws Throwable 异常
      */
     public Object proceed(ProceedingJoinPoint joinPoint) throws Throwable {
         return aroundLogHandler.around(new AroundLogProxyChainImpl(joinPoint));

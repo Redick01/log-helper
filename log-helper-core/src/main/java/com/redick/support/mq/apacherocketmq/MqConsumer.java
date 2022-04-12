@@ -4,7 +4,7 @@ import org.apache.rocketmq.spring.core.RocketMQLocalTransactionState;
 
 /**
  * @author liupenghui
- * @date 2021/12/10 1:23 下午
+ *  2021/12/10 1:23 下午
  */
 public interface MqConsumer<T> {
 

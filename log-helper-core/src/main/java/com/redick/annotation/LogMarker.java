@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 日志模版注解
  * @author liu_penghui
- * @date 2018/10/15.
+ *  2018/10/15.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

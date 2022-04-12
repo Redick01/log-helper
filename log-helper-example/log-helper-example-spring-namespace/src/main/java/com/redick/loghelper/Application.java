@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ImportResource;
 
 /**
  * @author Redick01
- * @date 2022/3/29 17:01
+ *  2022/3/29 17:01
  */
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)

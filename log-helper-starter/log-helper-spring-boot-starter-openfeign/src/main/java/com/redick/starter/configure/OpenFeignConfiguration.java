@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Redick01
- * @date 2022/3/26 14:32
+ * 2022/3/26 14:32
  */
 @Configuration
 public class OpenFeignConfiguration {

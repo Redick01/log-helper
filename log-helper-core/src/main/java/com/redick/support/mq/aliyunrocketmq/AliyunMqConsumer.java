@@ -4,7 +4,7 @@ import com.aliyun.openservices.ons.api.Action;
 
 /**
  * @author liupenghui
- * @date 2021/12/10 4:59 下午
+ *  2021/12/10 4:59 下午
  */
 public interface AliyunMqConsumer<T> {
 

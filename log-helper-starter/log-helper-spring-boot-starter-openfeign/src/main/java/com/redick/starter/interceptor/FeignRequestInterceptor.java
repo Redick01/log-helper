@@ -9,7 +9,7 @@ import org.slf4j.MDC;
 
 /**
  * @author Redick01
- * @date 2021/12/18 10:05 下午
+ * 2021/12/18 10:05 下午
  */
 @Slf4j
 public class FeignRequestInterceptor implements RequestInterceptor {

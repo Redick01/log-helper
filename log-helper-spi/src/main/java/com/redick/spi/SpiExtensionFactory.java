@@ -2,7 +2,7 @@ package com.redick.spi;
 
 /**
  * @author liupenghui
- * @date 2021/12/24 3:21 下午
+ *  2021/12/24 3:21 下午
  */
 @Join
 public class SpiExtensionFactory implements ExtensionFactory {

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author Redick
- * @date 2022/3/29 10:17 下午
+ *  2022/3/29 10:17 下午
  */
 @SuppressWarnings("all")
 @Component

@@ -6,7 +6,7 @@ import org.springframework.core.type.AnnotationMetadata;
 
 /**
  * @author Redick01
- * @date 2022/3/25 14:29
+ *  2022/3/25 14:29
  */
 public class LogHelperImportSelector implements ImportSelector {
 
