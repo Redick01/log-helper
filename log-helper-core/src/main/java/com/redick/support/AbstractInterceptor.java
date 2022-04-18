@@ -1,4 +1,4 @@
-package com.redick.support.httpclient;
+package com.redick.support;
 
 import com.redick.common.TraceIdDefine;
 import org.slf4j.MDC;

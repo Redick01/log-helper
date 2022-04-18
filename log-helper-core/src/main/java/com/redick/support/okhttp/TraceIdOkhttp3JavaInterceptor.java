@@ -1,6 +1,7 @@
 package com.redick.support.okhttp;
 
 import com.redick.common.TraceIdDefine;
+import com.redick.support.AbstractInterceptor;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
@@ -16,24 +17,24 @@ import java.io.IOException;
  * @author Redick01
  */
 @Slf4j
-public class TraceIdOkhttp3JavaInterceptor implements Interceptor {
+public class TraceIdOkhttp3JavaInterceptor extends AbstractInterceptor implements Interceptor {
 
     @NotNull
     @Override
     public Response intercept(@NotNull Chain chain) throws IOException {
         Request request = chain.request();
         try {
-            String traceId = MDC.get(TraceIdDefine.TRACE_ID);
+            String traceId = traceId();
             if (StringUtils.isNotBlank(traceId)) {
                 request = request
                         .newBuilder()
                         .addHeader(TraceIdDefine.TRACE_ID, traceId)
                         .build();
             } else {
-                log.info(LogUtil.marker(), "当前线程没有traceId");
+                log.info(LogUtil.marker(), "current thread have not the traceId!");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(LogUtil.exceptionMarker(), "Okhttp3 http header set traceId exception!", e);
         }
         return chain.proceed(request);
     }

@@ -1,7 +1,7 @@
 package com.redick.example.httpclient;
 
 
-import com.redick.support.httpclient.TraceIdIdHttpClient5Interceptor;
+import com.redick.support.httpclient.TraceIdHttpClient5Interceptor;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.config.RequestConfig;
@@ -33,7 +33,7 @@ public class HttpClient5Util {
     public static String doGet(String url) {
         String result = "";
         // 为HttpClient添加拦截器TraceIdHttpClientInterceptor
-        try (CloseableHttpClient httpClient = HttpClientBuilder.create().addRequestInterceptorFirst(new TraceIdIdHttpClient5Interceptor()).build()) {
+        try (CloseableHttpClient httpClient = HttpClientBuilder.create().addRequestInterceptorFirst(new TraceIdHttpClient5Interceptor()).build()) {
             // 创建httpGet远程连接实例
             HttpGet httpGet = new HttpGet(url);
             RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
@@ -60,7 +60,7 @@ public class HttpClient5Util {
         String result = "";
         System.out.println(param);
         // 为HttpClient添加拦截器TraceIdHttpClientInterceptor
-        try (CloseableHttpClient httpClient = HttpClientBuilder.create().addRequestInterceptorLast(new TraceIdIdHttpClient5Interceptor()).build()) {
+        try (CloseableHttpClient httpClient = HttpClientBuilder.create().addRequestInterceptorLast(new TraceIdHttpClient5Interceptor()).build()) {
             HttpPost httpPost = new HttpPost(url);
             RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
                     .setConnectionRequestTimeout(Timeout.of(CONNECTION_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS))

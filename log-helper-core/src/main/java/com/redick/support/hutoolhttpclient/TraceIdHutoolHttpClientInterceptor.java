@@ -1,30 +1,31 @@
-package com.redick.support.httpclient;
+package com.redick.support.hutoolhttpclient;
 
+import cn.hutool.http.HttpInterceptor;
+import cn.hutool.http.HttpRequest;
 import com.redick.common.TraceIdDefine;
 import com.redick.support.AbstractInterceptor;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpException;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.protocol.HttpContext;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * @author liupenghui
- *  2021/12/12 3:04 下午
+ * @author Redick01
+ * @date 2022/4/18 13:13
  */
 @Slf4j
-public class TraceIdHttpClientInterceptor extends AbstractInterceptor implements HttpRequestInterceptor {
+public class TraceIdHutoolHttpClientInterceptor extends AbstractInterceptor implements HttpInterceptor {
 
     @Override
-    public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
+    public void process(HttpRequest request) {
         try {
             if (StringUtils.isNotBlank(traceId())) {
                 // 传递traceId
-                request.setHeader(TraceIdDefine.TRACE_ID, traceId());
+                Map<String, String> header = new HashMap<>();
+                header.put(TraceIdDefine.TRACE_ID, traceId());
+                request.addHeaders(header);
             } else {
                 log.info(LogUtil.marker(), "current thread have not the traceId!");
             }

@@ -24,6 +24,7 @@
         <log-helper.version>1.0-RELEASE</log-helper.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <logback.version>1.2.3</logback.version>
+        <forest.version>1.5.19</forest.version>
         <hutool.version>5.7.16</hutool.version>
         <spring.version>5.3.14</spring.version>
         <skywalking.trace.version>8.3.0</skywalking.trace.version>
@@ -149,6 +150,18 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
             <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.dtflys.forest</groupId>
+            <artifactId>forest-core</artifactId>
+            <version>${forest.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!--skywalking traceId获取组件-->
         <dependency>

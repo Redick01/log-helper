@@ -1,6 +1,7 @@
 package com.redick.support.httpclient;
 
 import com.redick.common.TraceIdDefine;
+import com.redick.support.AbstractInterceptor;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,7 @@ import java.io.IOException;
  *  2021/12/12 3:10 下午
  */
 @Slf4j
-public class TraceIdIdHttpClient5Interceptor extends AbstractInterceptor implements HttpRequestInterceptor {
+public class TraceIdHttpClient5Interceptor extends AbstractInterceptor implements HttpRequestInterceptor {
 
     @Override
     public void process(HttpRequest httpRequest, EntityDetails entityDetails, HttpContext httpContext) throws HttpException, IOException {
@@ -26,10 +27,10 @@ public class TraceIdIdHttpClient5Interceptor extends AbstractInterceptor impleme
                 // 传递traceId
                 httpRequest.setHeader(TraceIdDefine.TRACE_ID, traceId());
             } else {
-                log.info(LogUtil.marker(), "当前线程没有traceId");
+                log.info(LogUtil.marker(), "current thread have not the traceId!");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(LogUtil.exceptionMarker(), "HttpClient5 http header set traceId exception!", e);
         }
     }
 }

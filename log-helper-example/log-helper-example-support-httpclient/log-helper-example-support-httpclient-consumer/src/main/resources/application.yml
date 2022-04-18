@@ -6,3 +6,6 @@ server:
 spring:
   application:
     name: httpclient-consumer-demo
+
+forest:
+  backend: httpclient

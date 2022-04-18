@@ -1,8 +1,8 @@
 package com.redick.example.support.controller;
 
 import com.redick.annotation.LogMarker;
-import com.redick.example.dto.Request;
-import com.redick.example.dto.Response;
+import com.redick.example.dto.RequestDTO;
+import com.redick.example.dto.ResponseDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,7 +17,8 @@ public class ProducerController {
 
     @PostMapping("/say")
     @LogMarker(businessDescription = "say", interfaceName = "com.redick.example.support.controller.ProducerController#say()")
-    public @ResponseBody Response say(@RequestBody Request request) {
-        return new Response(0, "success", request.getContent());
+    public @ResponseBody
+    ResponseDTO say(@RequestBody RequestDTO requestDTO) {
+        return new ResponseDTO(0, "success", requestDTO.getContent());
     }
 }

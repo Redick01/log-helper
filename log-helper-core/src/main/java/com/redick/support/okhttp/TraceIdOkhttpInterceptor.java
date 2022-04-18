@@ -1,6 +1,7 @@
 package com.redick.support.okhttp;
 
 import com.redick.common.TraceIdDefine;
+import com.redick.support.AbstractInterceptor;
 import com.redick.util.LogUtil;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
@@ -16,23 +17,23 @@ import java.io.IOException;
  *  2021/12/12 3:13 下午
  */
 @Slf4j
-public class TraceIdOkhttpInterceptor implements Interceptor {
+public class TraceIdOkhttpInterceptor extends AbstractInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         try {
-            String traceId = MDC.get(TraceIdDefine.TRACE_ID);
+            String traceId = traceId();
             if (StringUtils.isNotBlank(traceId)) {
                 request = request
                         .newBuilder()
                         .addHeader(TraceIdDefine.TRACE_ID, traceId)
                         .build();
             } else {
-                log.info(LogUtil.marker(), "当前线程没有traceId");
+                log.info(LogUtil.marker(), "current thread have not the traceId!");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(LogUtil.exceptionMarker(), "Okhttp http header set traceId exception!", e);
         }
         return chain.proceed(request);
     }

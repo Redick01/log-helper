@@ -19,5 +19,10 @@
             <artifactId>log-helper-example-support-httpclient-common</artifactId>
             <version>1.0-RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.dtflys.forest</groupId>
+            <artifactId>forest-spring-boot-starter</artifactId>
+            <version>${forest.version}</version>
+        </dependency>
     </dependencies>
 </project>

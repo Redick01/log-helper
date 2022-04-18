@@ -279,8 +279,8 @@ public class TestController {
     @PostMapping("/httpclient")
     @LogMarker(businessDescription = "/httpclient-test", interfaceName = "com.redick.example.support.controller.ConsumerController#httpclient()")
     public @ResponseBody
-    Response httpclient(@RequestBody Request request) {
-        return JSONObject.parseObject(HttpClientUtil.doPost(url, JSONObject.toJSONString(request)), Response.class);
+    Response httpclient(@RequestBody Request requestDTO) {
+        return JSONObject.parseObject(HttpClientUtil.doPost(url, JSONObject.toJSONString(requestDTO)), Response.class);
     }
 }
 ```

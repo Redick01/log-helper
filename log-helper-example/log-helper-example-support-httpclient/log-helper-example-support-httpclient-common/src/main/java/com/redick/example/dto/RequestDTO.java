@@ -7,7 +7,7 @@ import lombok.Data;
  *  2022/3/31 13:28
  */
 @Data
-public class Request {
+public class RequestDTO {
 
     private String content;
 }
