@@ -40,6 +40,12 @@
 - **提供接口参数解析接口，支持自定义接口参数的解析，只需要按SPI规范实现即可**
 - **提供Spring命名空间和SpringBoot两种接入方式**
 
+##### 1.0.1-RELEASE版本
+
+- **支持forest框架日志链路追踪**
+- **支持hutool httpclient框架日志链路追踪**
+- **支持spring webflux日志链路追踪**
+
 &nbsp; &nbsp;
 &nbsp; &nbsp;
 &nbsp; &nbsp;
