@@ -7,7 +7,6 @@ import com.redick.support.forest.TraceIdForestInterceptor;
 
 /**
  * @author Redick01
- * @date 2022/4/18 18:13
  */
 public interface ForestClientService {
 

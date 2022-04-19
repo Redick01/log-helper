@@ -5,12 +5,12 @@
     <parent>
         <artifactId>log-trace-helper-all</artifactId>
         <groupId>io.github.redick01</groupId>
-        <version>1.0-RELEASE</version>
+        <version>1.0.1-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>log-helper-core</artifactId>
-    <version>1.0-RELEASE</version>
+    <version>1.0.1-RELEASE</version>
 
     <packaging>jar</packaging>
 
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spi</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>1.0.1-RELEASE</version>
         </dependency>
         <!--TTL 解决线程池，异步 无法做到全链路日志追踪问题-->
         <dependency>

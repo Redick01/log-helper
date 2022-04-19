@@ -30,6 +30,7 @@ public class LogHelperAspectJ {
      * 执行结果
      * @param joinPoint 切点
      * @return 返回结果
+     * @throws Throwable 异常
      */
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {

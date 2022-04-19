@@ -14,7 +14,6 @@ import java.util.UUID;
 
 /**
  * @author Redick01
- * @date 2022/4/19 17:42
  */
 @Slf4j
 public enum LogHelperTraceIdExchange {

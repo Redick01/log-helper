@@ -5,7 +5,7 @@
     <parent>
         <artifactId>log-helper-example-support-httpclient</artifactId>
         <groupId>io.github.redick01</groupId>
-        <version>1.0-RELEASE</version>
+        <version>1.0.1-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,12 +17,12 @@
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-example-support-httpclient-common</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>1.0.1-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.dtflys.forest</groupId>
             <artifactId>forest-spring-boot-starter</artifactId>
-            <version>${forest.version}</version>
+            <version>1.5.19</version>
         </dependency>
     </dependencies>
 </project>
