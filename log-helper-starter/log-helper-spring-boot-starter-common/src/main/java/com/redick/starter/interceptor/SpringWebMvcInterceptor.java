@@ -31,7 +31,6 @@ public class SpringWebMvcInterceptor implements HandlerInterceptor {
                 traceId = UUID.randomUUID().toString();
             }
         }
-        response.addHeader(TraceIdDefine.TRACE_ID, traceId);
         MDC.put(LogUtil.kLOG_KEY_TRACE_ID, traceId);
         return true;
     }

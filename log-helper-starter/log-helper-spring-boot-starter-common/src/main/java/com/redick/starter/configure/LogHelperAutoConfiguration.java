@@ -1,8 +1,10 @@
 package com.redick.starter.configure;
 
 import com.redick.AroundLogHandler;
+import com.redick.starter.filter.LogHelperWebFluxFilter;
 import com.redick.starter.interceptor.SpringWebMvcInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -27,7 +29,11 @@ public class LogHelperAutoConfiguration {
         return new WebMvcInterceptor();
     }
 
-
+    @Bean
+    @ConditionalOnClass(WebFluxProperties.class)
+    public LogHelperWebFluxFilter logHelperWebFluxFilter() {
+        return new LogHelperWebFluxFilter();
+    }
 }
 
 class WebMvcInterceptor implements WebMvcConfigurer {

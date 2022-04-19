@@ -11,14 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Redick01
- * @date 2022/4/18 17:30
  */
 @Slf4j
 public class TraceIdForestInterceptor extends AbstractInterceptor implements Interceptor<Object> {
 
     @Override
     public boolean beforeExecute(ForestRequest request) {
-        log.info(LogUtil.funcStartMarker(request), "开始forest请求处理");
+        log.info(LogUtil.funcStartMarker(request.getBody()), "开始forest请求处理");
         if (StringUtils.isNotBlank(traceId())) {
             request.addHeader(TraceIdDefine.TRACE_ID, traceId());
         } else {
@@ -29,6 +28,6 @@ public class TraceIdForestInterceptor extends AbstractInterceptor implements Int
 
     @Override
     public void afterExecute(ForestRequest request, ForestResponse response) {
-        log.info(LogUtil.marker(response), "forest请求处理完毕");
+        log.info(LogUtil.marker(response.getContent()), "forest请求处理完毕");
     }
 }

@@ -13,7 +13,6 @@ import java.util.Map;
 
 /**
  * @author Redick01
- * @date 2022/4/18 13:13
  */
 @Slf4j
 public class TraceIdHutoolHttpClientInterceptor extends AbstractInterceptor implements HttpInterceptor {
