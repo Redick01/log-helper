@@ -1,2 +1,1 @@
-psid=com.redick.apachedubbo.filter.DubboProviderTraceIdFilter
-csid=com.redick.apachedubbo.filter.DubboConsumerTraceIdFilter
+dubboTraceIdFilter=com.redick.apachedubbo.filter.DubboTraceIdFilter

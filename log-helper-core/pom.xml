@@ -20,12 +20,6 @@
             <artifactId>log-helper-spi</artifactId>
             <version>1.0.1-RELEASE</version>
         </dependency>
-        <!--TTL 解决线程池，异步 无法做到全链路日志追踪问题-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>transmittable-thread-local</artifactId>
-            <version>2.11.2</version>
-        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
