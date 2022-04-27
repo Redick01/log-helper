@@ -16,7 +16,6 @@
         <module>log-helper-spring</module>
         <module>log-helper-spi</module>
         <module>log-helper-starter</module>
-        <module>log-helper-common</module>
     </modules>
     <packaging>pom</packaging>
     <name>log-trace-helper-all</name>

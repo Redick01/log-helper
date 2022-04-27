@@ -16,6 +16,7 @@
         <module>log-helper-spring-boot-starter-alibabadubbo</module>
         <module>log-helper-spring-boot-starter-openfeign</module>
         <module>log-helper-spring-boot-starter-apachedubbo</module>
+        <module>log-helper-spring-boot-starter-webflux</module>
     </modules>
 
     <dependencies>
@@ -36,13 +37,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.boot.version}</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
             <version>${spring.boot.version}</version>
             <scope>provided</scope>
             <optional>true</optional>
