@@ -1,6 +1,7 @@
 package com.redick.starter.configure;
 
 import com.redick.AroundLogHandler;
+import com.redick.starter.banner.LogHelperBanner;
 import com.redick.starter.interceptor.SpringWebMvcInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class LogHelperAutoConfiguration {
+
+    @Bean
+    public LogHelperBanner logHelperBanner() {
+        return new LogHelperBanner();
+    }
 
     @Bean
     public AroundLogHandler aroundLogHandler() {
