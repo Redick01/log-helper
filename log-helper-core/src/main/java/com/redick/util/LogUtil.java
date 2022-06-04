@@ -160,6 +160,17 @@ public class LogUtil {
         result.and(append(kLOG_KEY_REQUEST_TYPE, businessDescription + "." + processDescription));
         return result;
     }
+
+    /**
+     * 添加自定义字段模板
+     * @param fileName 字段名
+     * @param data 数据
+     * @return LogstashMarker
+     */
+    public static LogstashMarker responseTimeMarker(String fileName, Object data) {
+        return append(fileName, data);
+    }
+
     /**
      * 打印脱敏数据日志模版--支持传入参数类型为java bean，且java bean中不存在泛型参数
      * @param data 数据
