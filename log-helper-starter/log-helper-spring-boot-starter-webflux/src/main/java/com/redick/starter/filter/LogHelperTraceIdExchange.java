@@ -29,7 +29,7 @@ public enum LogHelperTraceIdExchange {
         if (traceIds != null && traceIds.size() > 0) {
             traceId = traceIds.get(0);
         } else {
-            if (StringUtils.isNotBlank(TraceContext.traceId())) {
+            if (StringUtils.isNotBlank(TraceContext.traceId()) && !TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
                 traceId = TraceContext.traceId();
             } else {
                 traceId = UUID.randomUUID().toString();
