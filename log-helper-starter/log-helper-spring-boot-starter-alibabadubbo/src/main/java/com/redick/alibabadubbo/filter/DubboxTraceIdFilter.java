@@ -3,6 +3,7 @@ package com.redick.alibabadubbo.filter;
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.rpc.*;
+import com.redick.common.TraceIdDefine;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +33,7 @@ public class DubboxTraceIdFilter implements Filter {
             if (Constants.PROVIDER_SIDE.equals(side)) {
                 String traceId = RpcContext.getContext().getAttachment(LogUtil.kLOG_KEY_TRACE_ID);
                 if (StringUtils.isBlank(traceId)) {
-                    if (StringUtils.isNotBlank(TraceContext.traceId())) {
+                    if (StringUtils.isNotBlank(TraceContext.traceId()) && !TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
                         traceId = TraceContext.traceId();
                     } else {
                         traceId = UUID.randomUUID().toString();

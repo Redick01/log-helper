@@ -25,7 +25,7 @@ public class SpringWebMvcInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String traceId = request.getHeader(TraceIdDefine.TRACE_ID);
         if (StringUtils.isBlank(traceId)) {
-            if (StringUtils.isNotBlank(TraceContext.traceId())) {
+            if (StringUtils.isNotBlank(TraceContext.traceId()) && !TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
                 traceId = TraceContext.traceId();
             } else {
                 traceId = UUID.randomUUID().toString();

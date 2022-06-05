@@ -29,7 +29,7 @@ public class AliyunMqConsumerProcessor {
             String traceId = mqWrapperBean.getTraceId();
             if (StringUtils.isBlank(traceId)) {
                 traceId = TraceContext.traceId();
-                if (StringUtils.isBlank(traceId)) {
+                if (StringUtils.isBlank(traceId) || TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
                     traceId = UUID.randomUUID().toString();
                 }
             }

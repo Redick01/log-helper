@@ -30,7 +30,7 @@ public class AroundLogHandler {
         Logger logger = getRealLogger(chain);
         mdcLogMarkerParam(chain);
         if (StringUtils.isEmpty(MDC.get(TraceIdDefine.TRACE_ID))) {
-            if (StringUtils.isNotBlank(TraceContext.traceId())) {
+            if (StringUtils.isNotBlank(TraceContext.traceId()) && !TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
                 MDC.put(TraceIdDefine.TRACE_ID, TraceContext.traceId());
             } else {
                 MDC.put(TraceIdDefine.TRACE_ID, UUID.randomUUID().toString());

@@ -1,5 +1,6 @@
 package com.redick.apachedubbo.filter;
 
+import com.redick.common.TraceIdDefine;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +41,7 @@ public class DubboTraceIdFilter implements Filter {
             } else {
                 String traceId = RpcContext.getServiceContext().getAttachment(LogUtil.kLOG_KEY_TRACE_ID);
                 if (StringUtils.isBlank(traceId)) {
-                    if (StringUtils.isNotBlank(TraceContext.traceId())) {
+                    if (StringUtils.isNotBlank(TraceContext.traceId()) && !TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
                         traceId = TraceContext.traceId();
                     } else {
                         traceId = UUID.randomUUID().toString();
