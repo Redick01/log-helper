@@ -1,5 +1,6 @@
 package com.redick.loghelper.controller;
 
+import com.alibaba.ttl.TtlRunnable;
 import com.redick.annotation.LogMarker;
 import com.redick.executor.TtlThreadPoolExecutor;
 import com.redick.executor.TtlThreadPoolTaskExecutor;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author Redick01
@@ -24,6 +26,9 @@ public class TestController {
     @Resource(name = "ttlThreadPoolExecutor")
     private TtlThreadPoolExecutor ttlThreadPoolExecutor;
 
+    @Resource(name = "threadPoolExecutor")
+    private ThreadPoolExecutor threadPoolExecutor;
+
     @LogMarker(businessDescription = "say方法", interfaceName = "com.redick.loghelper.controller.TestController#say()")
     @GetMapping("/test")
     public String say(String content) {
@@ -35,6 +40,10 @@ public class TestController {
         ttlThreadPoolTaskExecutor.execute(() -> {
             log.info(LogUtil.marker("ttlThreadPoolTaskExecutor"), content);
         });
+
+        threadPoolExecutor.execute(TtlRunnable.get(() -> {
+            log.info(LogUtil.marker("threadPoolExecutor"), content);
+        }));
 
         return "say" + content;
     }
