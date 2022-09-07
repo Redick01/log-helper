@@ -1,17 +1,14 @@
 package com.redick.starter.interceptor;
 
-import com.redick.common.TraceIdDefine;
-import com.redick.util.LogUtil;
-import org.apache.commons.lang3.StringUtils;
+import com.redick.tracer.Tracer;
+import com.redick.tracer.Tracer.TracerBuilder;
 import org.apache.skywalking.apm.toolkit.trace.Trace;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
 
 /**
  * @author Redick01
@@ -23,15 +20,18 @@ public class SpringWebMvcInterceptor implements HandlerInterceptor {
     @Trace
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String traceId = request.getHeader(TraceIdDefine.TRACE_ID);
-        if (StringUtils.isBlank(traceId)) {
-            if (StringUtils.isNotBlank(TraceContext.traceId()) && !TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
-                traceId = TraceContext.traceId();
-            } else {
-                traceId = UUID.randomUUID().toString();
-            }
+        Tracer tracer = Tracer.traceThreadLocal.get();
+        if (null == tracer) {
+            String traceId = request.getHeader(Tracer.TRACE_ID);
+            String spanId = request.getHeader(Tracer.SPAN_ID);
+            String parentId = request.getHeader(Tracer.PARENT_ID);
+            tracer = new TracerBuilder()
+                    .traceId(traceId)
+                    .spanId(null == spanId ? null : Integer.parseInt(spanId))
+                    .parentId(null == parentId ? null : Integer.parseInt(parentId))
+                    .build();
+            tracer.buildSpan();
         }
-        MDC.put(LogUtil.kLOG_KEY_TRACE_ID, traceId);
         return true;
     }
 

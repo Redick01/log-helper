@@ -1,19 +1,17 @@
 package com.redick;
 
 import com.redick.annotation.LogMarker;
-import com.redick.common.TraceIdDefine;
 import com.redick.proxy.AroundLogProxyChain;
 import com.redick.reflect.ReflectHandler;
+import com.redick.tracer.Tracer;
+import com.redick.tracer.Tracer.TracerBuilder;
 import com.redick.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.skywalking.apm.toolkit.trace.Trace;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.lang.reflect.Method;
-import java.util.*;
 
 /**
  * @author Redick01
@@ -25,16 +23,20 @@ public class AroundLogHandler {
      * @param chain 代理对象
      * @return 执行结果
      */
-    @Trace
     public Object around(final AroundLogProxyChain chain) {
         Logger logger = getRealLogger(chain);
         mdcLogMarkerParam(chain);
-        if (StringUtils.isEmpty(MDC.get(TraceIdDefine.TRACE_ID))) {
-            if (StringUtils.isNotBlank(TraceContext.traceId()) && !TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
-                MDC.put(TraceIdDefine.TRACE_ID, TraceContext.traceId());
-            } else {
-                MDC.put(TraceIdDefine.TRACE_ID, UUID.randomUUID().toString());
-            }
+        Tracer tracer = Tracer.traceThreadLocal.get();
+        if (null == tracer) {
+            String traceId = MDC.get(Tracer.TRACE_ID);
+            String spanId = MDC.get(Tracer.SPAN_ID);
+            String parentId = MDC.get(Tracer.PARENT_ID);
+            tracer = new TracerBuilder()
+                    .traceId(traceId)
+                    .spanId(null == spanId ? null : Integer.parseInt(spanId))
+                    .parentId(null == parentId ? null : Integer.parseInt(parentId))
+                    .build();
+            tracer.buildSpan();
         }
         logger.info(LogUtil.processBeginMarker(ReflectHandler.getInstance().getRequestParameter(chain)),
                 LogUtil.kTYPE_BEGIN);
