@@ -5,6 +5,7 @@ import com.dtflys.forest.http.ForestResponse;
 import com.dtflys.forest.interceptor.Interceptor;
 import com.redick.common.TraceIdDefine;
 import com.redick.support.AbstractInterceptor;
+import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +21,8 @@ public class TraceIdForestInterceptor extends AbstractInterceptor implements Int
         log.info(LogUtil.funcStartMarker(request.getBody()), "开始forest请求处理");
         if (StringUtils.isNotBlank(traceId())) {
             request.addHeader(TraceIdDefine.TRACE_ID, traceId());
+            request.addHeader(Tracer.SPAN_ID, spanId());
+            request.addHeader(Tracer.PARENT_ID, parentId());
         } else {
             log.info(LogUtil.marker(), "current thread have not the traceId!");
         }

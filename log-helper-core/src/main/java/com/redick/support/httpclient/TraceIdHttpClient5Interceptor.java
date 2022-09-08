@@ -1,7 +1,7 @@
 package com.redick.support.httpclient;
 
-import com.redick.common.TraceIdDefine;
 import com.redick.support.AbstractInterceptor;
+import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -21,11 +21,13 @@ import java.io.IOException;
 public class TraceIdHttpClient5Interceptor extends AbstractInterceptor implements HttpRequestInterceptor {
 
     @Override
-    public void process(HttpRequest httpRequest, EntityDetails entityDetails, HttpContext httpContext) throws HttpException, IOException {
+    public void process(HttpRequest request, EntityDetails entityDetails, HttpContext httpContext) throws HttpException, IOException {
         try {
             if (StringUtils.isNotBlank(traceId())) {
                 // 传递traceId
-                httpRequest.setHeader(TraceIdDefine.TRACE_ID, traceId());
+                request.setHeader(Tracer.TRACE_ID, traceId());
+                request.setHeader(Tracer.SPAN_ID, spanId());
+                request.setHeader(Tracer.PARENT_ID, parentId());
             } else {
                 log.info(LogUtil.marker(), "current thread have not the traceId!");
             }

@@ -1,7 +1,7 @@
 package com.redick.support.okhttp;
 
-import com.redick.common.TraceIdDefine;
 import com.redick.support.AbstractInterceptor;
+import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
@@ -9,7 +9,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.MDC;
 
 import java.io.IOException;
 
@@ -28,7 +27,9 @@ public class TraceIdOkhttp3JavaInterceptor extends AbstractInterceptor implement
             if (StringUtils.isNotBlank(traceId)) {
                 request = request
                         .newBuilder()
-                        .addHeader(TraceIdDefine.TRACE_ID, traceId)
+                        .addHeader(Tracer.TRACE_ID, traceId)
+                        .addHeader(Tracer.SPAN_ID, spanId())
+                        .addHeader(Tracer.PARENT_ID, parentId())
                         .build();
             } else {
                 log.info(LogUtil.marker(), "current thread have not the traceId!");

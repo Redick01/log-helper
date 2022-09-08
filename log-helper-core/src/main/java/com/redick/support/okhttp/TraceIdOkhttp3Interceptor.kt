@@ -1,7 +1,7 @@
 package com.redick.support.okhttp
 
-import com.redick.common.TraceIdDefine
 import com.redick.support.okhttp.Slf4j.Companion.log
+import com.redick.tracer.Tracer
 import com.redick.util.LogUtil
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -19,11 +19,13 @@ class TraceIdOkhttp3Interceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         try {
-            val traceId = MDC.get(TraceIdDefine.TRACE_ID)
+            val traceId = MDC.get(Tracer.TRACE_ID)
             if (StringUtils.isNotBlank(traceId)) {
                 request = request
                         .newBuilder()
-                        .addHeader(TraceIdDefine.TRACE_ID, traceId)
+                        .addHeader(Tracer.TRACE_ID, traceId)
+                        .addHeader(Tracer.SPAN_ID, MDC.get(Tracer.SPAN_ID))
+                        .addHeader(Tracer.PARENT_ID, MDC.get(Tracer.PARENT_ID))
                         .build()
             } else {
                 log.info(LogUtil.marker(), "当前线程没有traceId")

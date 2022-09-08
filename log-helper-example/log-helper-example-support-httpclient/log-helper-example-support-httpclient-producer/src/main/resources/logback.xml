@@ -12,6 +12,8 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <version>${LOG_VERSION}</version>
             <includeMdcKeyName>traceId</includeMdcKeyName>
+            <includeMdcKeyName>spanId</includeMdcKeyName>
+            <includeMdcKeyName>parentId</includeMdcKeyName>
             <includeMdcKeyName>request_type</includeMdcKeyName>
             <includeMdcKeyName>interface_name</includeMdcKeyName>
         </encoder>
@@ -37,6 +39,8 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <version>${LOG_VERSION}</version>
             <includeMdcKeyName>traceId</includeMdcKeyName>
+            <includeMdcKeyName>spanId</includeMdcKeyName>
+            <includeMdcKeyName>parentId</includeMdcKeyName>
             <includeMdcKeyName>request_type</includeMdcKeyName>
             <includeMdcKeyName>interface_name</includeMdcKeyName>
         </encoder>
@@ -64,6 +68,8 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <version>${LOG_VERSION}</version>
             <includeMdcKeyName>traceId</includeMdcKeyName>
+            <includeMdcKeyName>spanId</includeMdcKeyName>
+            <includeMdcKeyName>parentId</includeMdcKeyName>
             <includeMdcKeyName>request_type</includeMdcKeyName>
             <includeMdcKeyName>interface_name</includeMdcKeyName>
         </encoder>
@@ -91,6 +97,8 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <version>${LOG_VERSION}</version>
             <includeMdcKeyName>traceId</includeMdcKeyName>
+            <includeMdcKeyName>spanId</includeMdcKeyName>
+            <includeMdcKeyName>parentId</includeMdcKeyName>
             <includeMdcKeyName>request_type</includeMdcKeyName>
             <includeMdcKeyName>interface_name</includeMdcKeyName>
         </encoder>

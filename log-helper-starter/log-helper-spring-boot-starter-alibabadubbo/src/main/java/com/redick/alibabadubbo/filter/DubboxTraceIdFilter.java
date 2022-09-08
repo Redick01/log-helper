@@ -3,16 +3,13 @@ package com.redick.alibabadubbo.filter;
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.rpc.*;
-import com.redick.common.TraceIdDefine;
+import com.redick.support.AbstractInterceptor;
+import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.skywalking.apm.toolkit.trace.Trace;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
-import org.slf4j.MDC;
-
-import java.util.UUID;
 
 /**
  * @author liupenghui
@@ -20,7 +17,7 @@ import java.util.UUID;
  */
 @Activate(group = {Constants.CONSUMER_SIDE, Constants.PROVIDER_SIDE})
 @Slf4j
-public class DubboxTraceIdFilter implements Filter {
+public class DubboxTraceIdFilter extends AbstractInterceptor implements Filter {
 
     @Trace
     @Override
@@ -32,28 +29,23 @@ public class DubboxTraceIdFilter implements Filter {
             String side = invoker.getUrl().getParameter(Constants.SIDE_KEY);
             if (Constants.PROVIDER_SIDE.equals(side)) {
                 String traceId = RpcContext.getContext().getAttachment(LogUtil.kLOG_KEY_TRACE_ID);
-                if (StringUtils.isBlank(traceId)) {
-                    if (StringUtils.isNotBlank(TraceContext.traceId()) && !TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
-                        traceId = TraceContext.traceId();
-                    } else {
-                        traceId = UUID.randomUUID().toString();
-                    }
-                    RpcContext.getContext().setAttachment(LogUtil.kLOG_KEY_TRACE_ID, traceId);
-                }
-                MDC.put(LogUtil.kLOG_KEY_TRACE_ID, traceId);
+                String spanId = RpcContext.getContext().getAttachment(Tracer.SPAN_ID);
+                String parentId = RpcContext.getContext().getAttachment(Tracer.PARENT_ID);
+                Tracer.trace(traceId, spanId, parentId);
                 log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
                         invocation.getMethodName());
-                return invoker.invoke(invocation);
             } else {
                 log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
                         invocation.getMethodName());
                 // get traceId from MDC
-                String traceId = MDC.get(LogUtil.kLOG_KEY_TRACE_ID);
+                String traceId = traceId();
                 if (StringUtils.isNotBlank(traceId)) {
-                    RpcContext.getContext().setAttachment(LogUtil.kLOG_KEY_TRACE_ID, traceId);
+                    RpcContext.getContext().setAttachment(Tracer.TRACE_ID, traceId);
+                    RpcContext.getContext().setAttachment(Tracer.SPAN_ID, spanId());
+                    RpcContext.getContext().setAttachment(Tracer.PARENT_ID, parentId());
                 }
-                return invoker.invoke(invocation);
             }
+            return invoker.invoke(invocation);
         } finally {
             stopWatch.stop();
             log.info(LogUtil.marker(), "结束接口[{}]中方法[{}]的调用,耗时为:[{}]毫秒", invoker.getInterface().getSimpleName(),

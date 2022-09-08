@@ -1,16 +1,11 @@
 package com.redick.starter.filter;
 
-import com.redick.common.TraceIdDefine;
+import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.skywalking.apm.toolkit.trace.Trace;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
-import org.slf4j.MDC;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.server.ServerWebExchange;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Redick01
@@ -22,20 +17,18 @@ public enum LogHelperTraceIdExchange {
      */
     INSTANCE;
 
-    @Trace
     public ServerWebExchange preHandle(ServerWebExchange exchange) {
-        String traceId = null;
-        List<String> traceIds = exchange.getRequest().getHeaders().get(TraceIdDefine.TRACE_ID);
-        if (traceIds != null && traceIds.size() > 0) {
-            traceId = traceIds.get(0);
-        } else {
-            if (StringUtils.isNotBlank(TraceContext.traceId()) && !TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
-                traceId = TraceContext.traceId();
-            } else {
-                traceId = UUID.randomUUID().toString();
-            }
+        HttpHeaders httpHeaders = exchange.getRequest().getHeaders();
+        try {
+            String traceId = Objects.requireNonNull(httpHeaders.get(Tracer.TRACE_ID)).get(0);
+            String spanId = Objects.requireNonNull(httpHeaders.get(Tracer.SPAN_ID)).get(0);
+            String parentId = Objects.requireNonNull(httpHeaders.get(Tracer.PARENT_ID)).get(0);
+            Tracer.trace(traceId, spanId, parentId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(LogUtil.exceptionMarker(), "spring webflux tracer filter exception.", e);
         }
-        MDC.put(LogUtil.kLOG_KEY_TRACE_ID, traceId);
+
         return exchange;
     }
 }
