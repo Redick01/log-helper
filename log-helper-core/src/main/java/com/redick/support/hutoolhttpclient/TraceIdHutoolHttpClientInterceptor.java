@@ -2,8 +2,8 @@ package com.redick.support.hutoolhttpclient;
 
 import cn.hutool.http.HttpInterceptor;
 import cn.hutool.http.HttpRequest;
-import com.redick.common.TraceIdDefine;
 import com.redick.support.AbstractInterceptor;
+import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +23,9 @@ public class TraceIdHutoolHttpClientInterceptor extends AbstractInterceptor impl
             if (StringUtils.isNotBlank(traceId())) {
                 // 传递traceId
                 Map<String, String> header = new HashMap<>();
-                header.put(TraceIdDefine.TRACE_ID, traceId());
+                header.put(Tracer.TRACE_ID, traceId());
+                header.put(Tracer.SPAN_ID, spanId());
+                header.put(Tracer.PARENT_ID, parentId());
                 request.addHeaders(header);
             } else {
                 log.info(LogUtil.marker(), "current thread have not the traceId!");

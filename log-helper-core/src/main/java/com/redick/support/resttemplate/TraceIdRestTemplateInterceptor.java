@@ -1,12 +1,11 @@
 package com.redick.support.resttemplate;
 
-import com.redick.common.TraceIdDefine;
 import com.redick.support.AbstractInterceptor;
+import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -29,7 +28,9 @@ public class TraceIdRestTemplateInterceptor extends AbstractInterceptor implemen
         String traceId = traceId();
         try {
             if (StringUtils.isNotBlank(traceId)) {
-                httpHeaders.add(TraceIdDefine.TRACE_ID, traceId);
+                httpHeaders.add(Tracer.TRACE_ID, traceId);
+                httpHeaders.add(Tracer.SPAN_ID, spanId());
+                httpHeaders.add(Tracer.PARENT_ID, parentId());
             } else {
                 log.info(LogUtil.marker(), "current thread have not the traceId!");
             }

@@ -1,7 +1,6 @@
 package com.redick.tracer;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
-import java.util.Map;
 import java.util.UUID;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +35,18 @@ public final class Tracer {
         this.spanId = builder.spanId;
         this.parentId = builder.parentId;
         traceThreadLocal.set(this);
+    }
+
+    public static void trace(String traceId, String spanId, String parentId) {
+        Tracer tracer = Tracer.traceThreadLocal.get();
+        if (null == tracer) {
+            tracer = new TracerBuilder()
+                    .traceId(traceId)
+                    .spanId(null == spanId ? null : Integer.parseInt(spanId))
+                    .parentId(null == parentId ? null : Integer.parseInt(parentId))
+                    .build();
+            tracer.buildSpan();
+        }
     }
 
     @Trace

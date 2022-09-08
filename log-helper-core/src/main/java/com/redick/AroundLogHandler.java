@@ -3,6 +3,7 @@ package com.redick;
 import com.redick.annotation.LogMarker;
 import com.redick.proxy.AroundLogProxyChain;
 import com.redick.reflect.ReflectHandler;
+import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
 import com.redick.tracer.Tracer.TracerBuilder;
 import com.redick.util.LogUtil;
@@ -16,7 +17,7 @@ import java.lang.reflect.Method;
 /**
  * @author Redick01
  */
-public class AroundLogHandler {
+public class AroundLogHandler extends AbstractInterceptor {
 
     /**
      * 环绕处理
@@ -26,18 +27,7 @@ public class AroundLogHandler {
     public Object around(final AroundLogProxyChain chain) {
         Logger logger = getRealLogger(chain);
         mdcLogMarkerParam(chain);
-        Tracer tracer = Tracer.traceThreadLocal.get();
-        if (null == tracer) {
-            String traceId = MDC.get(Tracer.TRACE_ID);
-            String spanId = MDC.get(Tracer.SPAN_ID);
-            String parentId = MDC.get(Tracer.PARENT_ID);
-            tracer = new TracerBuilder()
-                    .traceId(traceId)
-                    .spanId(null == spanId ? null : Integer.parseInt(spanId))
-                    .parentId(null == parentId ? null : Integer.parseInt(parentId))
-                    .build();
-            tracer.buildSpan();
-        }
+        Tracer.trace(traceId(), spanId(), parentId());
         logger.info(LogUtil.processBeginMarker(ReflectHandler.getInstance().getRequestParameter(chain)),
                 LogUtil.kTYPE_BEGIN);
         long start = System.currentTimeMillis();

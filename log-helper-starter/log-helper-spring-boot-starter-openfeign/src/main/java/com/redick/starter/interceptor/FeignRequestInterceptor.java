@@ -1,25 +1,28 @@
 package com.redick.starter.interceptor;
 
+import com.redick.support.AbstractInterceptor;
+import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.MDC;
 
 /**
  * @author Redick01
  * 2021/12/18 10:05 下午
  */
 @Slf4j
-public class FeignRequestInterceptor implements RequestInterceptor {
+public class FeignRequestInterceptor extends AbstractInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
         try {
-            String traceId = MDC.get(LogUtil.kLOG_KEY_TRACE_ID);
+            String traceId = traceId();
             if (StringUtils.isNotBlank(traceId)) {
-                requestTemplate.header(LogUtil.kLOG_KEY_TRACE_ID, traceId);
+                requestTemplate.header(Tracer.TRACE_ID, traceId);
+                requestTemplate.header(Tracer.SPAN_ID, spanId());
+                requestTemplate.header(Tracer.PARENT_ID, parentId());
             }
         } catch (Exception e) {
             e.printStackTrace();
