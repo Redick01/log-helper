@@ -2,6 +2,7 @@ package com.redick.example.support.controller;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.Method;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.redick.annotation.LogMarker;
 import com.redick.example.dto.RequestDTO;
@@ -12,13 +13,20 @@ import com.redick.example.okhttp.OkHttp3Util;
 //import com.redick.example.okhttp.OkHttpUtil;
 import com.redick.example.support.service.ForestClientService;
 import com.redick.support.hutoolhttpclient.TraceIdHutoolHttpClientInterceptor;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Redick01
@@ -39,6 +47,9 @@ public class ConsumerController {
 
     @Autowired
     private ForestClientService forestClientService;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @PostMapping("/httpclient")
     @LogMarker(businessDescription = "/httpclient-test", interfaceName = "com.redick.example.support.controller.ConsumerController#httpclient()")
@@ -83,5 +94,18 @@ public class ConsumerController {
     public @ResponseBody
     ResponseDTO forestHttpclient(@RequestBody RequestDTO requestDTO) {
         return JSONObject.parseObject(forestClientService.say(requestDTO), ResponseDTO.class);
+    }
+
+    @PostMapping("/httpclient1")
+    @LogMarker(businessDescription = "/httpclient-test1", interfaceName = "com.redick.example.support.controller.ConsumerController#httpclient1()")
+    public @ResponseBody
+    ResponseDTO httpclient1(@RequestBody RequestDTO requestDTO) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", "1234");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> httpEntity = new HttpEntity<>(JSON.toJSONString(map), httpHeaders);
+        ResponseEntity<Response> responseEntity = restTemplate.postForEntity("http://localhost:8103/Rate/test", httpEntity, Response.class);
+        return new ResponseDTO(0000, "success", responseEntity.getBody());
     }
 }
