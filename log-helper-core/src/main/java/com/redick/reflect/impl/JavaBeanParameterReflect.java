@@ -20,6 +20,9 @@ public class JavaBeanParameterReflect implements Reflect {
 
     @Override
     public Object reflect(Object obj) throws UnsupportedEncodingException {
+        if (null == obj) {
+            return null;
+        }
         Field[] fields = FieldUtils.getAllFields(obj.getClass());
         HashMap<String, Object> result = new HashMap<>(fields.length);
         for (Field field : fields) {
