@@ -21,6 +21,9 @@ public class HttpServletRequestReflect implements Reflect {
     @Override
     public Object reflect(Object obj) throws UnsupportedEncodingException {
         Map<String, String[]> result = Maps.newConcurrentMap();
+        if (null == obj) {
+            return result;
+        }
         if (obj instanceof HttpServletRequest) {
             try {
                 ((HttpServletRequest) obj).setCharacterEncoding("UTF-8");

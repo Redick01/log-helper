@@ -30,15 +30,13 @@ public class ReflectHandler {
 
     public Object getRequestParameter(final AroundLogProxyChain chain) {
         List<Object> result = Lists.newArrayList();
-        chain.parameter().forEach((k, v) -> {
-            v.forEach(o -> {
-                try {
-                    result.add(ExtensionLoader.getExtensionLoader(Reflect.class).getJoin(SPI_NAME.contains(k) ? k : "default").reflect(o));
-                } catch (UnsupportedEncodingException e) {
-                    log.error(LogUtil.exceptionMarker(),"UnsupportedEncodingException", e);
-                }
-            });
-        });
+        chain.parameter().forEach((k, v) -> v.forEach(o -> {
+            try {
+                result.add(ExtensionLoader.getExtensionLoader(Reflect.class).getJoin(SPI_NAME.contains(k) ? k : "default").reflect(o));
+            } catch (UnsupportedEncodingException e) {
+                log.error(LogUtil.exceptionMarker(),"UnsupportedEncodingException", e);
+            }
+        }));
         return result;
     }
 

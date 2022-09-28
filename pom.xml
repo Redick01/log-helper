@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.redick01</groupId>
     <artifactId>log-trace-helper-all</artifactId>
-    <version>1.0.1-RELEASE</version>
+    <version>1.0.2-RELEASE</version>
 
     <description>🔥🔥🔥轻量级日志链路追踪工具，结合logstash-logback-encoder实现日志输出json格式化s</description>
     <url>https://github.com/Redick01/log-helper</url>
@@ -21,7 +21,7 @@
     <name>log-trace-helper-all</name>
     <properties>
         <java.version>1.8</java.version>
-        <log-helper.version>1.0.1-RELEASE</log-helper.version>
+        <log-helper.version>1.0.2-RELEASE</log-helper.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <logback.version>1.2.3</logback.version>
         <forest.version>1.5.19</forest.version>

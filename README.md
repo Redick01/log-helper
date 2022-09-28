@@ -46,6 +46,10 @@
 - **支持hutool httpclient框架日志链路追踪**
 - **支持spring webflux日志链路追踪**
 
+##### 1.0.2-RELEASE版本
+
+- **支持简单的链路父子关系，即span、parent**
+
 &nbsp; &nbsp;
 &nbsp; &nbsp;
 &nbsp; &nbsp;

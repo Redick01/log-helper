@@ -15,6 +15,9 @@ public class CollectionParameterReflect implements Reflect {
 
     @Override
     public Object reflect(Object obj) throws UnsupportedEncodingException {
+        if (obj == null) {
+            return null;
+        }
         // 脱敏后的参数
         try {
             return SensitiveDataConverter.invokeMsg(obj.toString());
