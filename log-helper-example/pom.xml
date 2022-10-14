@@ -18,6 +18,7 @@
         <module>log-helper-example-dubbo-api</module>
         <module>log-helper-example-spring-namespace</module>
         <module>log-helper-example-support-httpclient</module>
+        <module>log-helper-example-mysql</module>
     </modules>
 
     <properties>

@@ -25,6 +25,8 @@ public class LogUtil {
     public static final String kLOG_KEY_TRACE_ID = "traceId";
     public static final String kLOG_KEY_REQUEST_TYPE = "request_type";
     public static final String kLOG_KEY_INTERFACE_NAME = "interface_name";
+    public static final String kLOG_KEY_TRACE_TAG = "trace_tag";
+    public static final String kLOG_KEY_SQL_EXEC_DURATION = "sql_duration";
     public static final String kLOG_KEY_RESULT = "result";
     public static final String kTYPE_BEGIN = "开始处理";
     public static final String kTYPE_DONE = "处理完毕";
@@ -249,5 +251,9 @@ public class LogUtil {
             }
         }
         return marker(kTYPE_SENSITIVE, map);
+    }
+
+    public static LogstashMarker customizeMarker(String fileName, Object data) {
+        return append(fileName, data);
     }
 }

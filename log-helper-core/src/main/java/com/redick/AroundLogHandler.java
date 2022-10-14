@@ -5,7 +5,6 @@ import com.redick.proxy.AroundLogProxyChain;
 import com.redick.reflect.ReflectHandler;
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
-import com.redick.tracer.Tracer.TracerBuilder;
 import com.redick.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

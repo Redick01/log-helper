@@ -51,7 +51,7 @@ public final class Tracer {
 
     @Trace
     public void buildSpan() {
-        if (traceId == null) {
+        if (null == traceId) {
             if (StringUtils.isNotBlank(TraceContext.traceId()) && !SKYWALKING_NO_ID.equals(
                     TraceContext.traceId())) {
                 traceId = TraceContext.traceId();
