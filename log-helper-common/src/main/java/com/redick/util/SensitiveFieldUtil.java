@@ -1,7 +1,6 @@
 package com.redick.util;
 
 import com.redick.annotation.Sensitive;
-
 import java.lang.reflect.Field;
 
 /**

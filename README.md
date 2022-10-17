@@ -50,6 +50,10 @@
 
 - **支持简单的链路父子关系，即span、parent**
 
+##### 1.0.3-RELEASE版本
+
+- **支持简单mysql执行时间统计**
+
 &nbsp; &nbsp;
 &nbsp; &nbsp;
 &nbsp; &nbsp;
@@ -576,6 +580,53 @@ public class ModelsReturnT<T> {
 &nbsp; &nbsp;
 &nbsp; &nbsp;
 &nbsp; &nbsp;
+
+
+#### 3.8 MySQL执行时间统计支持
+
+支持MySQL驱动拦截器，能够统计执行时间，使用方法如下：
+
+- 3.8.1 MySQL 5
+
+```xml
+    <dependency>
+        <groupId>io.github.redick01</groupId>
+        <artifactId>mysql-5</artifactId>
+        <version>1.0.3-RELEASE</version>
+    </dependency>
+```
+
+```properties
+spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&characterEncoding=UTF8&statementInterceptors=com.redick.support.mysql.Mysql5StatementInterceptor&serverTimezone=CST
+```
+
+- 3.8.2 MySQL 6
+
+```xml
+    <dependency>
+        <groupId>io.github.redick01</groupId>
+        <artifactId>mysql-6</artifactId>
+        <version>1.0.3-RELEASE</version>
+    </dependency>
+```
+
+```properties
+spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&characterEncoding=UTF8&statementInterceptors=com.redick.support.mysql.Mysql6StatementInterceptor&serverTimezone=CST
+```
+
+- 3.8.3 MySQL 7
+
+```xml
+    <dependency>
+        <groupId>io.github.redick01</groupId>
+        <artifactId>mysql-8</artifactId>
+        <version>1.0.3-RELEASE</version>
+    </dependency>
+```
+
+```properties
+spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&characterEncoding=UTF8&queryInterceptors=com.redick.support.mysql.Mysql8QueryInterceptor&exceptionInterceptors=Mysql8ExceptionInterceptor&serverTimezone=CST
+```
 
 ## 4 日志打印自定义操作及建议规范
 

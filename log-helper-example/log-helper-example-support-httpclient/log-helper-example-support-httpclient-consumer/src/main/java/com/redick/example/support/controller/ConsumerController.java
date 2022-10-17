@@ -20,6 +20,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -107,5 +108,11 @@ public class ConsumerController {
         HttpEntity<String> httpEntity = new HttpEntity<>(JSON.toJSONString(map), httpHeaders);
         ResponseEntity<Response> responseEntity = restTemplate.postForEntity("http://localhost:8103/Rate/test", httpEntity, Response.class);
         return new ResponseDTO(0000, "success", responseEntity.getBody());
+    }
+
+    @LogMarker(businessDescription = "/traceTest", interfaceName = "com.redick.example.support.controller.ConsumerController#traceTest()")
+    @GetMapping("/traceTest")
+    public String traceTest() {
+        return HttpClientUtil.doGet("http://localhost:3321/trace/getName?id=1");
     }
 }

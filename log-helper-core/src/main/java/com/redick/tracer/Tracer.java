@@ -46,6 +46,8 @@ public final class Tracer {
                     .parentId(null == parentId ? null : Integer.parseInt(parentId))
                     .build();
             tracer.buildSpan();
+        } else {
+            traceThreadLocal.remove();
         }
     }
 

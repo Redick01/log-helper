@@ -5,12 +5,12 @@
     <parent>
         <artifactId>log-trace-helper-all</artifactId>
         <groupId>io.github.redick01</groupId>
-        <version>1.0.2-RELEASE</version>
+        <version>1.0.3-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>log-helper-core</artifactId>
-    <version>1.0.2-RELEASE</version>
+    <version>1.0.3-RELEASE</version>
     
     <properties>
         <servlet.version>3.1.0</servlet.version>
@@ -18,7 +18,6 @@
         <httpclient5.version>5.0</httpclient5.version>
         <okhttp.version>2.7.5</okhttp.version>
         <okhttp3.version>4.9.0</okhttp3.version>
-        <mysql5.version>5.1.18</mysql5.version>
     </properties>
 
     <packaging>jar</packaging>
@@ -27,7 +26,12 @@
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spi</artifactId>
-            <version>1.0.2-RELEASE</version>
+            <version>1.0.3-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.redick01</groupId>
+            <artifactId>log-helper-common</artifactId>
+            <version>1.0.3-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -67,12 +71,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql5.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- rocketMq 阿里云自带的-->
