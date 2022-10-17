@@ -1,15 +1,14 @@
 package com.redick.util;
 
+import static net.logstash.logback.marker.Markers.append;
+
 import com.redick.annotation.FieldIgnore;
 import com.redick.annotation.Sensitive;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import net.logstash.logback.marker.LogstashMarker;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.MDC;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-
-import static net.logstash.logback.marker.Markers.append;
 
 /**
  * 打印日志模版工具类
