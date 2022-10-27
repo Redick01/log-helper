@@ -43,8 +43,6 @@ public class GrpcInterceptor extends AbstractInterceptor implements ServerInterc
             Channel channel) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        String serviceName = methodDescriptor.getServiceName();
-        String methodName = methodDescriptor.getFullMethodName();
         try {
             return new ForwardingClientCall.SimpleForwardingClientCall<ReqT, RespT>(channel.newCall(methodDescriptor, callOptions)) {
                 @Override
@@ -54,7 +52,6 @@ public class GrpcInterceptor extends AbstractInterceptor implements ServerInterc
                         headers.put(TRACE, traceId);
                         headers.put(SPAN, spanId());
                         headers.put(PARENT, parentId());
-                        log.info(LogUtil.marker(), "调用服务[{}]的方法[{}]", serviceName, methodName);
                     }
                     // 继续下一步
                     super.start(new ForwardingClientCallListener.SimpleForwardingClientCallListener<RespT>(responseListener) {
@@ -68,20 +65,18 @@ public class GrpcInterceptor extends AbstractInterceptor implements ServerInterc
             };
         } finally {
             stopWatch.stop();
-            log.info(LogUtil.marker(), "结束服务[{}]中方法[{}]的调用,耗时为:[{}]毫秒", serviceName, methodName, stopWatch.getTime());
+            log.info(LogUtil.marker(stopWatch.getTime()), "GRPC调用耗时");
         }
     }
 
     @Override
     public <ReqT, RespT> Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> serverCall,
             Metadata headers, ServerCallHandler<ReqT, RespT> serverCallHandler) {
-        String serviceName = serverCall.getMethodDescriptor().getServiceName();
-        String methodName = serverCall.getMethodDescriptor().getFullMethodName();
-        log.info(LogUtil.marker(), "调用服务[{}]的方法[{}]", serviceName, methodName);
         String traceId = headers.get(TRACE);
         String spanId = headers.get(SPAN);
         String parentId = headers.get(PARENT);
         Tracer.trace(traceId, spanId, parentId);
+        log.info(LogUtil.marker(), "开始处理");
         return serverCallHandler.startCall(new ForwardingServerCall.SimpleForwardingServerCall<ReqT, RespT>(serverCall) {
 
             @Override

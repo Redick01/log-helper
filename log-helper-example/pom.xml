@@ -19,6 +19,7 @@
         <module>log-helper-example-spring-namespace</module>
         <module>log-helper-example-support-httpclient</module>
         <module>log-helper-example-mysql</module>
+        <module>log-helper-example-grpc</module>
     </modules>
 
     <properties>
