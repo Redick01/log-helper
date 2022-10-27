@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>log-helper-starter</artifactId>
+        <groupId>io.github.redick01</groupId>
+        <version>1.0.3-RELEASE</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    
+    <artifactId>log-helper-spring-boot-stater-grpc</artifactId>
+    
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <grpc.version>1.46.0</grpc.version>
+        <grpc.starter.version>2.13.1.RELEASE</grpc.starter.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-all</artifactId>
+            <version>${grpc.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-server-spring-boot-starter</artifactId>
+            <version>${grpc.starter.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-client-spring-boot-starter</artifactId>
+            <version>${grpc.starter.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.redick01</groupId>
+            <artifactId>log-helper-spring-boot-starter-common</artifactId>
+            <version>1.0.3-RELEASE</version>
+        </dependency>
+    </dependencies>
+</project>
