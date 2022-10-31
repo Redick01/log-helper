@@ -6,7 +6,6 @@ import com.redick.example.protocol.UserServiceGrpc;
 import com.redick.starter.interceptor.GrpcInterceptor;
 import io.grpc.Channel;
 import io.grpc.ClientInterceptors;
-import java.util.Iterator;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
