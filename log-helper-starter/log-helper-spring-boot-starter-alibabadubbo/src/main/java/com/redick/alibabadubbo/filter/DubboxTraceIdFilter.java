@@ -27,16 +27,14 @@ public class DubboxTraceIdFilter extends AbstractInterceptor implements Filter {
         // get traceId from dubbo context attachment
         try {
             String side = invoker.getUrl().getParameter(Constants.SIDE_KEY);
+            log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
+                    invocation.getMethodName());
             if (Constants.PROVIDER_SIDE.equals(side)) {
                 String traceId = RpcContext.getContext().getAttachment(LogUtil.kLOG_KEY_TRACE_ID);
                 String spanId = RpcContext.getContext().getAttachment(Tracer.SPAN_ID);
                 String parentId = RpcContext.getContext().getAttachment(Tracer.PARENT_ID);
                 Tracer.trace(traceId, spanId, parentId);
-                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
-                        invocation.getMethodName());
             } else {
-                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
-                        invocation.getMethodName());
                 // get traceId from MDC
                 String traceId = traceId();
                 if (StringUtils.isNotBlank(traceId)) {

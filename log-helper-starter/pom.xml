@@ -18,6 +18,7 @@
         <module>log-helper-spring-boot-starter-apachedubbo</module>
         <module>log-helper-spring-boot-starter-webflux</module>
         <module>log-helper-spring-boot-stater-grpc</module>
+        <module>log-helper-spring-boot-starter-motan</module>
     </modules>
 
     <dependencies>
