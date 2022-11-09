@@ -28,8 +28,6 @@ public class MotanTracerFilter extends AbstractInterceptor implements Filter {
     @Override
     public Response filter(Caller<?> caller, Request request) {
         String nodeName = caller.getUrl().getParameter(URLParamType.nodeType.getName());
-        log.info(LogUtil.marker(request.getArguments()), "调用接口[{}]的方法[{}]", request.getInterfaceName(),
-                request.getMethodName());
         if (MotanConstants.NODE_TYPE_SERVICE.equals(nodeName)) {
             String traceId = request.getAttachments().get(Tracer.TRACE_ID);
             String spanId = request.getAttachments().get(Tracer.SPAN_ID);
@@ -45,6 +43,8 @@ public class MotanTracerFilter extends AbstractInterceptor implements Filter {
                 request.setAttachment(Tracer.PARENT_ID, parentId());
             }
         }
+        log.info(LogUtil.marker(request.getArguments()), "调用接口[{}]的方法[{}]", request.getInterfaceName(),
+                request.getMethodName());
         return caller.call(request);
     }
 }
