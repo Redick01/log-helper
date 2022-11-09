@@ -53,6 +53,7 @@
 ##### 1.0.3-RELEASE版本
 
 - **支持简单mysql执行时间统计**
+- **支持motan RPC框架日志链路追踪**
 
 &nbsp; &nbsp;
 &nbsp; &nbsp;
@@ -627,6 +628,39 @@ spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&cha
 ```properties
 spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&characterEncoding=UTF8&queryInterceptors=com.redick.support.mysql.Mysql8QueryInterceptor&exceptionInterceptors=Mysql8ExceptionInterceptor&serverTimezone=CST
 ```
+
+### 3.9 Motan RPC框架支持
+
+#### 3.9.1 SpringBoot接入
+
+```xml
+        <dependency>
+            <groupId>io.github.redick01</groupId>
+            <artifactId>log-helper-spring-boot-starter-motan</artifactId>
+            <version>1.0.3-RELEASE</version>
+        </dependency>
+```
+
+#### 3.9.2 Spring NameSpace接入
+
+```xml
+        <dependency>
+            <groupId>io.github.redick01</groupId>
+            <artifactId>log-helper-spring</artifactId>
+            <version>1.0.3-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.redick01</groupId>
+            <artifactId>log-helper-spring-boot-starter-motan</artifactId>
+            <version>1.0.3-RELEASE</version>
+        </dependency>
+```
+
+参考log-helper-example-motan示例程序
+
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
 
 ## 4 日志打印自定义操作及建议规范
 

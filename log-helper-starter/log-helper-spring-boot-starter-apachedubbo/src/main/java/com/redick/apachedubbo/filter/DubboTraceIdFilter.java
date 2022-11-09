@@ -25,8 +25,6 @@ public class DubboTraceIdFilter extends AbstractInterceptor implements Filter {
         String side = invoker.getUrl().getParameter(CommonConstants.SIDE_KEY);
         try {
             if (CommonConstants.CONSUMER_SIDE.equals(side)) {
-                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
-                        invocation.getMethodName());
                 // get sessionId from MDC
                 String traceId = traceId();
                 if (StringUtils.isNotBlank(traceId)) {
@@ -39,9 +37,9 @@ public class DubboTraceIdFilter extends AbstractInterceptor implements Filter {
                 String spanId = RpcContext.getServiceContext().getAttachment(Tracer.SPAN_ID);
                 String parentId = RpcContext.getServiceContext().getAttachment(Tracer.PARENT_ID);
                 Tracer.trace(traceId, spanId, parentId);
-                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
-                        invocation.getMethodName());
             }
+            log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
+                    invocation.getMethodName());
             return invoker.invoke(invocation);
         } finally {
             stopWatch.stop();

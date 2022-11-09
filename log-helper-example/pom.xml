@@ -20,6 +20,7 @@
         <module>log-helper-example-support-httpclient</module>
         <module>log-helper-example-mysql</module>
         <module>log-helper-example-grpc</module>
+        <module>log-helper-example-motan</module>
     </modules>
 
     <properties>

@@ -32,11 +32,7 @@ public class DubboxTraceIdFilter extends AbstractInterceptor implements Filter {
                 String spanId = RpcContext.getContext().getAttachment(Tracer.SPAN_ID);
                 String parentId = RpcContext.getContext().getAttachment(Tracer.PARENT_ID);
                 Tracer.trace(traceId, spanId, parentId);
-                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
-                        invocation.getMethodName());
             } else {
-                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
-                        invocation.getMethodName());
                 // get traceId from MDC
                 String traceId = traceId();
                 if (StringUtils.isNotBlank(traceId)) {
@@ -45,6 +41,8 @@ public class DubboxTraceIdFilter extends AbstractInterceptor implements Filter {
                     RpcContext.getContext().setAttachment(Tracer.PARENT_ID, parentId());
                 }
             }
+            log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
+                    invocation.getMethodName());
             return invoker.invoke(invocation);
         } finally {
             stopWatch.stop();
