@@ -23,7 +23,7 @@ public class AroundLogHandler extends AbstractInterceptor {
      * @param chain 代理对象
      * @return 执行结果
      */
-    public Object around(final AroundLogProxyChain chain) {
+    public Object around(final AroundLogProxyChain chain) throws Throwable {
         Logger logger = getRealLogger(chain);
         mdcLogMarkerParam(chain);
         Tracer.trace(traceId(), spanId(), parentId());
@@ -33,8 +33,6 @@ public class AroundLogHandler extends AbstractInterceptor {
         Object o = null;
         try {
             o = chain.getProceed();
-        } catch (Throwable throwable) {
-            logger.error(LogUtil.exceptionMarker(), LogUtil.kTYPE_EXCEPTION, throwable);
         } finally {
             logger.info(LogUtil.processSuccessDoneMarker(o != null ? ReflectHandler.getInstance().getResponseParameter(o) : null,
                     System.currentTimeMillis() - start), LogUtil.kTYPE_DONE);
