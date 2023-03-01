@@ -615,7 +615,7 @@ spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&cha
 spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&characterEncoding=UTF8&statementInterceptors=com.redick.support.mysql.Mysql6StatementInterceptor&serverTimezone=CST
 ```
 
-- 3.8.3 MySQL 7
+- 3.8.3 MySQL 8
 
 ```xml
     <dependency>
