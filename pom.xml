@@ -18,6 +18,7 @@
         <module>log-helper-starter</module>
         <module>log-helper-mysql</module>
         <module>log-helper-common</module>
+        <module>log-helper-graphql</module>
     </modules>
     <packaging>pom</packaging>
     <name>log-trace-helper-all</name>
