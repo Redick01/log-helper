@@ -12,3 +12,4 @@ target/
 *.iws
 .DS_Store
 logs/*
+.fleet/
