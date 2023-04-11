@@ -24,5 +24,12 @@
             <version>${graphql.version}</version>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.redick01</groupId>
+            <artifactId>log-helper-core</artifactId>
+            <version>1.0.3-RELEASE</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 </project>

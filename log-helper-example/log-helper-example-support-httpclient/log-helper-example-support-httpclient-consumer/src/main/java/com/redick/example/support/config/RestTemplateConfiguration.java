@@ -1,11 +1,14 @@
 package com.redick.example.support.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.redick.support.resttemplate.TraceIdRestTemplateInterceptor;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
@@ -99,6 +102,8 @@ public class RestTemplateConfiguration {
                         DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             }
         }
+        restTemplate.setInterceptors(Stream.of(new TraceIdRestTemplateInterceptor()).collect(
+                Collectors.toList()));
         return restTemplate;
     }
 }

@@ -1,5 +1,7 @@
 package com.redick.support.httpclient;
 
+import static com.redick.constant.TraceTagConstant.HTTP_CLIENT_EXEC_BEFORE;
+
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
@@ -17,7 +19,7 @@ import java.io.IOException;
  *  2021/12/12 3:04 下午
  */
 @Slf4j
-public class TraceIdHttpClientInterceptor extends AbstractInterceptor implements HttpRequestInterceptor {
+public class TraceIdHttpRequestInterceptor extends AbstractInterceptor implements HttpRequestInterceptor {
 
     @Override
     public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
@@ -27,6 +29,7 @@ public class TraceIdHttpClientInterceptor extends AbstractInterceptor implements
                 request.setHeader(Tracer.TRACE_ID, traceId());
                 request.setHeader(Tracer.SPAN_ID, spanId());
                 request.setHeader(Tracer.PARENT_ID, parentId());
+                super.executeBefore(HTTP_CLIENT_EXEC_BEFORE);
             } else {
                 log.info(LogUtil.marker(), "current thread have not the traceId!");
             }

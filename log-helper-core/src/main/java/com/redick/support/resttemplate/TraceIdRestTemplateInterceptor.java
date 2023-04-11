@@ -1,9 +1,13 @@
 package com.redick.support.resttemplate;
 
+import static com.redick.constant.TraceTagConstant.REST_TEMPLATE_EXEC_AFTER;
+import static com.redick.constant.TraceTagConstant.REST_TEMPLATE_EXEC_BEFORE;
+
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +41,9 @@ public class TraceIdRestTemplateInterceptor extends AbstractInterceptor implemen
         } catch (Exception e) {
             log.error(LogUtil.exceptionMarker(), "RestTemplate http header set traceId exception!", e);
         }
-        return execution.execute(request, body);
+        super.executeBefore(REST_TEMPLATE_EXEC_BEFORE);
+        var response = execution.execute(request, body);
+        super.executeAfter(REST_TEMPLATE_EXEC_AFTER);
+        return response;
     }
 }

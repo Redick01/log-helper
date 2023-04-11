@@ -1,5 +1,6 @@
 package com.redick.util;
 
+import static com.redick.constant.TraceTagConstant.ENDPOINT_DONE;
 import static net.logstash.logback.marker.Markers.append;
 
 import com.redick.annotation.FieldIgnore;
@@ -25,7 +26,6 @@ public class LogUtil {
     public static final String kLOG_KEY_REQUEST_TYPE = "request_type";
     public static final String kLOG_KEY_INTERFACE_NAME = "interface_name";
     public static final String kLOG_KEY_TRACE_TAG = "trace_tag";
-    public static final String kLOG_KEY_SQL_EXEC_DURATION = "sql_duration";
     public static final String kLOG_KEY_RESULT = "result";
     public static final String kTYPE_BEGIN = "开始处理";
     public static final String kTYPE_DONE = "处理完毕";
@@ -63,6 +63,7 @@ public class LogUtil {
      */
     public static LogstashMarker processSuccessDoneMarker(Object data, long duration) {
         LogstashMarker result = marker(kTYPE_DONE, data).and(append(kLOG_KEY_DURATION, duration));
+        result.and(append(kLOG_KEY_TRACE_TAG, ENDPOINT_DONE));
         result.and(append(kLOG_KEY_RESULT, kRESULT_SUCCESS));
         return result;
     }
@@ -74,6 +75,7 @@ public class LogUtil {
      */
     public static LogstashMarker processFailedDoneMarker(Object data, long duration) {
         LogstashMarker result = marker(kTYPE_DONE, data).and(append(kLOG_KEY_DURATION, duration));
+        result.and(append(kLOG_KEY_TRACE_TAG, ENDPOINT_DONE));
         result.and(append(kLOG_KEY_RESULT, kRESULT_FAILED));
         return result;
     }

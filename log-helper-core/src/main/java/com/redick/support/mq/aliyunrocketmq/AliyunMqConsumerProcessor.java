@@ -1,7 +1,7 @@
 package com.redick.support.mq.aliyunrocketmq;
 
 import com.aliyun.openservices.ons.api.Action;
-import com.redick.common.TraceIdDefine;
+import com.redick.constant.TraceIdDefine;
 import com.redick.support.mq.MqWrapperBean;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.Trace;

@@ -1,8 +1,12 @@
-package com.redick.support.okhttp
+package com.redick.support.okhttp3
 
-import com.redick.support.okhttp.Slf4j.Companion.log
+import com.redick.constant.TraceTagConstant
+import com.redick.constant.TraceTagConstant.OKHTTP_CLIENT_EXEC_AFTER
+import com.redick.constant.TraceTagConstant.OKHTTP_CLIENT_EXEC_BEFORE
+import com.redick.support.okhttp3.Slf4j.Companion.log
 import com.redick.tracer.Tracer
 import com.redick.util.LogUtil
+import net.logstash.logback.marker.Markers.append
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.apache.commons.lang3.StringUtils
@@ -33,6 +37,13 @@ class TraceIdOkhttp3Interceptor : Interceptor {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return chain.proceed(request)
+        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, OKHTTP_CLIENT_EXEC_BEFORE), OKHTTP_CLIENT_EXEC_BEFORE)
+        val startTime = System.currentTimeMillis();
+        val response = chain.proceed(request)
+        val duration = System.currentTimeMillis() - startTime;
+        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, OKHTTP_CLIENT_EXEC_AFTER)
+                .and(append(LogUtil.kLOG_KEY_DURATION, duration))
+                , OKHTTP_CLIENT_EXEC_AFTER);
+        return response
     }
 }

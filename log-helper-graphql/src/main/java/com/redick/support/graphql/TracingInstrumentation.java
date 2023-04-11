@@ -1,63 +1,94 @@
 package com.redick.support.graphql;
 
 import graphql.ExecutionResult;
-import graphql.execution.instrumentation.ExecutionStrategyInstrumentationContext;
-import graphql.execution.instrumentation.Instrumentation;
+import graphql.ExecutionResultImpl;
 import graphql.execution.instrumentation.InstrumentationContext;
-import graphql.execution.instrumentation.parameters.InstrumentationExecuteOperationParameters;
+import graphql.execution.instrumentation.InstrumentationState;
+import graphql.execution.instrumentation.SimpleInstrumentation;
+import graphql.execution.instrumentation.SimpleInstrumentationContext;
 import graphql.execution.instrumentation.parameters.InstrumentationExecutionParameters;
-import graphql.execution.instrumentation.parameters.InstrumentationExecutionStrategyParameters;
 import graphql.execution.instrumentation.parameters.InstrumentationFieldFetchParameters;
-import graphql.execution.instrumentation.parameters.InstrumentationFieldParameters;
 import graphql.execution.instrumentation.parameters.InstrumentationValidationParameters;
+import graphql.execution.instrumentation.tracing.TracingSupport;
 import graphql.language.Document;
 import graphql.validation.ValidationError;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
 /**
  * @author Redick01
  */
-public class TracingInstrumentation implements Instrumentation {
+@Slf4j
+public class TracingInstrumentation extends SimpleInstrumentation {
 
-    @Override
-    public InstrumentationContext<ExecutionResult> beginExecution(
-            InstrumentationExecutionParameters instrumentationExecutionParameters ) {
-        return null;
+    private final Options options;
+
+    public TracingInstrumentation() {
+        this(Options.newOptions());
     }
 
-    @Override
-    public InstrumentationContext<Document> beginParse(
-            InstrumentationExecutionParameters instrumentationExecutionParameters ) {
-        return null;
+    public TracingInstrumentation(Options options) {
+        this.options = options;
     }
 
-    @Override
-    public InstrumentationContext<List<ValidationError>> beginValidation(
-            InstrumentationValidationParameters instrumentationValidationParameters ) {
-        return null;
+    public InstrumentationState createState() {
+        return new TracingSupport(this.options.includeTrivialDataFetchers);
     }
 
-    @Override
-    public InstrumentationContext<ExecutionResult> beginExecuteOperation(
-            InstrumentationExecuteOperationParameters instrumentationExecuteOperationParameters ) {
-        return null;
+    public CompletableFuture<ExecutionResult> instrumentExecutionResult(ExecutionResult executionResult, InstrumentationExecutionParameters parameters) {
+        Map<Object, Object> currentExt = executionResult.getExtensions();
+        TracingSupport tracingSupport = (TracingSupport)parameters.getInstrumentationState();
+        Map<Object, Object> withTracingExt = new LinkedHashMap(currentExt == null ? Collections.emptyMap() : currentExt);
+        withTracingExt.put("tracing", tracingSupport.snapshotTracingData());
+        return CompletableFuture.completedFuture(new ExecutionResultImpl(executionResult.getData(), executionResult.getErrors(), withTracingExt));
     }
 
-    @Override
-    public ExecutionStrategyInstrumentationContext beginExecutionStrategy(
-            InstrumentationExecutionStrategyParameters instrumentationExecutionStrategyParameters ) {
-        return null;
+    public InstrumentationContext<Object> beginFieldFetch(InstrumentationFieldFetchParameters parameters) {
+        TracingSupport tracingSupport = (TracingSupport)parameters.getInstrumentationState();
+        TracingSupport.TracingContext ctx = tracingSupport.beginField(parameters.getEnvironment(), parameters.isTrivialDataFetcher());
+        return SimpleInstrumentationContext.whenCompleted((result, t) -> {
+            ctx.onEnd();
+        });
     }
 
-    @Override
-    public InstrumentationContext<ExecutionResult> beginField(
-            InstrumentationFieldParameters instrumentationFieldParameters ) {
-        return null;
+    public InstrumentationContext<Document> beginParse(InstrumentationExecutionParameters parameters) {
+        TracingSupport tracingSupport = (TracingSupport)parameters.getInstrumentationState();
+        TracingSupport.TracingContext ctx = tracingSupport.beginParse();
+        return SimpleInstrumentationContext.whenCompleted((result, t) -> {
+            ctx.onEnd();
+        });
     }
 
-    @Override
-    public InstrumentationContext<Object> beginFieldFetch(
-            InstrumentationFieldFetchParameters instrumentationFieldFetchParameters ) {
-        return null;
+    public InstrumentationContext<List<ValidationError>> beginValidation(InstrumentationValidationParameters parameters) {
+        TracingSupport tracingSupport = (TracingSupport)parameters.getInstrumentationState();
+        TracingSupport.TracingContext ctx = tracingSupport.beginValidation();
+        return SimpleInstrumentationContext.whenCompleted((result, t) -> {
+            ctx.onEnd();
+        });
+    }
+
+    public static class Options {
+        private final boolean includeTrivialDataFetchers;
+
+        private Options(boolean includeTrivialDataFetchers) {
+            this.includeTrivialDataFetchers = includeTrivialDataFetchers;
+        }
+
+        public boolean isIncludeTrivialDataFetchers() {
+            return this.includeTrivialDataFetchers;
+        }
+
+        public Options includeTrivialDataFetchers(boolean flag) {
+            return new Options(flag);
+        }
+
+        public static Options newOptions() {
+            return new Options(true);
+        }
     }
 }

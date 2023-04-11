@@ -1,6 +1,6 @@
 package com.redick.example.okhttp;
 
-import com.redick.support.okhttp.TraceIdOkhttp3JavaInterceptor;
+import com.redick.support.okhttp3.TraceIdOkhttp3JavaInterceptor;
 import okhttp3.*;
 
 import java.io.IOException;

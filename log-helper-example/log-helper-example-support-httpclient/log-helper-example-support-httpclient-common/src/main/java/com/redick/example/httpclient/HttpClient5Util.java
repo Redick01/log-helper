@@ -1,7 +1,8 @@
 package com.redick.example.httpclient;
 
 
-import com.redick.support.httpclient.TraceIdHttpClient5Interceptor;
+import com.redick.support.httpclient5.TraceIdHttpRequest5Interceptor;
+import com.redick.support.httpclient5.TraceIdHttpResponse5Interceptor;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.config.RequestConfig;
@@ -30,53 +31,56 @@ public class HttpClient5Util {
 
     private static final long RESPONSE_TIMEOUT = 60000;
 
+    static CloseableHttpClient httpClient;
+
+    static {
+        httpClient = HttpClientBuilder
+                .create()
+                .addRequestInterceptorFirst(new TraceIdHttpRequest5Interceptor())
+                .addResponseInterceptorLast(new TraceIdHttpResponse5Interceptor())
+                .build();
+    }
+
     public static String doGet(String url) {
         String result = "";
         // 为HttpClient添加拦截器TraceIdHttpClientInterceptor
-        try (CloseableHttpClient httpClient = HttpClientBuilder.create().addRequestInterceptorFirst(new TraceIdHttpClient5Interceptor()).build()) {
-            // 创建httpGet远程连接实例
-            HttpGet httpGet = new HttpGet(url);
-            RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
-                    .setConnectionRequestTimeout(Timeout.of(CONNECTION_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS))
-                    .setResponseTimeout(Timeout.of(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS))
-                    .build();
-            // 为httpGet实例设置配置
-            httpGet.setConfig(requestConfig);
-            // 执行get请求得到返回对象
-            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
-                // 通过返回对象获取返回数据
-                HttpEntity entity = response.getEntity();
-                // 通过EntityUtils中的toString方法将结果转换为字符串
-                result = EntityUtils.toString(entity);
-            }
-
+        // 创建httpGet远程连接实例
+        HttpGet httpGet = new HttpGet(url);
+        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
+                .setConnectionRequestTimeout(Timeout.of(CONNECTION_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS))
+                .setResponseTimeout(Timeout.of(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS))
+                .build();
+        // 为httpGet实例设置配置
+        httpGet.setConfig(requestConfig);
+        // 执行get请求得到返回对象
+        try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+            // 通过返回对象获取返回数据
+            HttpEntity entity = response.getEntity();
+            // 通过EntityUtils中的toString方法将结果转换为字符串
+            result = EntityUtils.toString(entity);
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return result;
     }
 
     public static String doPost(String url, String param) {
         String result = "";
-        System.out.println(param);
         // 为HttpClient添加拦截器TraceIdHttpClientInterceptor
-        try (CloseableHttpClient httpClient = HttpClientBuilder.create().addRequestInterceptorLast(new TraceIdHttpClient5Interceptor()).build()) {
-            HttpPost httpPost = new HttpPost(url);
-            RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
-                    .setConnectionRequestTimeout(Timeout.of(CONNECTION_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS))
-                    .setResponseTimeout(Timeout.of(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS))
-                    .build();
-            httpPost.setConfig(requestConfig);
-            StringEntity stringEntity = new StringEntity(param, StandardCharsets.UTF_8);
-            httpPost.addHeader("Content-Type", "application/json");
-            httpPost.setEntity(stringEntity);
-            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
-                // 通过EntityUtils中的toString方法将结果转换为字符串
-                result = EntityUtils.toString(response.getEntity());
-            }
-
+        HttpPost httpPost = new HttpPost(url);
+        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
+                .setConnectionRequestTimeout(Timeout.of(CONNECTION_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS))
+                .setResponseTimeout(Timeout.of(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS))
+                .build();
+        httpPost.setConfig(requestConfig);
+        StringEntity stringEntity = new StringEntity(param, StandardCharsets.UTF_8);
+        httpPost.addHeader("Content-Type", "application/json");
+        httpPost.setEntity(stringEntity);
+        try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+            // 通过EntityUtils中的toString方法将结果转换为字符串
+            result = EntityUtils.toString(response.getEntity());
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return result;
     }

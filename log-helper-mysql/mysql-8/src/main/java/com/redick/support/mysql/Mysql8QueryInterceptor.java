@@ -1,5 +1,7 @@
 package com.redick.support.mysql;
 
+import static com.redick.constant.TraceTagConstant.SQL_EXEC_AFTER;
+import static com.redick.constant.TraceTagConstant.SQL_EXEC_BEFORE;
 import static net.logstash.logback.marker.Markers.append;
 
 import com.mysql.cj.MysqlConnection;
@@ -29,7 +31,7 @@ public class Mysql8QueryInterceptor implements QueryInterceptor {
     public <T extends Resultset> T preProcess(Supplier<String> supplier, Query query) {
         String start = String.valueOf(System.currentTimeMillis());
         MDC.put("sql_exec_time", start);
-        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, "sql_exec_before"), "开始执行sql");
+        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, SQL_EXEC_BEFORE), "开始执行sql");
         return null;
     }
 
@@ -48,8 +50,8 @@ public class Mysql8QueryInterceptor implements QueryInterceptor {
             ServerSession serverSession) {
         long start = Long.parseLong(MDC.get("sql_exec_time"));
         long end = System.currentTimeMillis();
-        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, "sql_exec_after")
-                .and(append(LogUtil.kLOG_KEY_SQL_EXEC_DURATION, end - start)), "结束执行sql");
+        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, SQL_EXEC_AFTER)
+                .and(append(LogUtil.kLOG_KEY_DURATION, end - start)), "结束执行sql");
         return null;
     }
 }
