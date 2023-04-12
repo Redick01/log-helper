@@ -1,5 +1,8 @@
 package com.redick.support.okhttp;
 
+import static com.redick.constant.TraceTagConstant.OKHTTP_CLIENT_EXEC_AFTER;
+import static com.redick.constant.TraceTagConstant.OKHTTP_CLIENT_EXEC_BEFORE;
+
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
@@ -36,6 +39,9 @@ public class TraceIdOkhttpInterceptor extends AbstractInterceptor implements Int
         } catch (Exception e) {
             log.error(LogUtil.exceptionMarker(), "Okhttp http header set traceId exception!", e);
         }
-        return chain.proceed(request);
+        super.executeBefore(OKHTTP_CLIENT_EXEC_BEFORE);
+        Response response = chain.proceed(request);
+        super.executeAfter(OKHTTP_CLIENT_EXEC_AFTER);
+        return response;
     }
 }

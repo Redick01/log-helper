@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import static com.redick.constant.TraceTagConstant.SQL_EXEC_BEFORE;
+import static com.redick.constant.TraceTagConstant.SQL_EXEC_AFTER;
 
 /**
  * @author Redick01
@@ -28,7 +30,7 @@ public class Mysql5StatementInterceptor implements StatementInterceptorV2 {
             throws SQLException {
         String start = String.valueOf(System.currentTimeMillis());
         MDC.put("sql_exec_time", start);
-        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, "sql_exec_before"), "开始执行sql");
+        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, SQL_EXEC_BEFORE), "开始执行sql");
         return null;
     }
 
@@ -48,8 +50,8 @@ public class Mysql5StatementInterceptor implements StatementInterceptorV2 {
             boolean b, boolean b1, SQLException e) throws SQLException {
         long start = Long.parseLong(MDC.get("sql_exec_time"));
         long end = System.currentTimeMillis();
-        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, "sql_exec_after")
-                .and(append(LogUtil.kLOG_KEY_SQL_EXEC_DURATION, end - start)), "结束执行sql");
+        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, SQL_EXEC_AFTER)
+                .and(append(LogUtil.kLOG_KEY_DURATION, end - start)), "结束执行sql");
         return null;
     }
 }

@@ -1,4 +1,7 @@
-package com.redick.support.okhttp;
+package com.redick.support.okhttp3;
+
+import static com.redick.constant.TraceTagConstant.OKHTTP_CLIENT_EXEC_AFTER;
+import static com.redick.constant.TraceTagConstant.OKHTTP_CLIENT_EXEC_BEFORE;
 
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
@@ -37,6 +40,9 @@ public class TraceIdOkhttp3JavaInterceptor extends AbstractInterceptor implement
         } catch (Exception e) {
             log.error(LogUtil.exceptionMarker(), "Okhttp3 http header set traceId exception!", e);
         }
-        return chain.proceed(request);
+        super.executeBefore(OKHTTP_CLIENT_EXEC_BEFORE);
+        Response response = chain.proceed(request);
+        super.executeBefore(OKHTTP_CLIENT_EXEC_AFTER);
+        return response;
     }
 }

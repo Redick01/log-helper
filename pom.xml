@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.redick01</groupId>
     <artifactId>log-trace-helper-all</artifactId>
-    <version>1.0.3-RELEASE</version>
+    <version>${revision}</version>
 
     <description>🔥🔥🔥轻量级日志链路追踪工具，结合logstash-logback-encoder实现日志输出json格式化s</description>
     <url>https://github.com/Redick01/log-helper</url>
@@ -18,13 +18,12 @@
         <module>log-helper-starter</module>
         <module>log-helper-mysql</module>
         <module>log-helper-common</module>
-        <module>log-helper-graphql</module>
     </modules>
     <packaging>pom</packaging>
     <name>log-trace-helper-all</name>
     <properties>
+        <revision>1.0.4-RELEASE</revision>
         <java.version>1.8</java.version>
-        <log-helper.version>1.0.3-RELEASE</log-helper.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <logback.version>1.2.3</logback.version>
         <forest.version>1.5.19</forest.version>
@@ -61,22 +60,22 @@
             <dependency>
                 <groupId>io.github.redick01</groupId>
                 <artifactId>log-helper-core</artifactId>
-                <version>${log-helper.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.redick01</groupId>
                 <artifactId>log-helper-starter</artifactId>
-                <version>${log-helper.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.redick01</groupId>
                 <artifactId>log-helper-spring</artifactId>
-                <version>${log-helper.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.redick01</groupId>
                 <artifactId>log-helper-spi</artifactId>
-                <version>${log-helper.version}</version>
+                <version>${revision}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -317,6 +316,32 @@
                     <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.1.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

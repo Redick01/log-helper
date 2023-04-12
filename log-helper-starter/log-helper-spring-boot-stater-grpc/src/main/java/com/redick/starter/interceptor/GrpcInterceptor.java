@@ -1,5 +1,8 @@
 package com.redick.starter.interceptor;
 
+import static com.redick.constant.TraceTagConstant.GRPC_INVOKE_AFTER;
+import static com.redick.constant.TraceTagConstant.GRPC_INVOKE_BEFORE;
+
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
@@ -21,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.interceptor.GrpcGlobalClientInterceptor;
 import net.devh.boot.grpc.server.interceptor.GrpcGlobalServerInterceptor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * @author Redick01
@@ -41,32 +43,27 @@ public class GrpcInterceptor extends AbstractInterceptor implements ServerInterc
     public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(
             MethodDescriptor<ReqT, RespT> methodDescriptor, CallOptions callOptions,
             Channel channel) {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        try {
-            return new ForwardingClientCall.SimpleForwardingClientCall<ReqT, RespT>(channel.newCall(methodDescriptor, callOptions)) {
-                @Override
-                public void start(Listener<RespT> responseListener, Metadata headers) {
-                    String traceId = traceId();
-                    if (StringUtils.isNotBlank(traceId)) {
-                        headers.put(TRACE, traceId);
-                        headers.put(SPAN, spanId());
-                        headers.put(PARENT, parentId());
-                    }
-                    // 继续下一步
-                    super.start(new ForwardingClientCallListener.SimpleForwardingClientCallListener<RespT>(responseListener) {
-                        @Override
-                        public void onHeaders(Metadata headers) {
-                            // 服务端传递回来的header
-                            super.onHeaders(headers);
-                        }
-                    }, headers);
+        return new ForwardingClientCall.SimpleForwardingClientCall<ReqT, RespT>(channel.newCall(methodDescriptor, callOptions)) {
+            @Override
+            public void start(Listener<RespT> responseListener, Metadata headers) {
+                String traceId = traceId();
+                if (StringUtils.isNotBlank(traceId)) {
+                    executeBefore(GRPC_INVOKE_BEFORE);
+                    headers.put(TRACE, traceId);
+                    headers.put(SPAN, spanId());
+                    headers.put(PARENT, parentId());
                 }
-            };
-        } finally {
-            stopWatch.stop();
-            log.info(LogUtil.marker(stopWatch.getTime()), "GRPC调用耗时");
-        }
+                // 继续下一步
+                super.start(new ForwardingClientCallListener.SimpleForwardingClientCallListener<RespT>(responseListener) {
+                    @Override
+                    public void onHeaders(Metadata headers) {
+                        // 服务端传递回来的header
+                        super.onHeaders(headers);
+                        executeAfter(GRPC_INVOKE_AFTER);
+                    }
+                }, headers);
+            }
+        };
     }
 
     @Override

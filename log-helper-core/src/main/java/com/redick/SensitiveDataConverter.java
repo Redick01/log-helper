@@ -2,7 +2,7 @@ package com.redick;
 
 import ch.qos.logback.classic.pattern.MessageConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import com.redick.common.SensitiveType;
+import com.redick.constant.SensitiveType;
 import com.redick.util.SensitiveInfoConvertUtil;
 
 import java.util.regex.Matcher;

@@ -1,4 +1,4 @@
-package com.redick.common;
+package com.redick.constant;
 
 /**
  * 脱敏类型

@@ -1,6 +1,6 @@
 package com.redick.support.mq;
 
-import com.redick.common.TraceIdDefine;
+import com.redick.constant.TraceIdDefine;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

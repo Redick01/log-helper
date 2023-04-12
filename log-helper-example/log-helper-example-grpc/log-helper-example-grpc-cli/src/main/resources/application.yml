@@ -7,4 +7,4 @@ grpc:
   client:
     userClient:
       negotiationType: PLAINTEXT
-      address: static://localhost:9090
+      address: static://localhost:7052

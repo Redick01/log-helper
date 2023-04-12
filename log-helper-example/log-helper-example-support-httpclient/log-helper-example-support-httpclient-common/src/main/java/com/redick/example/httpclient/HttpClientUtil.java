@@ -1,6 +1,7 @@
 package com.redick.example.httpclient;
 
-import com.redick.support.httpclient.TraceIdHttpClientInterceptor;
+import com.redick.support.httpclient.TraceIdHttpRequestInterceptor;
+import com.redick.support.httpclient.TraceIdHttpResponseInterceptor;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -26,7 +27,11 @@ public class HttpClientUtil {
     static CloseableHttpClient httpClient;
 
     static {
-        httpClient = HttpClientBuilder.create().addInterceptorFirst(new TraceIdHttpClientInterceptor()).build();
+        httpClient = HttpClientBuilder
+                .create()
+                .addInterceptorFirst(new TraceIdHttpRequestInterceptor())
+                .addInterceptorLast(new TraceIdHttpResponseInterceptor())
+                .build();
     }
 
     public static String doGet(String url) {

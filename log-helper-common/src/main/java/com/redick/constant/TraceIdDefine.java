@@ -1,4 +1,4 @@
-package com.redick.common;
+package com.redick.constant;
 
 /**
  * @author liupenghui

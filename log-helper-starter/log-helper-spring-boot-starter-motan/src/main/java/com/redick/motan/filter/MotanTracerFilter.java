@@ -1,5 +1,8 @@
 package com.redick.motan.filter;
 
+import static com.redick.constant.TraceTagConstant.MOTAN_CALL_AFTER;
+import static com.redick.constant.TraceTagConstant.MOTAN_CALL_BEFORE;
+
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
@@ -28,23 +31,28 @@ public class MotanTracerFilter extends AbstractInterceptor implements Filter {
     @Override
     public Response filter(Caller<?> caller, Request request) {
         String nodeName = caller.getUrl().getParameter(URLParamType.nodeType.getName());
-        if (MotanConstants.NODE_TYPE_SERVICE.equals(nodeName)) {
-            String traceId = request.getAttachments().get(Tracer.TRACE_ID);
-            String spanId = request.getAttachments().get(Tracer.SPAN_ID);
-            String parentId = request.getAttachments().get(Tracer.PARENT_ID);
-            Tracer.trace(traceId, spanId, parentId);
+        try {
+            if (MotanConstants.NODE_TYPE_SERVICE.equals(nodeName)) {
+                String traceId = request.getAttachments().get(Tracer.TRACE_ID);
+                String spanId = request.getAttachments().get(Tracer.SPAN_ID);
+                String parentId = request.getAttachments().get(Tracer.PARENT_ID);
+                Tracer.trace(traceId, spanId, parentId);
 
-        } else {
-            // get sessionId from MDC
-            String traceId = traceId();
-            if (StringUtils.isNotBlank(traceId)) {
-                request.setAttachment(Tracer.TRACE_ID, traceId);
-                request.setAttachment(Tracer.SPAN_ID, spanId());
-                request.setAttachment(Tracer.PARENT_ID, parentId());
+            } else {
+                log.info(LogUtil.marker(request.getArguments()), "调用接口[{}]的方法[{}]", request.getInterfaceName(),
+                        request.getMethodName());
+                executeBefore(MOTAN_CALL_BEFORE);
+                // consumer set trace info to attachment
+                String traceId = traceId();
+                if (StringUtils.isNotBlank(traceId)) {
+                    request.setAttachment(Tracer.TRACE_ID, traceId);
+                    request.setAttachment(Tracer.SPAN_ID, spanId());
+                    request.setAttachment(Tracer.PARENT_ID, parentId());
+                }
             }
+            return caller.call(request);
+        } finally {
+            executeAfter(MOTAN_CALL_AFTER);
         }
-        log.info(LogUtil.marker(request.getArguments()), "调用接口[{}]的方法[{}]", request.getInterfaceName(),
-                request.getMethodName());
-        return caller.call(request);
     }
 }
