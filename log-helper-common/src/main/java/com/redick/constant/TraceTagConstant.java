@@ -48,4 +48,25 @@ public class TraceTagConstant {
     public static final String REST_TEMPLATE_EXEC_BEFORE = "rest_template_exec_before";
 
     public static final String REST_TEMPLATE_EXEC_AFTER = "rest_template_exec_after";
+
+    /**
+     * Dubbo RPC 调用标签
+     */
+    public static final String DUBBO_INVOKE_BEFORE = "dubbo_invoke_before";
+
+    public static final String DUBBO_INVOKE_AFTER = "dubbo_invoke_after";
+
+    /**
+     * Motan RPC 调用标签
+     */
+    public static final String MOTAN_CALL_BEFORE = "motan_call_before";
+
+    public static final String MOTAN_CALL_AFTER = "motan_call_after";
+
+    /**
+     * GRPC 调用标签
+     */
+    public static final String GRPC_INVOKE_BEFORE = "grpc_invoke_before";
+
+    public static final String GRPC_INVOKE_AFTER = "grpc_invoke_after";
 }

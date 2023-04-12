@@ -55,6 +55,17 @@
 - **支持简单mysql执行时间统计**
 - **支持motan RPC框架日志链路追踪**
 
+##### 1.0.3-RELEASE版本
+
+- **支持简单mysql执行时间统计**
+- **支持motan RPC框架日志链路追踪**
+
+###### 1.0.4-RELEASE版本
+
+- **支持apache dubbo,alibaba dubbo,motan,grpc调用耗时计算**
+- **支持forest,httpclient,httpclient5,okhttp,okhttp3,restTemplate调用耗时计算**
+- **支持自定义标签，参考LogUtil#customizeMarker**
+
 &nbsp; &nbsp;
 &nbsp; &nbsp;
 &nbsp; &nbsp;

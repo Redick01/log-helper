@@ -5,7 +5,7 @@
     <parent>
         <artifactId>log-helper-starter</artifactId>
         <groupId>io.github.redick01</groupId>
-        <version>1.0.3-RELEASE</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-common</artifactId>
-            <version>1.0.3-RELEASE</version>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 </project>

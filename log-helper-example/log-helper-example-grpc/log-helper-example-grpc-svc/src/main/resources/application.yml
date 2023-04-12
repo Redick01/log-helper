@@ -1,6 +1,6 @@
 grpc:
   server:
-    port: 9090
+    port: 7052
 
 server:
-  port: 8080
+  port: 8558
