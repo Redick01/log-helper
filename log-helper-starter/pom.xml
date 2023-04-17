@@ -19,6 +19,7 @@
         <module>log-helper-spring-boot-starter-webflux</module>
         <module>log-helper-spring-boot-stater-grpc</module>
         <module>log-helper-spring-boot-starter-motan</module>
+        <module>log-helper-spring-boot-starter-scg</module>
     </modules>
 
     <dependencies>

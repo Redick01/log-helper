@@ -39,6 +39,7 @@
         <slf4j.version>1.7.25</slf4j.version>
         <guava.version>31.0.1-jre</guava.version>
         <spring.boot.version>2.6.3</spring.boot.version>
+        <spring.cloud.version>2021.0.5</spring.cloud.version>
         <alibaba.dubbo.version>2.8.4</alibaba.dubbo.version>
         <apache.dubbo.version>3.0.1</apache.dubbo.version>
         <ttl.version>2.12.1</ttl.version>
@@ -76,6 +77,13 @@
                 <groupId>io.github.redick01</groupId>
                 <artifactId>log-helper-spi</artifactId>
                 <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

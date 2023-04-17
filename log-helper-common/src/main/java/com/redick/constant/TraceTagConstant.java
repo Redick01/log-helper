@@ -69,4 +69,9 @@ public class TraceTagConstant {
     public static final String GRPC_INVOKE_BEFORE = "grpc_invoke_before";
 
     public static final String GRPC_INVOKE_AFTER = "grpc_invoke_after";
+
+    /**
+     * Spring Cloud Gateway tag
+     */
+    public static final String SCG_INVOKE_TAG = "spring_cloud_gateway_tag";
 }

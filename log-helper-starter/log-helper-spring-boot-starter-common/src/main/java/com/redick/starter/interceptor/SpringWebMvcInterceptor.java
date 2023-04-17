@@ -17,11 +17,10 @@ public class SpringWebMvcInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Tracer.trace(
-                request.getHeader(Tracer.TRACE_ID),
-                request.getHeader(Tracer.SPAN_ID),
-                request.getHeader(Tracer.PARENT_ID)
-        );
+        String traceId = request.getHeader(Tracer.TRACE_ID);
+        String parentId = request.getHeader(Tracer.SPAN_ID);
+        String spanId = request.getHeader(Tracer.PARENT_ID);
+        Tracer.trace(traceId, parentId, spanId);
         return true;
     }
 
