@@ -41,7 +41,9 @@ public class FeignTraceClientWrapper extends AbstractInterceptor implements Clie
     }
 
     private Request setRequestHeader(Request request) {
-        Map<String, Collection<String>> newHeaders = new ConcurrentHashMap<>(3);
+        Map<String, Collection<String>> headers = request.headers();
+        Map<String, Collection<String>> newHeaders = new ConcurrentHashMap<>(16);
+        newHeaders.putAll(headers);
         newHeaders.put(Tracer.TRACE_ID, Collections.singleton(traceId()));
         newHeaders.put(Tracer.PARENT_ID, Collections.singleton(parentId()));
         newHeaders.put(Tracer.SPAN_ID, Collections.singleton(spanId()));
