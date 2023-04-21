@@ -73,5 +73,11 @@ public class TraceTagConstant {
     /**
      * Spring Cloud Gateway tag
      */
-    public static final String SCG_INVOKE_TAG = "spring_cloud_gateway_tag";
+    public static final String SCG_INVOKE_START = "scg_invoke_start";
+
+    public static final String SCG_INVOKE_END = "scg_invoke_end";
+
+    public static final String OPEN_FEIGN_INVOKE_BEFORE_BEFORE = "open_feign_invoke_before";
+
+    public static final String OPEN_FEIGN_INVOKE_BEFORE_AFTER = "open_feign_invoke_after";
 }

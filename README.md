@@ -55,16 +55,19 @@
 - **支持简单mysql执行时间统计**
 - **支持motan RPC框架日志链路追踪**
 
-##### 1.0.3-RELEASE版本
-
-- **支持简单mysql执行时间统计**
-- **支持motan RPC框架日志链路追踪**
-
 ###### 1.0.4-RELEASE版本
 
 - **支持apache dubbo,alibaba dubbo,motan,grpc调用耗时计算**
 - **支持forest,httpclient,httpclient5,okhttp,okhttp3,restTemplate调用耗时计算**
 - **支持自定义标签，参考LogUtil#customizeMarker**
+
+###### 1.0.5-RELEASE版本
+
+- **支持apache dubbo,alibaba dubbo,motan,grpc调用耗时计算**
+- **支持forest,httpclient,httpclient5,okhttp,okhttp3,restTemplate调用耗时计算**
+- **支持自定义标签，参考LogUtil#customizeMarker**
+- **支持spring cloud gateway链路追踪和调用耗时计算**
+- **支持OpenFeign调用耗时计算**
 
 &nbsp; &nbsp;
 &nbsp; &nbsp;
@@ -80,7 +83,7 @@
 <dependency>
     <groupId>io.github.redick01</groupId>
     <artifactId>log-helper-spring-boot-starter-common</artifactId>
-    <version>1.0-RELEASE</version>
+    <version>最新版本</version>
 </dependency>
 ```
 
@@ -107,7 +110,7 @@ public class Server {
 <dependency>
     <groupId>io.github.redick01</groupId>
     <artifactId>log-helper-spring</artifactId>
-    <version>1.0-RELEASE</version>
+    <version>最新版本</version>
 </dependency>
 ```
 
@@ -397,7 +400,7 @@ public class TestController {
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-apachedubbo</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
 ```
 
@@ -407,12 +410,12 @@ public class TestController {
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-apachedubbo</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
 ```
 
@@ -425,7 +428,7 @@ public class TestController {
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-alibabadubbo</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
 ```
 
@@ -435,12 +438,12 @@ public class TestController {
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-alibabadubbo</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
 ```
 
@@ -448,7 +451,7 @@ public class TestController {
 &nbsp; &nbsp;
 &nbsp; &nbsp;
 
-### 3.4 SpringCloud支持
+### 3.4 OpenFeign支持
 
 #### 3.4.1 SpringBoot接入
 
@@ -456,7 +459,7 @@ public class TestController {
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-openfeign</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
 ```
 
@@ -604,7 +607,7 @@ public class ModelsReturnT<T> {
     <dependency>
         <groupId>io.github.redick01</groupId>
         <artifactId>mysql-5</artifactId>
-        <version>1.0.3-RELEASE</version>
+        <version>最新版本</version>
     </dependency>
 ```
 
@@ -618,7 +621,7 @@ spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&cha
     <dependency>
         <groupId>io.github.redick01</groupId>
         <artifactId>mysql-6</artifactId>
-        <version>1.0.3-RELEASE</version>
+        <version>最新版本</version>
     </dependency>
 ```
 
@@ -632,7 +635,7 @@ spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&cha
     <dependency>
         <groupId>io.github.redick01</groupId>
         <artifactId>mysql-8</artifactId>
-        <version>1.0.3-RELEASE</version>
+        <version>最新版本</version>
     </dependency>
 ```
 
@@ -648,7 +651,7 @@ spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&cha
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-motan</artifactId>
-            <version>1.0.3-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
 ```
 
@@ -658,13 +661,23 @@ spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&cha
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring</artifactId>
-            <version>1.0.3-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
         <dependency>
             <groupId>io.github.redick01</groupId>
             <artifactId>log-helper-spring-boot-starter-motan</artifactId>
-            <version>1.0.3-RELEASE</version>
+            <version>最新版本</version>
         </dependency>
+```
+
+### 3.10 Spring Cloud Gateway接入
+
+```xml
+            <dependency>
+                <groupId>io.github.redick01</groupId>
+                <artifactId>log-helper-spring-boot-starter-scg</artifactId>
+                <version>1.0.5-RELEASE</version>
+            </dependency>
 ```
 
 参考log-helper-example-motan示例程序
