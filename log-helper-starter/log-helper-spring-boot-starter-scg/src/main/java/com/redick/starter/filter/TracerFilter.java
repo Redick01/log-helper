@@ -1,10 +1,9 @@
 package com.redick.starter.filter;
 
-import static com.redick.constant.TraceTagConstant.SCG_INVOKE_TAG;
+import static com.redick.constant.TraceTagConstant.SCG_INVOKE_START;
 
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
-import com.redick.util.LogUtil;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -45,8 +44,7 @@ public class TracerFilter extends AbstractInterceptor implements GlobalFilter, O
                     httpHeaders.set(Tracer.PARENT_ID, parentId());
                     httpHeaders.set(Tracer.SPAN_ID, spanId());
                 })).build());
-        String url = request.getURI().getPath();
-        log.info(LogUtil.customizeMarker(SCG_INVOKE_TAG, url), "收到请求");
+        executeBefore(SCG_INVOKE_START + request.getURI().getPath());
         return voidMono;
     }
 
