@@ -21,7 +21,7 @@
         
         <dependency>
             <groupId>io.github.reidck01</groupId>
-            <artifactId>log-helper-spring-boot-starter-stream</artifactId>
+            <artifactId>log-helper-spring-boot-starter-scs</artifactId>
             <version>${revision}</version>
         </dependency>
         
