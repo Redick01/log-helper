@@ -20,6 +20,7 @@
         <module>log-helper-spring-boot-stater-grpc</module>
         <module>log-helper-spring-boot-starter-motan</module>
         <module>log-helper-spring-boot-starter-scg</module>
+        <module>log-helper-spring-boot-starter-stream</module>
     </modules>
 
     <dependencies>

@@ -38,8 +38,9 @@
         <javassist.version>3.24.0-GA</javassist.version>
         <slf4j.version>1.7.25</slf4j.version>
         <guava.version>31.0.1-jre</guava.version>
-        <spring.boot.version>2.6.3</spring.boot.version>
+        <spring.boot.version>2.7.7</spring.boot.version>
         <spring.cloud.version>2021.0.5</spring.cloud.version>
+        <spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
         <alibaba.dubbo.version>2.6.5</alibaba.dubbo.version>
         <apache.dubbo.version>3.0.1</apache.dubbo.version>
         <ttl.version>2.12.1</ttl.version>

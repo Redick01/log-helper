@@ -77,7 +77,17 @@ public class TraceTagConstant {
 
     public static final String SCG_INVOKE_END = "scg_invoke_end";
 
-    public static final String OPEN_FEIGN_INVOKE_BEFORE_BEFORE = "open_feign_invoke_before";
+    /**
+     * Open Feign tag.
+     */
+    public static final String OPEN_FEIGN_INVOKE_BEFORE = "open_feign_invoke_before";
 
-    public static final String OPEN_FEIGN_INVOKE_BEFORE_AFTER = "open_feign_invoke_after";
+    public static final String OPEN_FEIGN_INVOKE_AFTER = "open_feign_invoke_after";
+
+    /**
+     * Spring Cloud Stream tag.
+     */
+    public static final String SCS_INVOKE_BEFORE = "scs_invoke_before";
+
+    public static final String SCS_INVOKE_AFTER = "scs_invoke_after";
 }

@@ -1,9 +1,8 @@
 package com.redick.starter.client;
 
-import static com.redick.constant.TraceTagConstant.OPEN_FEIGN_INVOKE_BEFORE_AFTER;
-import static com.redick.constant.TraceTagConstant.OPEN_FEIGN_INVOKE_BEFORE_BEFORE;
+import static com.redick.constant.TraceTagConstant.OPEN_FEIGN_INVOKE_AFTER;
+import static com.redick.constant.TraceTagConstant.OPEN_FEIGN_INVOKE_BEFORE;
 
-import com.google.common.collect.Lists;
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
 import feign.Client;
@@ -33,10 +32,10 @@ public class FeignTraceClientWrapper extends AbstractInterceptor implements Clie
         String traceId = traceId();
         if (StringUtils.isNotBlank(traceId)) {
             request = setRequestHeader(request);
-            super.executeBefore(OPEN_FEIGN_INVOKE_BEFORE_BEFORE);
+            super.executeBefore(OPEN_FEIGN_INVOKE_BEFORE);
         }
         Response response = delegate.execute(request, options);
-        executeAfter(OPEN_FEIGN_INVOKE_BEFORE_AFTER);
+        executeAfter(OPEN_FEIGN_INVOKE_AFTER);
         return response;
     }
 
