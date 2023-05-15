@@ -1,0 +1,27 @@
+server:
+  port: 8990
+
+spring:
+  application:
+    name: message-stream-demo
+  cloud:
+    stream:
+      function:
+        definition: producer; consumer
+      rocketmq:
+        binder:
+          name-server: 172.17.10.179:9876
+        bindings:
+          producer-out-0:
+            producer:
+              enabled: true
+              group: output_1
+          consumer-in-0:
+            consumer:
+              enabled: true
+      bindings:
+        producer-out-0:
+          destination: TPC_Test_dev
+        consumer-in-0:
+          destination: TPC_Test_dev
+          group: GID_Test_dev

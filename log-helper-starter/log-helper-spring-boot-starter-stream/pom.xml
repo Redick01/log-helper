@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.redick01</groupId>
+        <artifactId>log-helper-starter</artifactId>
+        <version>${revision}</version>
+    </parent>
+    
+    <groupId>io.github.reidck01</groupId>
+    <artifactId>log-helper-spring-boot-starter-stream</artifactId>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream</artifactId>
+            <version>3.2.6</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.github.redick01</groupId>
+            <artifactId>log-helper-spring-boot-starter-common</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+
+</project>
