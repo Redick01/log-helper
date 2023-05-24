@@ -25,18 +25,14 @@ import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.Trace;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.MDC;
-
-import java.util.UUID;
 
 import static com.redick.constant.TraceTagConstant.NETTY_INVOKE_START;
 import static com.redick.constant.TraceTagConstant.START_TIME;
 
 /**
- * @author: Redick01
+ * @author: nff0610
  * @description: Netty inbound interceptor
  * @date: 2023/5/24 15:06
  */
