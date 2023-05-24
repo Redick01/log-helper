@@ -29,8 +29,8 @@ import static com.redick.constant.TraceTagConstant.START_TIME;
 import static net.logstash.logback.marker.Markers.append;
 
 /**
- * @author: Redick01
- * @description:
+ * @author: nff0610
+ * @description: Netty inbound interceptor
  * @date: 2023/5/24 15:18
  */
 @Slf4j
