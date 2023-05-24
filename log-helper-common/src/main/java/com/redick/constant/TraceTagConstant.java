@@ -107,4 +107,11 @@ public class TraceTagConstant {
     public static final String SCS_INVOKE_BEFORE = "scs_invoke_before";
 
     public static final String SCS_INVOKE_AFTER = "scs_invoke_after";
+
+    /**
+     * Netty tag.
+     */
+    public static final String NETTY_INVOKE_START = "netty_invoke_start";
+
+    public static final String NETTY_INVOKE_OVER = "netty_invoke_over";
 }
