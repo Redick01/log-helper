@@ -21,6 +21,7 @@
         <module>log-helper-example-grpc</module>
         <module>log-helper-example-motan</module>
         <module>log-helper-example-message-stream</module>
+        <module>log-helper-example-spring-data-redis</module>
     </modules>
 
     <properties>

@@ -114,4 +114,11 @@ public class TraceTagConstant {
     public static final String NETTY_INVOKE_START = "netty_invoke_start";
 
     public static final String NETTY_INVOKE_OVER = "netty_invoke_over";
+
+    /**
+     * Redis tag.
+     */
+    public static final String REDIS_EXECUTE_BEFORE = "redis_execute_before";
+
+    public static final String REDIS_EXECUTE_AFTER = "redis_execute_after";
 }
