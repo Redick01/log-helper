@@ -21,6 +21,7 @@ import com.redick.AroundLogHandler;
 import com.redick.banner.LogHelperBanner;
 import com.redick.starter.interceptor.SpringWebMvcInterceptor;
 import com.redick.starter.processor.SpringRedisConnectionFactoryPostProcessor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -57,7 +58,7 @@ public class LogHelperAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "spring.data.redis")
+    @ConditionalOnProperty()
     public SpringRedisConnectionFactoryPostProcessor springRedisConnectionFactoryPostProcessor() {
         return new SpringRedisConnectionFactoryPostProcessor();
     }

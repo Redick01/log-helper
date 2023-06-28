@@ -46,9 +46,15 @@ public class SpringRedisCommandInterceptor extends AbstractInterceptor implement
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy)
             throws Throwable {
-        executeBefore(REDIS_EXECUTE_BEFORE);
-        Object result = methodProxy.invoke(o, objects);
-        executeAfter(REDIS_EXECUTE_AFTER);
+        String beforeTag = REDIS_EXECUTE_BEFORE;
+        String afterTag = REDIS_EXECUTE_AFTER;
+        if ("isPipelined".equals(method.getName()) || "close".equals(method.getName())) {
+            beforeTag += "_" + method.getName();
+            afterTag += "_" + method.getName();
+        }
+        executeBefore(beforeTag);
+        Object result = method.invoke(o, objects);
+        executeAfter(afterTag);
         return result;
     }
 }

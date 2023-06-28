@@ -1,0 +1,16 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: spring-redis-demo
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    jedis:
+      pool:
+        min-idle: 10
+        max-idle: 200
+        max-wait: 3000ms
+        max-active: 50

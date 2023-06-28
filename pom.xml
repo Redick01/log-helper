@@ -28,7 +28,7 @@
         <logback.version>1.2.3</logback.version>
         <forest.version>1.5.19</forest.version>
         <hutool.version>5.7.16</hutool.version>
-        <spring.version>5.3.14</spring.version>
+        <spring.version>5.3.24</spring.version>
         <skywalking.trace.version>8.3.0</skywalking.trace.version>
         <logstash.encoder.version>5.2</logstash.encoder.version>
         <aspect.version>1.8.10</aspect.version>
@@ -44,6 +44,7 @@
         <alibaba.dubbo.version>2.6.5</alibaba.dubbo.version>
         <apache.dubbo.version>3.0.1</apache.dubbo.version>
         <ttl.version>2.12.1</ttl.version>
+        <lettuce.version>6.1.10.RELEASE</lettuce.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -83,13 +84,6 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring.cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -181,6 +175,12 @@
             <artifactId>forest-core</artifactId>
             <version>${forest.version}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--skywalking traceId获取组件-->
         <dependency>
@@ -192,6 +192,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--TTL 解决线程池，异步 无法做到全链路日志追踪问题-->
         <dependency>
