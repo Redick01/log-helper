@@ -15,21 +15,24 @@
  * limitations under the License.
  */
 
-package com.redick.support.redis.jedis;
+package com.redick.starter.configure;
 
-import java.lang.reflect.Method;
-import org.springframework.cglib.proxy.MethodInterceptor;
-import org.springframework.cglib.proxy.MethodProxy;
+import com.redick.starter.processor.SpringRedisConnectionFactoryPostProcessor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisOperations;
 
 /**
  * @author: Redick01
- * @date: 2023/6/26 20:09
+ * @date: 2023/6/29 11:22
  */
-public class JedisCommandInterceptor implements MethodInterceptor {
+@Configuration
+@ConditionalOnClass(RedisOperations.class)
+public class SpringRedisAutoConfiguration {
 
-    @Override
-    public Object intercept( Object o, Method method, Object[] objects, MethodProxy methodProxy )
-            throws Throwable {
-        return null;
+    @Bean
+    public SpringRedisConnectionFactoryPostProcessor springRedisConnectionFactoryPostProcessor() {
+        return new SpringRedisConnectionFactoryPostProcessor();
     }
 }

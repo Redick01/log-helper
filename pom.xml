@@ -45,6 +45,7 @@
         <apache.dubbo.version>3.0.1</apache.dubbo.version>
         <ttl.version>2.12.1</ttl.version>
         <lettuce.version>6.1.10.RELEASE</lettuce.version>
+        <jedis.version>3.8.0</jedis.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>

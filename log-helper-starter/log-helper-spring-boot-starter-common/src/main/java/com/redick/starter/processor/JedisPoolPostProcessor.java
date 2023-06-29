@@ -21,29 +21,28 @@ import com.redick.support.redis.SpringRedisCommandInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
+import redis.clients.jedis.JedisPool;
 
 /**
  * @author: Redick01
- * @date: 2023/6/26 21:09
+ * @date: 2023/6/29 14:34
  */
-public class SpringRedisConnectionFactoryPostProcessor implements BeanPostProcessor {
+public class JedisPoolPostProcessor implements BeanPostProcessor {
 
-    private static final String GET_CONNECTION = "getConnection";
+    private static final String GET_RESOURCE = "getResource";
 
     @Override
-    public Object postProcessAfterInitialization(final Object bean, final String beanName)
-            throws BeansException {
-        if (bean instanceof RedisConnectionFactory) {
-            return ProxyUtil.getProxy(bean, this::interceptorRedisFactory);
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        if (bean instanceof JedisPool) {
+            return ProxyUtil.getProxy(bean, this::interceptorJedisPool);
         }
         return bean;
     }
 
-    public Object interceptorRedisFactory(final MethodInvocation methodInvocation)
+    public Object interceptorJedisPool(final MethodInvocation methodInvocation)
             throws Throwable {
         Object result = methodInvocation.proceed();
-        if (GET_CONNECTION.equals(methodInvocation.getMethod().getName())) {
+        if (GET_RESOURCE.equals(methodInvocation.getMethod().getName())) {
             return ProxyUtil.getProxy(result, new SpringRedisCommandInterceptor());
         }
         return result;

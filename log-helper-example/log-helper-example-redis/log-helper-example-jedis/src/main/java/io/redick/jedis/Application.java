@@ -15,20 +15,32 @@
  * limitations under the License.
  */
 
-package com.redick.support.redis.lettuce;
+package io.redick.jedis;
 
-import io.lettuce.core.dynamic.intercept.MethodInterceptor;
-import io.lettuce.core.dynamic.intercept.MethodInvocation;
+import com.redick.starter.annotation.LogHelperEnable;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * @author: Redick01
- * @date: 2023/6/26 19:59
+ * @date: 2023/6/27 15:09
  */
-public class LettuceCommandInterceptor implements MethodInterceptor {
+@SpringBootApplication
+@LogHelperEnable
+public class Application {
 
-    @Override
-    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+    @Bean
+    public JedisPool jedisPool() {
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(30);
+        config.setMaxIdle(10);
+        return new JedisPool(config, "127.0.0.1", 6379, 2000);
+    }
 
-        return null;
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 }

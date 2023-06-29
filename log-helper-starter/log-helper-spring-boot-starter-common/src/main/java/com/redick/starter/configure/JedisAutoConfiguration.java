@@ -17,40 +17,24 @@
 
 package com.redick.starter.configure;
 
-import com.redick.AroundLogHandler;
-import com.redick.banner.LogHelperBanner;
-import com.redick.starter.interceptor.SpringWebMvcInterceptor;
+import com.redick.starter.processor.JedisPoolPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import redis.clients.jedis.JedisPool;
 
 /**
- * @author Redick01
- *  2022/3/25 14:42
+ * @author: Redick01
+ * @date: 2023/6/29 14:42
  */
 @Configuration
-public class LogHelperAutoConfiguration {
+@ConditionalOnClass(JedisPool.class)
+public class JedisAutoConfiguration {
 
     @Bean
-    public LogHelperBanner logHelperBanner() {
-        return new LogHelperBanner();
-    }
-
-    @Bean
-    public AroundLogHandler aroundLogHandler() {
-        return new AroundLogHandler();
-    }
-
-    @Bean
-    @ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")
-    public WebMvcConfigurer webMvcInterceptor() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(new SpringWebMvcInterceptor());
-            }
-        };
+    @ConditionalOnMissingClass(value = {"org.springframework.data.redis.connection.RedisConnectionFactory"})
+    public JedisPoolPostProcessor jedisPoolPostProcessor() {
+        return new JedisPoolPostProcessor();
     }
 }
