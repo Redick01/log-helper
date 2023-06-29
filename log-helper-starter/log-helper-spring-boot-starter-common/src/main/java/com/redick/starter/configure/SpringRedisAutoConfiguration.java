@@ -17,40 +17,22 @@
 
 package com.redick.starter.configure;
 
-import com.redick.AroundLogHandler;
-import com.redick.banner.LogHelperBanner;
-import com.redick.starter.interceptor.SpringWebMvcInterceptor;
+import com.redick.starter.processor.SpringRedisConnectionFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.data.redis.core.RedisOperations;
 
 /**
- * @author Redick01
- *  2022/3/25 14:42
+ * @author: Redick01
+ * @date: 2023/6/29 11:22
  */
 @Configuration
-public class LogHelperAutoConfiguration {
+@ConditionalOnClass(RedisOperations.class)
+public class SpringRedisAutoConfiguration {
 
     @Bean
-    public LogHelperBanner logHelperBanner() {
-        return new LogHelperBanner();
-    }
-
-    @Bean
-    public AroundLogHandler aroundLogHandler() {
-        return new AroundLogHandler();
-    }
-
-    @Bean
-    @ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")
-    public WebMvcConfigurer webMvcInterceptor() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(new SpringWebMvcInterceptor());
-            }
-        };
+    public SpringRedisConnectionFactoryPostProcessor springRedisConnectionFactoryPostProcessor() {
+        return new SpringRedisConnectionFactoryPostProcessor();
     }
 }
