@@ -15,32 +15,24 @@
  * limitations under the License.
  */
 
-package io.redick.lettuce;
+package com.redick.starter.processor;
 
-import com.redick.starter.annotation.LogHelperEnable;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.StatefulRedisConnection;
+import com.redick.support.redis.SpringRedisCommandInterceptor;
 import io.lettuce.core.api.sync.RedisCommands;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
  * @author: Redick01
- * @date: 2023/6/27 15:09
+ * @date: 2023/7/4 16:47
  */
-@SpringBootApplication
-@LogHelperEnable
-public class Application {
+public class LettuceCorePostProcessor implements BeanPostProcessor {
 
-    @Bean
-    public RedisCommands<String, String> redisCommands() {
-        RedisClient redisClient = RedisClient.create("redis://@127.0.0.1:6379/0");
-        StatefulRedisConnection<String, String> connection = redisClient.connect();
-        return connection.sync();
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        if (bean instanceof RedisCommands) {
+            return ProxyUtil.getProxy(bean, new SpringRedisCommandInterceptor());
+        }
+        return bean;
     }
 }

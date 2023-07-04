@@ -3,4 +3,5 @@ org.springframework.context.ApplicationContextInitializer=\
   com.redick.TtlMDCAdapterInitializer
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.redick.starter.configure.SpringRedisAutoConfiguration,\
-  com.redick.starter.configure.JedisAutoConfiguration
+  com.redick.starter.configure.JedisAutoConfiguration,\
+  com.redick.starter.configure.LettuceAutoConfiguration

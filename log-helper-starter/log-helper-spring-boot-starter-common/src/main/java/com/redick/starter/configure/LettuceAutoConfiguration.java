@@ -15,32 +15,21 @@
  * limitations under the License.
  */
 
-package io.redick.lettuce;
+package com.redick.starter.configure;
 
-import com.redick.starter.annotation.LogHelperEnable;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisCommands;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.redick.starter.processor.LettuceCorePostProcessor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author: Redick01
- * @date: 2023/6/27 15:09
+ * @date: 2023/7/4 16:57
  */
-@SpringBootApplication
-@LogHelperEnable
-public class Application {
+@Configuration
+public class LettuceAutoConfiguration {
 
     @Bean
-    public RedisCommands<String, String> redisCommands() {
-        RedisClient redisClient = RedisClient.create("redis://@127.0.0.1:6379/0");
-        StatefulRedisConnection<String, String> connection = redisClient.connect();
-        return connection.sync();
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    public LettuceCorePostProcessor lettuceCorePostProcessor() {
+        return new LettuceCorePostProcessor();
     }
 }

@@ -18,6 +18,7 @@
 package io.redick.lettuce.controller;
 
 import com.redick.annotation.LogMarker;
+import io.lettuce.core.api.sync.RedisCommands;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,20 +30,21 @@ import org.springframework.web.bind.annotation.RestController;
  * @date: 2023/6/27 15:10
  */
 @RestController
-@RequestMapping("/redis-command")
+@RequestMapping("/lettuces-command")
 @Slf4j
 @AllArgsConstructor
 public class TestController {
 
+    private final RedisCommands<String, String> redisCommands;
 
     private final static String FLAG = "sys_config:sys.account.registerUser";
 
     @GetMapping("/get")
     @LogMarker(businessDescription = "jedis-command-get")
     public String getParam() {
-//        if (jedisPool.getResource().exists(FLAG)) {
-//            return FLAG;
-//        }
+        if (redisCommands.exists(FLAG) > 0) {
+            return FLAG;
+        }
         return "null";
     }
 }
