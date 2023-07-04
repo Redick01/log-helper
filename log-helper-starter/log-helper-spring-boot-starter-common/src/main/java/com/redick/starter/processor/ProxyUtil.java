@@ -26,7 +26,6 @@ import org.springframework.aop.framework.ProxyFactory;
  */
 public class ProxyUtil {
 
-
     public static Object getProxy(final Object object, final MethodInterceptor methodInterceptor) {
         ProxyFactory proxyFactory = new ProxyFactory(object);
         proxyFactory.setProxyTargetClass(true);

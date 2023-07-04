@@ -37,6 +37,10 @@ import org.springframework.cglib.proxy.MethodProxy;
 public class SpringRedisCommandInterceptor extends AbstractInterceptor implements MethodInterceptor,
         org.aopalliance.intercept.MethodInterceptor {
 
+    private static final String IS_PIPELINED = "isPipelined";
+
+    private static final String CLOSE = "close";
+
     @Nullable
     @Override
     public Object invoke(@NotNull MethodInvocation invocation) throws Throwable {
@@ -48,7 +52,7 @@ public class SpringRedisCommandInterceptor extends AbstractInterceptor implement
             throws Throwable {
         String beforeTag = REDIS_EXECUTE_BEFORE;
         String afterTag = REDIS_EXECUTE_AFTER;
-        if ("isPipelined".equals(method.getName()) || "close".equals(method.getName())) {
+        if (IS_PIPELINED.equals(method.getName()) || CLOSE.equals(method.getName())) {
             beforeTag += "_" + method.getName();
             afterTag += "_" + method.getName();
         }
