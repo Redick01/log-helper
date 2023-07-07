@@ -18,6 +18,7 @@
 package io.redick.jedis.controller;
 
 import com.redick.annotation.LogMarker;
+import com.redick.util.LogUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,9 @@ public class TestController {
     @GetMapping("/get")
     @LogMarker(businessDescription = "jedis-command-get")
     public String getParam() {
+        if (log.isDebugEnabled()) {
+            log.debug(LogUtil.marker("123411"), "123411");
+        }
         if (jedisPool.getResource().exists(FLAG)) {
             return FLAG;
         }

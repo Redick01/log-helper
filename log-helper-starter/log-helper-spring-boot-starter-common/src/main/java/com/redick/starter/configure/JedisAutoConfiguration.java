@@ -30,10 +30,10 @@ import redis.clients.jedis.JedisPool;
  */
 @Configuration
 @ConditionalOnClass(JedisPool.class)
+@ConditionalOnMissingClass(value = {"org.springframework.data.redis.connection.RedisConnectionFactory"})
 public class JedisAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingClass(value = {"org.springframework.data.redis.connection.RedisConnectionFactory"})
     public JedisPoolPostProcessor jedisPoolPostProcessor() {
         return new JedisPoolPostProcessor();
     }

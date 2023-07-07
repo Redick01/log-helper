@@ -18,6 +18,9 @@
 package com.redick.starter.configure;
 
 import com.redick.starter.processor.LettuceCorePostProcessor;
+import io.lettuce.core.api.sync.RedisCommands;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,6 +29,8 @@ import org.springframework.context.annotation.Configuration;
  * @date: 2023/7/4 16:57
  */
 @Configuration
+@ConditionalOnClass(value = {RedisCommands.class})
+@ConditionalOnMissingClass(value = {"org.springframework.data.redis.connection.RedisConnectionFactory"})
 public class LettuceAutoConfiguration {
 
     @Bean
