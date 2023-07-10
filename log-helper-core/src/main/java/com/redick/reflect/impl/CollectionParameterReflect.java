@@ -20,6 +20,8 @@ package com.redick.reflect.impl;
 import com.redick.SensitiveDataConverter;
 import com.redick.reflect.Reflect;
 import com.redick.spi.Join;
+import com.redick.util.LogUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.UnsupportedEncodingException;
 
@@ -28,6 +30,7 @@ import java.io.UnsupportedEncodingException;
  *  2022/3/22 19:43
  */
 @Join
+@Slf4j
 public class CollectionParameterReflect implements Reflect {
 
     @Override
@@ -39,7 +42,7 @@ public class CollectionParameterReflect implements Reflect {
         try {
             return SensitiveDataConverter.invokeMsg(obj.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(LogUtil.exceptionMarker(), e.getMessage(), e);
         }
         return "parameter is null!";
     }

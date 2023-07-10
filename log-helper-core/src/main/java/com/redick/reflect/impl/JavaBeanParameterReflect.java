@@ -21,7 +21,9 @@ import com.redick.annotation.FieldIgnore;
 import com.redick.annotation.ValidChild;
 import com.redick.reflect.Reflect;
 import com.redick.spi.Join;
+import com.redick.util.LogUtil;
 import com.redick.util.SensitiveFieldUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -33,6 +35,7 @@ import java.util.HashMap;
  *  2022/3/22 19:44
  */
 @Join
+@Slf4j
 public class JavaBeanParameterReflect implements Reflect {
 
     @Override
@@ -58,7 +61,7 @@ public class JavaBeanParameterReflect implements Reflect {
                 // 将处理后的请求参数放到map中
                 result.put(name, argument);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                log.error(LogUtil.exceptionMarker(), "IllegalAccessException", e);
             }
         }
         return result;
