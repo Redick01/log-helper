@@ -20,6 +20,7 @@ package com.redick.reflect.impl;
 import com.google.common.collect.Maps;
 import com.redick.reflect.Reflect;
 import com.redick.spi.Join;
+import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ public class HttpServletRequestReflect implements Reflect {
                     result.put(name, value);
                 }
             } catch (UnsupportedEncodingException e) {
-                log.error("UnsupportedEncodingException", e);
+                log.error(LogUtil.exceptionMarker(), "UnsupportedEncodingException", e);
             }
         }
         return result;
