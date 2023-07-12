@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.redick01</groupId>
         <artifactId>log-helper-example-redis</artifactId>
-        <version>1.0.5-RELEASE</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>log-helper-example-jedis</artifactId>
