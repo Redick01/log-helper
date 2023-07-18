@@ -32,6 +32,11 @@ public class SpringRedisConnectionFactoryPostProcessor implements BeanPostProces
     private static final String GET_CONNECTION = "getConnection";
 
     @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        return bean;
+    }
+
+    @Override
     public Object postProcessAfterInitialization(final Object bean, final String beanName)
             throws BeansException {
         if (bean instanceof RedisConnectionFactory) {

@@ -32,6 +32,11 @@ public class JedisPoolPostProcessor implements BeanPostProcessor {
     private static final String GET_RESOURCE = "getResource";
 
     @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        return bean;
+    }
+
+    @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof JedisPool) {
             return ProxyUtil.getProxy(bean, this::interceptorJedisPool);
