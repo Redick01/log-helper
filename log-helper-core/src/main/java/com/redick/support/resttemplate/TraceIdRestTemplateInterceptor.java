@@ -44,7 +44,8 @@ public class TraceIdRestTemplateInterceptor extends AbstractInterceptor implemen
 
     @NotNull
     @Override
-    public ClientHttpResponse intercept(HttpRequest request, @NotNull byte[] body, @NotNull ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(HttpRequest request, @NotNull byte[] body,
+                                        @NotNull ClientHttpRequestExecution execution) throws IOException {
         HttpHeaders httpHeaders = request.getHeaders();
         String traceId = traceId();
         try {

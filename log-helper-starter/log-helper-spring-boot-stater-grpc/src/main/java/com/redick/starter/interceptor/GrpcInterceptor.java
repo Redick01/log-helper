@@ -60,7 +60,8 @@ public class GrpcInterceptor extends AbstractInterceptor implements ServerInterc
     public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(
             MethodDescriptor<ReqT, RespT> methodDescriptor, CallOptions callOptions,
             Channel channel) {
-        return new ForwardingClientCall.SimpleForwardingClientCall<ReqT, RespT>(channel.newCall(methodDescriptor, callOptions)) {
+        return new ForwardingClientCall.SimpleForwardingClientCall<ReqT, RespT>(channel.newCall(methodDescriptor,
+                callOptions)) {
             @Override
             public void start(Listener<RespT> responseListener, Metadata headers) {
                 String traceId = traceId();
@@ -71,7 +72,8 @@ public class GrpcInterceptor extends AbstractInterceptor implements ServerInterc
                     headers.put(PARENT, parentId());
                 }
                 // 继续下一步
-                super.start(new ForwardingClientCallListener.SimpleForwardingClientCallListener<RespT>(responseListener) {
+                super.start(new ForwardingClientCallListener
+                        .SimpleForwardingClientCallListener<RespT>(responseListener) {
                     @Override
                     public void onHeaders(Metadata headers) {
                         // 服务端传递回来的header
@@ -91,7 +93,8 @@ public class GrpcInterceptor extends AbstractInterceptor implements ServerInterc
         String parentId = headers.get(PARENT);
         Tracer.trace(traceId, spanId, parentId);
         log.info(LogUtil.marker(), "开始处理");
-        return serverCallHandler.startCall(new ForwardingServerCall.SimpleForwardingServerCall<ReqT, RespT>(serverCall) {
+        return serverCallHandler.startCall(new ForwardingServerCall
+                .SimpleForwardingServerCall<ReqT, RespT>(serverCall) {
 
             @Override
             public void sendHeaders(Metadata responseHeaders) {

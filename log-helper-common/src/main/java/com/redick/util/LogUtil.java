@@ -202,7 +202,7 @@ public class LogUtil {
         }
         Field[] fields = FieldUtils.getAllFields(data.getClass());
         HashMap<String, Object> map = new HashMap<>(fields.length);
-        for(Field field : fields){
+        for (Field field : fields) {
             String name = "";
             Object argument = null;
             try {
@@ -236,7 +236,7 @@ public class LogUtil {
         }
         Field[] fields = FieldUtils.getAllFields(data.getClass());
         HashMap<String, Object> map = new HashMap<>(fields.length);
-        for(Field field : fields){
+        for (Field field : fields) {
             String name = "";
             Object argument = null;
             try {
@@ -271,6 +271,13 @@ public class LogUtil {
         return marker(kTYPE_SENSITIVE, map);
     }
 
+    /**
+     * 自定义标签模板
+     *
+     * @param fileName file name
+     * @param data data
+     * @return result
+     */
     public static LogstashMarker customizeMarker(String fileName, Object data) {
         return append(fileName, data);
     }

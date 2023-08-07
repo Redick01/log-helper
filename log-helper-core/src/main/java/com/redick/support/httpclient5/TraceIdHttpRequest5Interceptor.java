@@ -34,13 +34,14 @@ import java.io.IOException;
 
 /**
  * @author liupenghui
- *  2021/12/12 3:10 下午
+ * 2021/12/12 3:10 下午
  */
 @Slf4j
 public class TraceIdHttpRequest5Interceptor extends AbstractInterceptor implements HttpRequestInterceptor {
 
     @Override
-    public void process(HttpRequest request, EntityDetails entityDetails, HttpContext httpContext) throws HttpException, IOException {
+    public void process(HttpRequest request, EntityDetails entityDetails, HttpContext httpContext)
+            throws HttpException, IOException {
         try {
             if (StringUtils.isNotBlank(traceId())) {
                 // 传递traceId

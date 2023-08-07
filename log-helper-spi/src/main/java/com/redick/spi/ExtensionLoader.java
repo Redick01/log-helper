@@ -17,6 +17,7 @@
 
 package com.redick.spi;
 
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,13 +73,23 @@ public class ExtensionLoader<T> {
      */
     private String cacheDefaultName;
 
+    /**
+     * 实例化 ExtensionLoader
+     *
+     * @param tClass Class
+     */
     public ExtensionLoader(final Class<T> tClass) {
         this.tClass = tClass;
         if (tClass != ExtensionFactory.class) {
             ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getExtensionClasses();
         }
     }
-    
+
+    /**
+     * 获取默认的实现对象
+     *
+     * @return T
+     */
     public T getDefaultJoin() {
         getExtensionClasses();
         if (StringUtils.isNotBlank(cacheDefaultName)) {
@@ -88,6 +98,12 @@ public class ExtensionLoader<T> {
         return null;
     }
 
+    /**
+     * 获取SPI对象
+     *
+     * @param cacheDefaultName SPI对象name
+     * @return SPI对象
+     */
     public T getJoin(String cacheDefaultName) {
         // 扩展名 文件中的key
         if (StringUtils.isBlank(cacheDefaultName)) {
@@ -116,6 +132,12 @@ public class ExtensionLoader<T> {
         return (T) value;
     }
 
+    /**
+     * create a new extension
+     *
+     * @param cacheDefaultName cache default name
+     * @return new extension
+     */
     private Object createExtension(String cacheDefaultName) {
         // 根据扩展名字获取扩展的Class，从Holder中获取 key-value缓存，然后根据名字从Map中获取扩展实现Class
         Class<?> aClass = getExtensionClasses().get(cacheDefaultName);
@@ -137,6 +159,13 @@ public class ExtensionLoader<T> {
         return o;
     }
 
+    /**
+     * 扩展加载器
+     *
+     * @param tClass Class
+     * @return 扩展加载器
+     * @param <T> T
+     */
     public static<T> ExtensionLoader<T> getExtensionLoader(final Class<T> tClass) {
         // 参数非空校验
         if (null == tClass) {
@@ -159,6 +188,11 @@ public class ExtensionLoader<T> {
         return (ExtensionLoader<T>) MAP.get(tClass);
     }
 
+    /**
+     * 扩展 Class
+     *
+     * @return Map spi文件中的 名称对应实现的全路径类名
+     */
     public Map<String, Class<?>> getExtensionClasses() {
         // 扩区SPI扩展实现的缓存，对应的就是扩展文件中的 key - value
         Map<String, Class<?>> classes = cachedClasses.getT();
@@ -176,6 +210,11 @@ public class ExtensionLoader<T> {
         return classes;
     }
 
+    /**
+     * load the extension
+     *
+     * @return the extension
+     */
     public Map<String, Class<?>> loadExtensionClass() {
         // 扩展接口tClass，必须包含SPI注解
         SPI annotation = tClass.getAnnotation(SPI.class);
@@ -186,12 +225,17 @@ public class ExtensionLoader<T> {
                 cacheDefaultName = v;
             }
         }
-        Map<String, Class<?>> classes = new HashMap<>(16);
+        Map<String, Class<?>> classes = Maps.newHashMap();
         // 从文件加载
         loadDirectory(classes);
         return classes;
     }
 
+    /**
+     * 从文件加载
+     *
+     * @param classes classes
+     */
     private void loadDirectory(final Map<String, Class<?>> classes) {
         // 文件名
         String fileName = DEFAULT_DIRECTORY + tClass.getName();
@@ -213,6 +257,12 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * load resources
+     *
+     * @param classes classes
+     * @param url url
+     */
     private void loadResources(Map<String, Class<?>> classes, URL url) {
         // 读取文件到Properties，遍历Properties，得到配置文件key（名字）和value（扩展实现的Class）
         try (InputStream inputStream = url.openStream()) {
@@ -237,6 +287,14 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * load a class
+     *
+     * @param classes classes
+     * @param name  name of the class
+     * @param classPath path to the class
+     * @throws ClassNotFoundException   ClassNotFoundException
+     */
     private void loadClass(Map<String, Class<?>> classes, String name, String classPath) throws ClassNotFoundException {
         // 反射创建扩展实现的Class
         Class<?> subClass = Class.forName(classPath);
@@ -247,8 +305,7 @@ public class ExtensionLoader<T> {
         // 扩展实现要有Join注解
         Join annotation = subClass.getAnnotation(Join.class);
         if (null == annotation) {
-            throw new IllegalArgumentException("load extension class error " + subClass + " without @Join" +
-                    "Annotation");
+            throw new IllegalArgumentException("load extension class error " + subClass + " without @Join Annotation");
         }
         // 缓存扩展实现Class
         Class<?> oldClass = classes.get(name);
@@ -259,6 +316,10 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * Holder
+     * @param <T>
+     */
     public static class Holder<T> {
 
         private volatile T t;

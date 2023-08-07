@@ -44,6 +44,13 @@ public class JedisPoolPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
+    /**
+     * 方法拦截
+     *
+     * @param methodInvocation 方法拦截
+     * @return result
+     * @throws Throwable Throwable
+     */
     public Object interceptorJedisPool(final MethodInvocation methodInvocation)
             throws Throwable {
         Object result = methodInvocation.proceed();

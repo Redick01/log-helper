@@ -64,7 +64,8 @@ public class MqConsumerProcessor {
      * @return {@link RocketMQLocalTransactionState}
      */
     @Trace
-    public static RocketMQLocalTransactionState processLocalTransaction(MqWrapperBean mqWrapperBean, MqConsumer mqConsumer) {
+    public static RocketMQLocalTransactionState processLocalTransaction(MqWrapperBean mqWrapperBean,
+                                                                        MqConsumer mqConsumer) {
         try {
             String traceId = mqWrapperBean.getTraceId();
             if (StringUtils.isBlank(traceId)) {

@@ -31,8 +31,7 @@ public class Mysql8ExceptionInterceptor implements ExceptionInterceptor {
     @Override
     public ExceptionInterceptor init(Properties properties, Log log) {
         String queryInterceptors = properties.getProperty("queryInterceptors");
-        if (queryInterceptors == null ||
-                !queryInterceptors.contains(Mysql8ExceptionInterceptor.class.getName())) {
+        if (queryInterceptors == null || !queryInterceptors.contains(Mysql8ExceptionInterceptor.class.getName())) {
             throw new IllegalStateException(
                     "TracingQueryInterceptor must be enabled to use TracingExceptionInterceptor.");
         }

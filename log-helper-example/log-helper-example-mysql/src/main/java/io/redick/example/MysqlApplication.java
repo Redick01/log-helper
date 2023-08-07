@@ -28,9 +28,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan(basePackages = {"io.redick.example.dao"})
 @LogHelperEnable
-public class ApplicationMysql {
+public class MysqlApplication {
 
+    /**
+     * start
+     * @param args arguments
+     */
     public static void main(String[] args) {
-        SpringApplication.run(ApplicationMysql.class, args);
+        SpringApplication.run(MysqlApplication.class, args);
     }
 }

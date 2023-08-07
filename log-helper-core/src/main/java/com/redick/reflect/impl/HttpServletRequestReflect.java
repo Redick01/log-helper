@@ -30,7 +30,7 @@ import java.util.Map;
 
 /**
  * @author Redick01
- *  2022/3/22 13:55
+ * 2022/3/22 13:55
  */
 @Slf4j
 @Join
@@ -48,7 +48,7 @@ public class HttpServletRequestReflect implements Reflect {
                 Enumeration<String> names = ((HttpServletRequest) obj).getParameterNames();
                 while (names.hasMoreElements()) {
                     String name = names.nextElement();
-                    String [] value = ((HttpServletRequest) obj).getParameterValues(name);
+                    String[] value = ((HttpServletRequest) obj).getParameterValues(name);
                     result.put(name, value);
                 }
             } catch (UnsupportedEncodingException e) {

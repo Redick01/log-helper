@@ -38,6 +38,9 @@ public class LogHelperAspectJ {
     @Resource
     private AroundLogHandler aroundLogHandler;
 
+    /**
+     * 切点
+     */
     @Pointcut("@annotation(com.redick.annotation.LogMarker)")
     public void pointcut() {
 

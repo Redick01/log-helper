@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author liu_penghui
- *  2018/10/16.
+ * 2018/10/16.
  */
 @SuppressWarnings("all")
 public class AroundLogProxyChainImpl implements AroundLogProxyChain {
@@ -129,7 +129,7 @@ public class AroundLogProxyChainImpl implements AroundLogProxyChain {
         if (!Objects.isNull(objects)) {
             List<Object> objectList = Arrays.stream(objects).collect(Collectors.toList());
             objectList.forEach(o -> {
-                if (!Objects.isNull(o)){
+                if (!Objects.isNull(o)) {
                     List<Object> list = map.getOrDefault(o.getClass().getName(), Lists.newArrayList());
                     list.add(o);
                     map.put(o.getClass().getName(), list);

@@ -38,7 +38,7 @@ public class TestController {
 
     private final JedisPool jedisPool;
 
-    private final static String FLAG = "sys_config:sys.account.registerUser";
+    private static final String FLAG = "sys_config:sys.account.registerUser";
 
     @GetMapping("/get")
     @LogMarker(businessDescription = "jedis-command-get")

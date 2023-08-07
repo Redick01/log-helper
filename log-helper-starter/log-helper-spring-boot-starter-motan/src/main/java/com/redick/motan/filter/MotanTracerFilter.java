@@ -41,7 +41,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Spi(scope = Scope.SINGLETON)
 @SpiMeta(name = "log_helper_filter")
-@Activation(key = { MotanConstants.NODE_TYPE_SERVICE, MotanConstants.NODE_TYPE_REFERER })
+@Activation(key = {MotanConstants.NODE_TYPE_SERVICE, MotanConstants.NODE_TYPE_REFERER})
 @Slf4j
 public class MotanTracerFilter extends AbstractInterceptor implements Filter {
 

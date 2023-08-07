@@ -24,7 +24,7 @@ import org.w3c.dom.Element;
 
 /**
  * @author Redick01
- *  2018/10/17.
+ * 2018/10/17.
  */
 @SuppressWarnings("all")
 public class LogMarkerInterceptorHandlerParser extends AbstractSingleBeanDefinitionParser {
@@ -32,7 +32,7 @@ public class LogMarkerInterceptorHandlerParser extends AbstractSingleBeanDefinit
     /**
      * handler引用
      */
-    private static final String HANDLER_REF="handler";
+    private static final String HANDLER_REF = "handler";
 
     @Override
     protected Class<?> getBeanClass(final Element element) {

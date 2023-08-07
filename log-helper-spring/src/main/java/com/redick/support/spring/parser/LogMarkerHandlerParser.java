@@ -23,7 +23,7 @@ import org.w3c.dom.Element;
 
 /**
  * @author Redick01
- *  2018/10/17.
+ * 2018/10/17.
  */
 @SuppressWarnings("all")
 public class LogMarkerHandlerParser extends AbstractSingleBeanDefinitionParser {

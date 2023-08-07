@@ -42,6 +42,11 @@ public class TestController {
     )
     private HelloApi helloApi;
 
+    /**
+     * test api
+     *
+     * @return result
+     */
     @GetMapping("/test")
     @LogMarker(businessDescription = "消费say接口", interfaceName = "com.redick.example.consumer#test()")
     public String test() {

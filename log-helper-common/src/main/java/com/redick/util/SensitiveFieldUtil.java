@@ -50,6 +50,14 @@ public class SensitiveFieldUtil {
         return obj;
     }
 
+    /**
+     * 字符串替换
+     *
+     * @param str string to replace
+     * @param start start index
+     * @param end end index
+     * @return string
+     */
     private static String strReplace(final String str, int start, int end) {
         char[] chars = str.toCharArray();
         for (int i = 0; i < chars.length; i++) {

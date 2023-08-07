@@ -17,7 +17,6 @@
 
 package org.slf4j;
 
-
 import com.alibaba.ttl.TransmittableThreadLocal;
 import org.slf4j.spi.MDCAdapter;
 
@@ -53,16 +52,31 @@ public class TtlMDCAdapter implements MDCAdapter {
 
     final ThreadLocal<Integer> lastOperation = new ThreadLocal<Integer>();
 
+    /**
+     * get the last operation
+     * @param op the operation
+     * @return the last operation
+     */
     private Integer getAndSetLastOperation(int op) {
         Integer lastOp = lastOperation.get();
         lastOperation.set(op);
         return lastOp;
     }
 
+    /**
+     * set the last operation
+     * @param lastOp lastOp
+     * @return result
+     */
     private boolean wasLastOpReadOrNull(Integer lastOp) {
         return lastOp == null || lastOp.intValue() == MAP_COPY_OPERATION;
     }
 
+    /**
+     * duplicateAndInsertNewMap
+     * @param oldMap old map
+     * @return map
+     */
     private Map<String, String> duplicateAndInsertNewMap(Map<String, String> oldMap) {
         Map<String, String> newMap = Collections.synchronizedMap(new HashMap<String, String>());
         if (oldMap != null) {
@@ -77,6 +91,13 @@ public class TtlMDCAdapter implements MDCAdapter {
         return newMap;
     }
 
+    /**
+     * put a new map
+     *
+     * @param key key
+     * @param val value
+     * @throws IllegalArgumentException Illegal
+     */
     @Override
     public void put(String key, String val) throws IllegalArgumentException {
         if (key == null) {
@@ -94,15 +115,17 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
+    /**
+     * remove
+     *
+     * @param key key to remove
+     */
     @Override
     public void remove(String key) {
-        if (key == null) {
+        Map<String, String> oldMap = copyOnInheritThreadLocal.get();
+        if (key == null || oldMap == null) {
             return;
         }
-        Map<String, String> oldMap = copyOnInheritThreadLocal.get();
-        if (oldMap == null)
-            return;
-
         Integer lastOp = getAndSetLastOperation(WRITE_OPERATION);
 
         if (wasLastOpReadOrNull(lastOp)) {
@@ -113,12 +136,20 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
+    /**
+     * clear
+     */
     @Override
     public void clear() {
         lastOperation.set(WRITE_OPERATION);
         copyOnInheritThreadLocal.remove();
     }
 
+    /**
+     * get value
+     * @param key key
+     * @return value
+     */
     @Override
     public String get(String key) {
         final Map<String, String> map = copyOnInheritThreadLocal.get();
@@ -129,11 +160,21 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
+    /**
+     * get property mapping.
+     *
+     * @return mapping
+     */
     public Map<String, String> getPropertyMap() {
         lastOperation.set(MAP_COPY_OPERATION);
         return copyOnInheritThreadLocal.get();
     }
 
+    /**
+     * get keys.
+     *
+     * @return keys
+     */
     public Set<String> getKeys() {
         Map<String, String> map = getPropertyMap();
 
@@ -144,6 +185,11 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
+    /**
+     * get copy of context
+     *
+     * @return map
+     */
     @Override
     public Map<String, String> getCopyOfContextMap() {
         Map<String, String> hashMap = copyOnInheritThreadLocal.get();
@@ -154,6 +200,12 @@ public class TtlMDCAdapter implements MDCAdapter {
         }
     }
 
+    /**
+     * set context map.
+     *
+     * @param contextMap must contain only keys and values of type String
+     *
+     */
     @Override
     public void setContextMap(Map<String, String> contextMap) {
         lastOperation.set(WRITE_OPERATION);

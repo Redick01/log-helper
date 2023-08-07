@@ -33,7 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 public class SpringWebMvcInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
         String traceId = request.getHeader(Tracer.TRACE_ID);
         String parentId = request.getHeader(Tracer.SPAN_ID);
         String spanId = request.getHeader(Tracer.PARENT_ID);
@@ -42,12 +43,14 @@ public class SpringWebMvcInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+                           ModelAndView modelAndView) throws Exception {
 
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+                                Exception ex) throws Exception {
         MDC.clear();
     }
 }

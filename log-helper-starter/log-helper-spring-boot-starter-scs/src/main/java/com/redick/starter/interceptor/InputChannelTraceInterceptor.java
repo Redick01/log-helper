@@ -48,7 +48,7 @@ public class InputChannelTraceInterceptor extends AbstractInterceptor implements
 
     @Override
     public void afterSendCompletion(@NotNull Message<?> message, @NotNull MessageChannel channel, boolean sent,
-            Exception ex ) {
+                                    Exception ex) {
         ChannelInterceptor.super.afterSendCompletion(message, channel, sent, ex);
         MDC.clear();
     }

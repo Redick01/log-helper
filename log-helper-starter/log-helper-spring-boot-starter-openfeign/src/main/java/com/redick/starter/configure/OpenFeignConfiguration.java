@@ -45,9 +45,10 @@ public class OpenFeignConfiguration {
     @Conditional(OnRetryNotEnabledCondition.class)
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public Client feignClient(LoadBalancerClient loadBalancerClient,
-            LoadBalancerClientFactory loadBalancerClientFactory) {
-        return new FeignBlockingLoadBalancerClient(new FeignTraceClientWrapper(new Client.Default(null, null))
-                , loadBalancerClient, loadBalancerClientFactory);
+                              LoadBalancerClientFactory loadBalancerClientFactory) {
+        return new FeignBlockingLoadBalancerClient(
+                new FeignTraceClientWrapper(new Client.Default(null, null)),
+                loadBalancerClient, loadBalancerClientFactory);
     }
 
     @Bean
@@ -57,8 +58,12 @@ public class OpenFeignConfiguration {
             matchIfMissing = true)
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public Client feignRetryClient(LoadBalancerClient loadBalancerClient,
-            LoadBalancedRetryFactory loadBalancedRetryFactory, LoadBalancerClientFactory loadBalancerClientFactory) {
-        return new RetryableFeignBlockingLoadBalancerClient(new FeignTraceClientWrapper(new Client.Default(null, null))
-                , loadBalancerClient, loadBalancedRetryFactory, loadBalancerClientFactory);
+                                   LoadBalancedRetryFactory loadBalancedRetryFactory,
+                                   LoadBalancerClientFactory loadBalancerClientFactory) {
+        return new RetryableFeignBlockingLoadBalancerClient(
+                new FeignTraceClientWrapper(new Client.Default(null, null)),
+                loadBalancerClient,
+                loadBalancedRetryFactory,
+                loadBalancerClientFactory);
     }
 }

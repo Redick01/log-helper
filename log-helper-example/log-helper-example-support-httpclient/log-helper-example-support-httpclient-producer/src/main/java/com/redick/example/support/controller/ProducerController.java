@@ -33,7 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProducerController {
 
     @PostMapping("/say")
-    @LogMarker(businessDescription = "say", interfaceName = "com.redick.example.support.controller.ProducerController#say()")
+    @LogMarker(businessDescription = "say",
+            interfaceName = "com.redick.example.support.controller.ProducerController#say()")
     public @ResponseBody
     ResponseDTO say(@RequestBody RequestDTO requestDTO) {
         return new ResponseDTO(0, "success", requestDTO.getContent());

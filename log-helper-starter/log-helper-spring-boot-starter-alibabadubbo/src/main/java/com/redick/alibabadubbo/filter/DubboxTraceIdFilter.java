@@ -22,13 +22,18 @@ import static com.redick.constant.TraceTagConstant.DUBBO_INVOKE_BEFORE;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.extension.Activate;
-import com.alibaba.dubbo.rpc.*;
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.Trace;
+import com.alibaba.dubbo.rpc.Filter;
+import com.alibaba.dubbo.rpc.Invocation;
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.RpcContext;
 
 /**
  * @author liupenghui
@@ -50,7 +55,8 @@ public class DubboxTraceIdFilter extends AbstractInterceptor implements Filter {
                 String parentId = RpcContext.getContext().getAttachment(Tracer.PARENT_ID);
                 Tracer.trace(traceId, spanId, parentId);
             } else {
-                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]", invoker.getInterface().getSimpleName(),
+                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]",
+                        invoker.getInterface().getSimpleName(),
                         invocation.getMethodName());
                 executeBefore(DUBBO_INVOKE_BEFORE);
                 // consumer set trace information to attachment
