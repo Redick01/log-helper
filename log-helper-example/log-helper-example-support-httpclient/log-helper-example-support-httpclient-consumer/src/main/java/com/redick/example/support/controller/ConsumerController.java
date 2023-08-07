@@ -68,52 +68,64 @@ public class ConsumerController {
     private RestTemplate restTemplate;
 
     @PostMapping("/httpclient")
-    @LogMarker(businessDescription = "/httpclient-test", interfaceName = "com.redick.example.support.controller.ConsumerController#httpclient()")
+    @LogMarker(businessDescription = "/httpclient-test",
+            interfaceName = "com.redick.example.support.controller.ConsumerController#httpclient()")
     public @ResponseBody
     ResponseDTO httpclient(@RequestBody RequestDTO requestDTO) {
-        return JSONObject.parseObject(HttpClientUtil.doPost(url, JSONObject.toJSONString(requestDTO)), ResponseDTO.class);
+        return JSONObject.parseObject(HttpClientUtil.doPost(url, JSONObject.toJSONString(requestDTO)),
+                ResponseDTO.class);
     }
 
     @PostMapping("/httpclient5")
-    @LogMarker(businessDescription = "/httpclient5-test", interfaceName = "com.redick.example.support.controller.ConsumerController#httpclient5()")
+    @LogMarker(businessDescription = "/httpclient5-test",
+            interfaceName = "com.redick.example.support.controller.ConsumerController#httpclient5()")
     public @ResponseBody
     ResponseDTO httpclient5(@RequestBody RequestDTO requestDTO) {
-        return JSONObject.parseObject(HttpClient5Util.doPost(url, JSONObject.toJSONString(requestDTO)), ResponseDTO.class);
+        return JSONObject.parseObject(HttpClient5Util.doPost(url, JSONObject.toJSONString(requestDTO)),
+                ResponseDTO.class);
     }
 
     @PostMapping("/okhttp")
-    @LogMarker(businessDescription = "/okhttp-test", interfaceName = "com.redick.example.support.controller.ConsumerController#okhttp()")
+    @LogMarker(businessDescription = "/okhttp-test",
+            interfaceName = "com.redick.example.support.controller.ConsumerController#okhttp()")
     public @ResponseBody
     ResponseDTO okhttp(@RequestBody RequestDTO requestDTO) throws IOException {
         return JSONObject.parseObject(OkHttpUtil.doPost(url, JSONObject.toJSONString(requestDTO)), ResponseDTO.class);
     }
 
     @PostMapping("/okhttp3")
-    @LogMarker(businessDescription = "/okhttp3-test", interfaceName = "com.redick.example.support.controller.ConsumerController#okhttp3()")
+    @LogMarker(businessDescription = "/okhttp3-test",
+            interfaceName = "com.redick.example.support.controller.ConsumerController#okhttp3()")
     public @ResponseBody
     ResponseDTO okhttp3(@RequestBody RequestDTO requestDTO) throws IOException {
         return JSONObject.parseObject(OkHttp3Util.doPost(url, JSONObject.toJSONString(requestDTO)), ResponseDTO.class);
     }
 
     @PostMapping("/hutool-httpclient")
-    @LogMarker(businessDescription = "/hutool-httpclient-test", interfaceName = "com.redick.example.support.controller.ConsumerController#hutoolHttpclient()")
+    @LogMarker(businessDescription = "/hutool-httpclient-test",
+            interfaceName = "com.redick.example.support.controller.ConsumerController#hutoolHttpclient()")
     public @ResponseBody
     ResponseDTO hutoolHttpclient(@RequestBody RequestDTO requestDTO) {
         TraceIdHutoolHttpClientInterceptor interceptor = new TraceIdHutoolHttpClientInterceptor();
-        HttpRequest httpRequest = new HttpRequest(url).method(Method.POST).body(JSONObject.toJSONString(requestDTO)).timeout(2000);
+        HttpRequest httpRequest = new HttpRequest(url)
+                .method(Method.POST)
+                .body(JSONObject.toJSONString(requestDTO))
+                .timeout(2000);
         httpRequest.addInterceptor(interceptor);
         return JSONObject.parseObject(httpRequest.execute().body(), ResponseDTO.class);
     }
 
     @PostMapping("/forest-httpclient")
-    @LogMarker(businessDescription = "/forest-httpclient-test", interfaceName = "com.redick.example.support.controller.ConsumerController#forestHttpclient()")
+    @LogMarker(businessDescription = "/forest-httpclient-test",
+            interfaceName = "com.redick.example.support.controller.ConsumerController#forestHttpclient()")
     public @ResponseBody
     ResponseDTO forestHttpclient(@RequestBody RequestDTO requestDTO) {
         return JSONObject.parseObject(forestClientService.say(requestDTO), ResponseDTO.class);
     }
 
     @PostMapping("/restTemplateTest")
-    @LogMarker(businessDescription = "/restTemplate-test", interfaceName = "com.redick.example.support.controller.ConsumerController#restTemplateTest()")
+    @LogMarker(businessDescription = "/restTemplate-test",
+            interfaceName = "com.redick.example.support.controller.ConsumerController#restTemplateTest()")
     public @ResponseBody
     ResponseDTO restTemplateTest(@RequestBody RequestDTO requestDTO) {
         HttpHeaders httpHeaders = new HttpHeaders();

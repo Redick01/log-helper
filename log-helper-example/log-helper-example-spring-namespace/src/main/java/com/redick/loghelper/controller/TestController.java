@@ -46,6 +46,12 @@ public class TestController {
     @Resource(name = "threadPoolExecutor")
     private ThreadPoolExecutor threadPoolExecutor;
 
+    /**
+     * test api
+     *
+     * @param content request content
+     * @return response
+     */
     @LogMarker(businessDescription = "say方法", interfaceName = "com.redick.loghelper.controller.TestController#say()")
     @GetMapping("/test")
     public String say(String content) {

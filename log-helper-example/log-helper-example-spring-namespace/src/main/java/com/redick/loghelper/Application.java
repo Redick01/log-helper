@@ -31,6 +31,10 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource(value = {"classpath:spring-config.xml"})
 public class Application {
 
+    /**
+     * start
+     * @param args args
+     */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

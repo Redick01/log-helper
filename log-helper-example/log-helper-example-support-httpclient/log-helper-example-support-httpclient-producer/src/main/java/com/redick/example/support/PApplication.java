@@ -23,13 +23,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author Redick01
- *  2022/3/31 13:24
+ * 2022/3/31 13:24
  */
 @SpringBootApplication
 @LogHelperEnable
 public class PApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PApplication.class,args);
+        SpringApplication.run(PApplication.class, args);
     }
 }

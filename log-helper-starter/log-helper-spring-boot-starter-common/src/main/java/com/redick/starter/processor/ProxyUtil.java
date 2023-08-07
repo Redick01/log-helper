@@ -26,6 +26,12 @@ import org.springframework.aop.framework.ProxyFactory;
  */
 public class ProxyUtil {
 
+    /**
+     * proxy
+     * @param object object
+     * @param methodInterceptor 拦截器
+     * @return 代理
+     */
     public static Object getProxy(final Object object, final MethodInterceptor methodInterceptor) {
         ProxyFactory proxyFactory = new ProxyFactory(object);
         proxyFactory.setProxyTargetClass(true);

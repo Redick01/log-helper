@@ -45,6 +45,12 @@ public class SpringRedisConnectionFactoryPostProcessor implements BeanPostProces
         return bean;
     }
 
+    /**
+     * 方法拦截
+     * @param methodInvocation 方法拦截
+     * @return result
+     * @throws Throwable Throwable
+     */
     public Object interceptorRedisFactory(final MethodInvocation methodInvocation)
             throws Throwable {
         Object result = methodInvocation.proceed();

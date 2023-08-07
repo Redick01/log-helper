@@ -18,7 +18,11 @@
 package com.redick.example.okhttp;
 
 import com.redick.support.okhttp.TraceIdOkhttpInterceptor;
-import com.squareup.okhttp.*;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.RequestBody;
 
 import java.io.IOException;
 

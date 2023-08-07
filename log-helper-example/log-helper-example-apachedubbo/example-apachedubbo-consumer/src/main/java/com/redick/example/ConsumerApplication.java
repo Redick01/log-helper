@@ -35,6 +35,10 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:/spring/dubbo-consumer.properties")
 public class ConsumerApplication {
 
+    /**
+     * start
+     * @param args args
+     */
     public static void main(String[] args) {
         SpringApplication.run(ConsumerApplication.class, args);
     }

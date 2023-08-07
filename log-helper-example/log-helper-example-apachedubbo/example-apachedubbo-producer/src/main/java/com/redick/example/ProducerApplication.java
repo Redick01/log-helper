@@ -20,7 +20,6 @@ package com.redick.example;
 import com.redick.starter.annotation.LogHelperEnable;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
@@ -41,11 +40,21 @@ import java.util.concurrent.CountDownLatch;
 @PropertySource("classpath:/spring/dubbo-provider.properties")
 public class ProducerApplication {
 
+    /**
+     * start
+     * @param args args
+     * @throws InterruptedException exception
+     */
     public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(ProducerApplication.class, args);
         new CountDownLatch(1).await();
     }
 
+    /**
+     * test api
+     *
+     * @return result
+     */
     @GetMapping("/test")
     public String test() {
         return "test";

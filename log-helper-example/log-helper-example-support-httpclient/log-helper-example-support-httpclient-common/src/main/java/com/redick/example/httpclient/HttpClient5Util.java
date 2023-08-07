@@ -63,7 +63,8 @@ public class HttpClient5Util {
         // 为HttpClient添加拦截器TraceIdHttpClientInterceptor
         // 创建httpGet远程连接实例
         HttpGet httpGet = new HttpGet(url);
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
                 .setConnectionRequestTimeout(Timeout.of(CONNECTION_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS))
                 .setResponseTimeout(Timeout.of(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS))
                 .build();
@@ -85,7 +86,8 @@ public class HttpClient5Util {
         String result = "";
         // 为HttpClient添加拦截器TraceIdHttpClientInterceptor
         HttpPost httpPost = new HttpPost(url);
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(Timeout.of(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS))
                 .setConnectionRequestTimeout(Timeout.of(CONNECTION_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS))
                 .setResponseTimeout(Timeout.of(RESPONSE_TIMEOUT, TimeUnit.MILLISECONDS))
                 .build();

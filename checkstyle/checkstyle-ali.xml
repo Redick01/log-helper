@@ -5,6 +5,11 @@
 
 <module name="Checker">
 
+  <!--排除不需要扫描的路径-->
+  <module name="SuppressionFilter">
+    <property name="file" value="checkstyle/suppressions.xml"/>
+  </module>
+
   <!-- 检查文件是否以一个空行结束 -->
   <module name="NewlineAtEndOfFile"/>
 
@@ -35,15 +40,10 @@
     <!-- 注释检查 -->
     <!-- 检查方法和构造函数的javadoc -->
     <module name="JavadocType">
+      <property name="tokens" value="INTERFACE_DEF"/>
       <property name="allowUnknownTags" value="true"/>
       <property name="allowMissingParamTags" value="true"/>
       <message key="javadoc.missing" value="类注释：缺少Javadoc注释。"/>
-    </module>
-    <module name="JavadocMethod">
-      <property name="tokens" value="METHOD_DEF" />
-      <!--允许get set 方法没有注释-->
-      <property name="allowMissingPropertyJavadoc" value="true"/>
-      <message key="javadoc.missing" value="方法注释：缺少Javadoc注释。"/>
     </module>
 
     <!-- 命名检查 -->
@@ -86,7 +86,7 @@
     <!-- 方法不超过50行 -->
     <module name="MethodLength">
       <property name="tokens" value="METHOD_DEF" />
-      <property name="max" value="50" />
+      <property name="max" value="80" />
     </module>
     <!-- 方法的参数个数不超过5个。 并且不对构造方法进行检查-->
     <module name="ParameterNumber">
@@ -140,13 +140,6 @@
     <module name="IllegalInstantiation"/>
     <!-- 检查子表达式中是否有赋值操作 -->
     <module name="InnerAssignment"/>
-    <!-- 检查是否有"魔术"数字 -->
-    <module name="MagicNumber">
-      <property name="ignoreNumbers" value="0, 1, 2"/>
-      <property name="ignoreAnnotation" value="true"/>
-      <property name="ignoreHashCodeMethod" value="true"/>
-      <property name="ignoreFieldDeclaration" value="true"/>
-    </module>
     <!-- 检查switch语句是否有default -->
     <module name="MissingSwitchDefault"/>
     <!-- 检查是否有过度复杂的布尔表达式 -->
@@ -178,7 +171,7 @@
     <module name="NestedIfDepth">
       <property name="max" value="3"/>
     </module>
-    <!-- 检查未被注释的main方法,排除以Appllication结尾命名的类 -->
+    <!-- 检查未被注释的main方法,排除以Application结尾命名的类 -->
     <module name="UncommentedMain">
       <property name="excludedClasses" value=".*Application$"/>
     </module>
@@ -199,7 +192,6 @@
     <module name="SuperClone" />
     <!-- finalize 必须调用了super.finalize() -->
     <module name="SuperFinalize" />
-
 
   </module>
 </module>

@@ -29,11 +29,21 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LogHelperAutoConfiguration {
 
+    /**
+     * banner
+     *
+     * @return banner bean
+     */
     @Bean
     public LogHelperBanner logHelperBanner() {
         return new LogHelperBanner();
     }
 
+    /**
+     * log handler
+     *
+     * @return log handler bean
+     */
     @Bean
     public AroundLogHandler aroundLogHandler() {
         return new AroundLogHandler();

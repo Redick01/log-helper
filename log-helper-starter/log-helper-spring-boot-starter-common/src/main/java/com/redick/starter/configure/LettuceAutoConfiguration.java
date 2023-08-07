@@ -33,6 +33,11 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnMissingClass(value = {"org.springframework.data.redis.connection.RedisConnectionFactory"})
 public class LettuceAutoConfiguration {
 
+    /**
+     * lettuce configuration
+     *
+     * @return lettuce configuration
+     */
     @Bean
     public LettuceCorePostProcessor lettuceCorePostProcessor() {
         return new LettuceCorePostProcessor();

@@ -37,7 +37,7 @@ public class TestController {
 
     private final RedisTemplate<Object, Object> redisTemplate;
 
-    private final static String FLAG = "sys_config:sys.account.registerUser";
+    private static final String FLAG = "sys_config:sys.account.registerUser";
 
     @GetMapping("/get")
     @LogMarker(businessDescription = "redis-command-get")

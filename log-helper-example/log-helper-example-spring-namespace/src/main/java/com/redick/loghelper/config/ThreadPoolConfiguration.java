@@ -33,18 +33,43 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class ThreadPoolConfiguration {
 
+    private static final int CORE = 5;
+
+    private static final int MAX = 10;
+
+    private static final int KEEP_ALIVE = 30;
+
+    private static final int SIZE = 1000;
+
+    /**
+     * 线程池bean
+     *
+     * @return 线程池实例
+     */
     @Bean(name = "ttlThreadPoolExecutor")
     public TtlThreadPoolExecutor ttlThreadPoolExecutor() {
-        return new TtlThreadPoolExecutor(5, 10, 30, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1000));
+        return new TtlThreadPoolExecutor(CORE, MAX, KEEP_ALIVE, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(SIZE));
     }
 
+    /**
+     * 线程池bean
+     *
+     * @return 线程池实例
+     */
     @Bean(name = "ttlThreadPoolTaskExecutor")
     public TtlThreadPoolTaskExecutor ttlThreadPoolTaskExecutor() {
         return new TtlThreadPoolTaskExecutor();
     }
 
+    /**
+     * 线程池bean
+     *
+     * @return 线程池实例
+     */
     @Bean(name = "threadPoolExecutor")
     public ThreadPoolExecutor threadPoolExecutor() {
-        return new ThreadPoolExecutor(5, 10, 30, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1000));
+        return new ThreadPoolExecutor(CORE, MAX, KEEP_ALIVE, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(SIZE));
     }
 }
