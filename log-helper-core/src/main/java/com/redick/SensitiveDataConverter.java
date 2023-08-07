@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 
 /**
  * 脱敏信息处理
+ *
  * @author liu_penghui
  */
 @SuppressWarnings("all")
@@ -45,6 +46,8 @@ public class SensitiveDataConverter extends MessageConverter {
      */
     private static final Pattern PATTERN = Pattern.compile("[0-9a-zA-Z]");
 
+    private static final int INDEX = -1;
+
     @Override
     public String convert(ILoggingEvent event) {
         // 获取原始日志
@@ -55,21 +58,22 @@ public class SensitiveDataConverter extends MessageConverter {
 
     /**
      * 处理日志字符串，返回脱敏后的字符串
+     *
      * @param oriLogMsg 原始字符串
      * @return 脱敏后的字符串
      */
     public static String invokeMsg(final String oriLogMsg) {
         String tempMsg = oriLogMsg;
-        if(CONVERTER_CAN_RUN){
+        if (CONVERTER_CAN_RUN) {
             // 处理字符串
             String[] keysArray = SENSITIVE_DATA_KEYS.split(",");
-            for(String key: keysArray){
-                int index= -1;
-                do{
-                    index = tempMsg.indexOf(key, index+1);
-                    if(index != -1){
+            for (String key : keysArray) {
+                int index = INDEX;
+                do {
+                    index = tempMsg.indexOf(key, index + 1);
+                    if (index != INDEX) {
                         // 判断key是否为单词字符
-                        if(isWordChar(tempMsg, key, index)){
+                        if (isWordChar(tempMsg, key, index)) {
                             continue;
                         }
                         // 寻找值的开始位置
@@ -79,10 +83,10 @@ public class SensitiveDataConverter extends MessageConverter {
                         // 对获取的值进行脱敏
                         String subStr = tempMsg.substring(valueStart, valueEnd);
                         subStr = sensitiveConvert(subStr, key);
-                        tempMsg = tempMsg.substring(0,valueStart) + subStr + tempMsg.substring(valueEnd);
+                        tempMsg = tempMsg.substring(0, valueStart) + subStr + tempMsg.substring(valueEnd);
                     }
                 }
-                while(index != -1);
+                while (index != INDEX);
             }
         }
         return tempMsg;
@@ -90,18 +94,19 @@ public class SensitiveDataConverter extends MessageConverter {
 
     /**
      * 判断从字符串msg获取的key值是否为单词 ， index为key在msg中的索引值
-     * @param msg
-     * @param key
-     * @param index
-     * @return
+     *
+     * @param msg msg
+     * @param key key
+     * @param index index
+     * @return result
      */
-    private static boolean isWordChar(String msg, String key, int index){
+    private static boolean isWordChar(String msg, String key, int index) {
         // 必须确定key是一个单词
         // 判断key前面一个字符
-        if(index != 0){
-            char preCh = msg.charAt(index-1);
+        if (index != 0) {
+            char preCh = msg.charAt(index - 1);
             Matcher match = PATTERN.matcher(preCh + "");
-            if(match.matches()){
+            if (match.matches()) {
                 return true;
             }
         }
@@ -113,92 +118,98 @@ public class SensitiveDataConverter extends MessageConverter {
 
     /**
      * 获取value值的开始位置
-     * @param msg 要查找的字符串
+     *
+     * @param msg        要查找的字符串
      * @param valueStart 查找的开始位置
      * @return value起始位置
      */
-    private static int getValueStartIndex(String msg, int valueStart ){
+    private static int getValueStartIndex(String msg, int valueStart) {
         // 寻找值的开始位置.................................
         // key与 value的分隔符
-        do{
+        do {
             char ch = msg.charAt(valueStart);
-            if(ch == ':' || ch == '='){
-                valueStart ++;
+            if (ch == ':' || ch == '=') {
+                valueStart++;
                 ch = msg.charAt(valueStart);
-                if(ch == '"'){
-                    valueStart ++;
+                if (ch == '"') {
+                    valueStart++;
                 }
                 // 找到值的开始位置
                 break;
-            }else{
-                valueStart ++;
+            } else {
+                valueStart++;
             }
-        }while(true);
+        } while (true);
         return valueStart;
     }
 
     /**
-     * 获取value值的结束位置
-     * @return value值的结束位置
+     * get value end index
+     *
+     * @param msg msg
+     * @param valueEnd value end index
+     * @return result
      */
-    private static int getValueEndIndex(String msg,int valueEnd) {
-        do{
-            if(valueEnd == msg.length()){
+    private static int getValueEndIndex(String msg, int valueEnd) {
+        do {
+            if (valueEnd == msg.length()) {
                 break;
             }
             char ch = msg.charAt(valueEnd);
             // 引号时，判断下一个值是结束，分号还是逗号决定是否为值的结束
-            if(ch == '"'){
-                if(valueEnd+1 == msg.length()){
+            if (ch == '"') {
+                if (valueEnd + 1 == msg.length()) {
                     break;
                 }
-                char nextCh = msg.charAt(valueEnd+1);
-                if(nextCh ==';' || nextCh == ','){
+                char nextCh = msg.charAt(valueEnd + 1);
+                if (nextCh == ';' || nextCh == ',') {
                     // 去掉前面的 \  处理这种形式的数据
-                    while(valueEnd>0 ){
-                        char preCh = msg.charAt(valueEnd-1);
-                        if(preCh != '\\'){
+                    while (valueEnd > 0) {
+                        char preCh = msg.charAt(valueEnd - 1);
+                        if (preCh != '\\') {
                             break;
                         }
                         valueEnd--;
                     }
                     break;
-                }else{
-                    valueEnd ++;
+                } else {
+                    valueEnd++;
                 }
-            }else if (ch ==';' || ch == ',' || ch == '}'){
+            } else if (ch == ';' || ch == ',' || ch == '}') {
                 break;
-            }else{
-                valueEnd ++;
+            } else {
+                valueEnd++;
             }
 
-        }while(true);
+        } while (true);
         return valueEnd;
     }
 
     /**
      * 对不同的敏感字段脱敏处理
+     *
      * @param submsg 待脱敏字符串
-     * @param key 字段名
+     * @param key    字段名
      * @return 脱敏后数据
      */
-    public static String sensitiveConvert(String submsg, String key){
+    public static String sensitiveConvert(String submsg, String key) {
+        String sensitiveStr = "";
         // idCard：身份证号, realName：姓名, bankCard：银行卡号, mobile：手机号, mac/macKey：密钥
         if (SensitiveType.ID_CARD.equals(key)) {
-            return SensitiveInfoConvertUtil.idCardNum(submsg);
+            sensitiveStr = SensitiveInfoConvertUtil.idCardNum(submsg);
         }
         if (SensitiveType.REAL_NAME.equals(key)) {
-            return SensitiveInfoConvertUtil.chineseName(submsg);
+            sensitiveStr = SensitiveInfoConvertUtil.chineseName(submsg);
         }
         if (SensitiveType.BANK_CARD.equals(key)) {
-            return SensitiveInfoConvertUtil.bankCard(submsg);
+            sensitiveStr = SensitiveInfoConvertUtil.bankCard(submsg);
         }
         if (SensitiveType.MOBILE.equals(key)) {
-            return SensitiveInfoConvertUtil.mobilePhone(submsg);
+            sensitiveStr = SensitiveInfoConvertUtil.mobilePhone(submsg);
         }
         if (SensitiveType.MAC.equals(key) || SensitiveType.MAC_KEY.equals(key)) {
-            return SensitiveInfoConvertUtil.macKey(submsg);
+            sensitiveStr = SensitiveInfoConvertUtil.macKey(submsg);
         }
-        return "";
+        return sensitiveStr;
     }
 }

@@ -43,8 +43,8 @@ public class NettyRequestExecDurationInboundHandler extends ChannelInboundHandle
             long startTime = Long.parseLong(start);
             long duration = System.currentTimeMillis() - startTime;
             log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, NETTY_INVOKE_OVER)
-                            .and(append(LogUtil.kLOG_KEY_DURATION, duration))
-                    , NETTY_INVOKE_OVER);
+                            .and(append(LogUtil.kLOG_KEY_DURATION, duration)),
+                    NETTY_INVOKE_OVER);
         }
         MDC.clear();
         ctx.flush();

@@ -18,6 +18,7 @@
 package com.redick.executor;
 
 import java.util.Map;
+
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.MDC;
 import org.springframework.core.task.TaskDecorator;
@@ -33,7 +34,7 @@ public class ContextCopyingDecorator implements TaskDecorator {
     @Override
     public Runnable decorate(@NotNull Runnable runnable) {
         RequestAttributes context = RequestContextHolder.currentRequestAttributes();
-        Map<String,String> previous = MDC.getCopyOfContextMap();
+        Map<String, String> previous = MDC.getCopyOfContextMap();
         return () -> {
             try {
                 RequestContextHolder.setRequestAttributes(context);

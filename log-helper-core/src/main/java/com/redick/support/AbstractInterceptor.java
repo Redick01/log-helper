@@ -28,36 +28,60 @@ import org.slf4j.MDC;
 
 /**
  * @author Redick01
- *  2022/3/24 21:01
+ * 2022/3/24 21:01
  */
 @Slf4j
 public abstract class AbstractInterceptor {
 
+    /**
+     * get trace id.
+     *
+     * @return trace id
+     */
     public String traceId() {
         return MDC.get(Tracer.TRACE_ID);
     }
 
+    /**
+     * get span id.
+     *
+     * @return span id
+     */
     public String spanId() {
         return MDC.get(Tracer.SPAN_ID);
     }
 
+    /**
+     * get parent id.
+     *
+     * @return parent id
+     */
     public String parentId() {
         return MDC.get(Tracer.PARENT_ID);
     }
 
-    protected void executeBefore(final String tranceTag) {
+    /**
+     * before
+     *
+     * @param traceTag 标签
+     */
+    protected void executeBefore(final String traceTag) {
         MDC.put(START_TIME, String.valueOf(System.currentTimeMillis()));
-        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, tranceTag), tranceTag);
+        log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, traceTag), traceTag);
     }
 
-    protected void executeAfter(final String tranceTag) {
+    /**
+     * after
+     *
+     * @param traceTag 标签
+     */
+    protected void executeAfter(final String traceTag) {
         String start = MDC.get(START_TIME);
         if (StringUtils.isNotBlank(start)) {
             long startTime = Long.parseLong(start);
             long duration = System.currentTimeMillis() - startTime;
-            log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, tranceTag)
-                            .and(append(LogUtil.kLOG_KEY_DURATION, duration))
-                    , tranceTag);
+            log.info(LogUtil.customizeMarker(LogUtil.kLOG_KEY_TRACE_TAG, traceTag)
+                            .and(append(LogUtil.kLOG_KEY_DURATION, duration)), traceTag);
         }
     }
 }

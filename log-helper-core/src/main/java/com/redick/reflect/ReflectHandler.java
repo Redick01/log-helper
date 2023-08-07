@@ -30,39 +30,55 @@ import java.util.Set;
 
 /**
  * @author Redick01
- *  2022/3/22 19:30
+ * 2022/3/22 19:30
  */
 @Slf4j
-public class ReflectHandler {
+public final class ReflectHandler {
 
-    private final Set<String> SPI_NAME = Sets.newHashSet();
+    private final Set<String> spiName = Sets.newHashSet();
 
 
     private ReflectHandler() {
-        SPI_NAME.add("java.util.Map");
-        SPI_NAME.add("java.util.List");
-        SPI_NAME.add("java.util.Set");
-        SPI_NAME.add("javax.servlet.http.HttpServletRequest");
+        spiName.add("java.util.Map");
+        spiName.add("java.util.List");
+        spiName.add("java.util.Set");
+        spiName.add("javax.servlet.http.HttpServletRequest");
     }
 
+    /**
+     * 请求参数解析
+     *
+     * @param chain chain
+     * @return 请求参数
+     */
     public Object getRequestParameter(final AroundLogProxyChain chain) {
         List<Object> result = Lists.newArrayList();
         chain.parameter().forEach((k, v) -> v.forEach(o -> {
             try {
-                result.add(ExtensionLoader.getExtensionLoader(Reflect.class).getJoin(SPI_NAME.contains(k) ? k : "default").reflect(o));
+                result.add(ExtensionLoader
+                        .getExtensionLoader(Reflect.class)
+                        .getJoin(spiName.contains(k) ? k : "default").reflect(o));
             } catch (UnsupportedEncodingException e) {
-                log.error(LogUtil.exceptionMarker(),"UnsupportedEncodingException", e);
+                log.error(LogUtil.exceptionMarker(), "UnsupportedEncodingException", e);
             }
         }));
         return result;
     }
 
+    /**
+     * 响应参数解析
+     *
+     * @param o object
+     * @return 响应参数
+     */
     public Object getResponseParameter(final Object o) {
         Object result = null;
         try {
-            result = ExtensionLoader.getExtensionLoader(Reflect.class).getJoin(SPI_NAME.contains(o.getClass().getName()) ? o.getClass().getName() : "default").reflect(o);
+            result = ExtensionLoader.getExtensionLoader(Reflect.class)
+                    .getJoin(spiName.contains(o.getClass().getName()) ? o.getClass().getName() : "default")
+                    .reflect(o);
         } catch (UnsupportedEncodingException e) {
-            log.error(LogUtil.exceptionMarker(),"UnsupportedEncodingException", e);
+            log.error(LogUtil.exceptionMarker(), "UnsupportedEncodingException", e);
         }
         return result;
     }
@@ -71,6 +87,9 @@ public class ReflectHandler {
         return ReflectHandlerHolder.INSTANCE;
     }
 
+    /**
+     * reflect handler holder
+     */
     private static class ReflectHandlerHolder {
 
         private static final ReflectHandler INSTANCE = new ReflectHandler();

@@ -39,7 +39,7 @@ public final class Tracer {
 
     public static final String SKYWALKING_NO_ID = "[Ignored Trace]";
 
-    public static TransmittableThreadLocal<Tracer> traceThreadLocal = new TransmittableThreadLocal<>();
+    private static TransmittableThreadLocal<Tracer> traceThreadLocal = new TransmittableThreadLocal<>();
 
     private String traceId;
 
@@ -54,6 +54,13 @@ public final class Tracer {
         traceThreadLocal.set(this);
     }
 
+    /**
+     * trace root
+     *
+     * @param traceId the trace id
+     * @param spanId the span id
+     * @param parentId the parent id
+     */
     public static void trace(String traceId, String spanId, String parentId) {
         Tracer tracer = Tracer.traceThreadLocal.get();
         if (null == tracer) {
@@ -68,6 +75,9 @@ public final class Tracer {
         }
     }
 
+    /**
+     * build span
+     */
     @Trace
     public void buildSpan() {
         if (null == traceId) {
@@ -85,6 +95,9 @@ public final class Tracer {
         MDC.put(PARENT_ID, parentId + "");
     }
 
+    /**
+     * trace builder
+     */
     public static class TracerBuilder {
 
         private String traceId;
@@ -93,21 +106,44 @@ public final class Tracer {
 
         private Integer parentId;
 
+        /**
+         * build trace id
+         *
+         * @param traceId trace id
+         * @return trace id
+         */
         public TracerBuilder traceId(String traceId) {
             this.traceId = traceId;
             return this;
         }
 
+        /**
+         * build span id
+         *
+         * @param spanId span id
+         * @return span id
+         */
         public TracerBuilder spanId(Integer spanId) {
             this.spanId = spanId;
             return this;
         }
 
+        /**
+         * build parent id
+         *
+         * @param parentId parent id
+         * @return parent id
+         */
         public TracerBuilder parentId(Integer parentId) {
             this.parentId = parentId;
             return this;
         }
 
+        /**
+         * build
+         *
+         * @return Tracer
+         */
         public Tracer build() {
             return new Tracer(this);
         }

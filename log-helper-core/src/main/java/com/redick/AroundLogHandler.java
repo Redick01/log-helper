@@ -37,8 +37,10 @@ public class AroundLogHandler extends AbstractInterceptor {
 
     /**
      * 环绕处理
+     *
      * @param chain 代理对象
      * @return 执行结果
+     * @throws Throwable throwable
      */
     public Object around(final AroundLogProxyChain chain) throws Throwable {
         Logger logger = getRealLogger(chain);
@@ -51,13 +53,19 @@ public class AroundLogHandler extends AbstractInterceptor {
         try {
             o = chain.getProceed();
         } finally {
-            logger.info(LogUtil.processSuccessDoneMarker(o != null ? ReflectHandler.getInstance().getResponseParameter(o) : null,
+            logger.info(LogUtil.processSuccessDoneMarker(o != null
+                            ? ReflectHandler.getInstance().getResponseParameter(o) : null,
                     System.currentTimeMillis() - start), LogUtil.kTYPE_DONE);
             MDC.clear();
         }
         return o;
     }
 
+    /**
+     * 处理LogMaker注解中的参数
+     *
+     * @param chain chain
+     */
     private void mdcLogMarkerParam(AroundLogProxyChain chain) {
         Method method = chain.getMethod();
         if (null != method.getAnnotation(LogMarker.class)) {
@@ -72,6 +80,7 @@ public class AroundLogHandler extends AbstractInterceptor {
 
     /**
      * 获取实际业务逻辑实现类的logger对象
+     *
      * @param aroundLogProxyChain 切点
      * @return 返回能够真正打印日志位置的包名Logger
      */

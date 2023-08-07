@@ -27,6 +27,10 @@ import org.apache.commons.lang3.StringUtils;
 @SuppressWarnings("all")
 public class SensitiveInfoConvertUtil {
 
+    private static final int START = 6;
+
+    private static final int END = 4;
+
     /**
      * 中文名脱敏
      * @param fullName real name
@@ -62,7 +66,8 @@ public class SensitiveInfoConvertUtil {
         if (StringUtils.isBlank(num)) {
             return "";
         }
-        return num.replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2");    }
+        return num.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+    }
     /**
      * 前六位，后四位，其他用星号隐藏每位1个星号
      *
@@ -73,7 +78,12 @@ public class SensitiveInfoConvertUtil {
         if (StringUtils.isBlank(cardNum)) {
             return "";
         }
-        return StringUtils.left(cardNum, 6).concat(StringUtils.removeStart(StringUtils.leftPad(StringUtils.right(cardNum, 4), StringUtils.length(cardNum), "*"), "******"));
+        return StringUtils.left(cardNum, START)
+                .concat(StringUtils
+                        .removeStart(StringUtils
+                                .leftPad(StringUtils
+                                        .right(cardNum, END),
+                                        StringUtils.length(cardNum), "*"), "******"));
     }
 
     /**

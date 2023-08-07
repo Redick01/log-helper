@@ -34,5 +34,5 @@ public interface Reflect {
      * @return format parameter
      * @throws UnsupportedEncodingException see {@link UnsupportedEncodingException}
      */
-    Object reflect(final Object obj) throws UnsupportedEncodingException;
+    Object reflect(Object obj) throws UnsupportedEncodingException;
 }
