@@ -36,5 +36,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--jboss-->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>3.0.12.Final</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 </project>
