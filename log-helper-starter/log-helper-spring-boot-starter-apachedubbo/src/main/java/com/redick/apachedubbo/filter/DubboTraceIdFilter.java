@@ -22,7 +22,6 @@ import static com.redick.constant.TraceTagConstant.DUBBO_INVOKE_BEFORE;
 
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
-import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.common.constants.CommonConstants;
@@ -47,9 +46,6 @@ public class DubboTraceIdFilter extends AbstractInterceptor implements Filter {
         String side = invoker.getUrl().getParameter(CommonConstants.SIDE_KEY);
         try {
             if (CommonConstants.CONSUMER_SIDE.equals(side)) {
-                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]",
-                        invoker.getInterface().getSimpleName(),
-                        invocation.getMethodName());
                 executeBefore(DUBBO_INVOKE_BEFORE);
                 // consumer set trace information to attachment
                 String traceId = traceId();

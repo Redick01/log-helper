@@ -40,6 +40,5 @@ public class TraceIdHttpResponse5Interceptor extends AbstractInterceptor impleme
     public void process(HttpResponse response, EntityDetails entity, HttpContext context)
             throws HttpException, IOException {
         super.executeAfter(HTTP_CLIENT_EXEC_AFTER);
-        log.info(LogUtil.funcEndMarker(entity.getContentEncoding()), "HttpClient调用响应数据");
     }
 }
