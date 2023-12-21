@@ -19,7 +19,6 @@ package com.redick.starter.interceptor;
 
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
-import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +36,6 @@ public class InputChannelTraceInterceptor extends AbstractInterceptor implements
 
     @Override
     public Message<?> preSend(Message<?> message, @NotNull MessageChannel channel) {
-        log.info(LogUtil.marker(message.getPayload()), "Received message");
         if (StringUtils.isNotBlank((String) message.getHeaders().get(Tracer.TRACE_ID))) {
             Tracer.trace((String) message.getHeaders().get(Tracer.TRACE_ID),
                     (String) message.getHeaders().get(Tracer.SPAN_ID),

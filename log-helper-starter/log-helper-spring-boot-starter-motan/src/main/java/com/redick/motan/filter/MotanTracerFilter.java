@@ -56,8 +56,6 @@ public class MotanTracerFilter extends AbstractInterceptor implements Filter {
                 Tracer.trace(traceId, spanId, parentId);
 
             } else {
-                log.info(LogUtil.marker(request.getArguments()), "调用接口[{}]的方法[{}]", request.getInterfaceName(),
-                        request.getMethodName());
                 executeBefore(MOTAN_CALL_BEFORE);
                 // consumer set trace info to attachment
                 String traceId = traceId();

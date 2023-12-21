@@ -55,9 +55,6 @@ public class DubboxTraceIdFilter extends AbstractInterceptor implements Filter {
                 String parentId = RpcContext.getContext().getAttachment(Tracer.PARENT_ID);
                 Tracer.trace(traceId, spanId, parentId);
             } else {
-                log.info(LogUtil.marker(invocation.getArguments()), "调用接口[{}]的方法[{}]",
-                        invoker.getInterface().getSimpleName(),
-                        invocation.getMethodName());
                 executeBefore(DUBBO_INVOKE_BEFORE);
                 // consumer set trace information to attachment
                 String traceId = traceId();

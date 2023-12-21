@@ -38,7 +38,6 @@ public class TraceIdForestInterceptor extends AbstractInterceptor implements Int
 
     @Override
     public boolean beforeExecute(ForestRequest request) {
-        log.info(LogUtil.funcStartMarker(request.getBody()), "开始forest请求处理");
         if (StringUtils.isNotBlank(traceId())) {
             request.addHeader(TraceIdDefine.TRACE_ID, traceId());
             request.addHeader(Tracer.SPAN_ID, spanId());
