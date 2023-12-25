@@ -39,31 +39,35 @@ public class SensitiveFieldUtil {
             // 脱敏
             if (null != obj) {
                 int len = obj.toString().length();
-                int start = sensitive.start();
-                int end = sensitive.end();
-                if (start <= 0 || end <= 0 || start >= len - 1 || end >= len - 1) {
+                int left = sensitive.left();
+                int right = sensitive.right();
+                if (left <= 0 || right <= 0 || left >= len - 1 || right >= len - 1) {
                     return obj;
                 }
-                obj = strReplace(obj.toString(), start, end);
+                obj = strReplace(obj.toString(), left, right);
             }
         }
         return obj;
     }
 
-    /**
-     * 字符串替换
-     *
-     * @param str string to replace
-     * @param start start index
-     * @param end end index
-     * @return string
-     */
-    private static String strReplace(final String str, int start, int end) {
+    private static String strReplace(final String str, int left, int right) {
+        if (left < 0) {
+            left = 0;
+        }
+        if (right < 0) {
+            right = 0;
+        }
         char[] chars = str.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            if (i >= start && i <= end) {
+        int len = chars.length;
+        right = len - right;
+        if (right <= left) {
+            for (int i = 0; i < len; i++) {
                 chars[i] = '*';
             }
+            return new String(chars);
+        }
+        for (int i = left; i < right; i++) {
+            chars[i] = '*';
         }
         return new String(chars);
     }

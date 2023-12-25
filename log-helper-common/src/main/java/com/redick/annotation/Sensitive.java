@@ -36,14 +36,21 @@ import java.lang.annotation.Target;
 public @interface Sensitive {
 
     /**
-     * 数据脱敏起始位置
-     * @return 脱敏起始位置
+     * 脱敏数据 左边界
+     *
+     * 如：left=3
+     * 数据1234567890从左边界index=3，从数据4开始脱敏
+     *
+     * @return 左边界
      */
-    int start() default Integer.MIN_VALUE;
+    int left() default -1;
 
     /**
-     * 数据脱敏终止位置
-     * @return 脱敏结束为止
+     * 脱敏数据 右边界
+     *
+     * 如：right=3
+     * 数据1234567890从右边界index=6，到数据7结束脱敏
+     * @return 右边界
      */
-    int end() default Integer.MIN_VALUE;
+    int right() default -1;
 }
