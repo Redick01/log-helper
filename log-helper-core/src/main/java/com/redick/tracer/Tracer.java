@@ -75,6 +75,11 @@ public final class Tracer {
         }
     }
 
+    public static void remove() {
+        traceThreadLocal.remove();
+        MDC.clear();
+    }
+
     /**
      * build span
      */
