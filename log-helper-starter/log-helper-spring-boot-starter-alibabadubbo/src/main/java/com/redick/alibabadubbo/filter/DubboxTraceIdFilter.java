@@ -53,7 +53,7 @@ public class DubboxTraceIdFilter extends AbstractInterceptor implements Filter {
                 String traceId = RpcContext.getContext().getAttachment(LogUtil.kLOG_KEY_TRACE_ID);
                 String spanId = RpcContext.getContext().getAttachment(Tracer.SPAN_ID);
                 String parentId = RpcContext.getContext().getAttachment(Tracer.PARENT_ID);
-                Tracer.trace(traceId, spanId, parentId);
+                mdc(traceId, spanId, parentId);
             } else {
                 executeBefore(DUBBO_INVOKE_BEFORE);
                 // consumer set trace information to attachment

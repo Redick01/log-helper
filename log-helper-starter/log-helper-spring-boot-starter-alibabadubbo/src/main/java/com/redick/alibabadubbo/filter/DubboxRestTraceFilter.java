@@ -51,7 +51,7 @@ public class DubboxRestTraceFilter extends AbstractInterceptor implements Contai
                 parentId = headers.get(Tracer.PARENT_ID).get(0);
             }
             if (StringUtils.isNotBlank(traceId)) {
-                Tracer.trace(traceId, parentId, spanId);
+                mdc(traceId, spanId, parentId);
             }
         }
     }

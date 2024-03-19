@@ -56,7 +56,7 @@ public class AroundLogHandler extends AbstractInterceptor {
             logger.info(LogUtil.processSuccessDoneMarker(o != null
                             ? ReflectHandler.getInstance().getResponseParameter(o) : null,
                     System.currentTimeMillis() - start), LogUtil.kTYPE_DONE);
-            MDC.clear();
+            Tracer.remove();
         }
         return o;
     }

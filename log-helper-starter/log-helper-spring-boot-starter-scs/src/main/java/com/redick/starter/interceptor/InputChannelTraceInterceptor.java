@@ -22,7 +22,6 @@ import com.redick.tracer.Tracer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.MDC;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.ChannelInterceptor;
@@ -48,6 +47,6 @@ public class InputChannelTraceInterceptor extends AbstractInterceptor implements
     public void afterSendCompletion(@NotNull Message<?> message, @NotNull MessageChannel channel, boolean sent,
                                     Exception ex) {
         ChannelInterceptor.super.afterSendCompletion(message, channel, sent, ex);
-        MDC.clear();
+        Tracer.remove();
     }
 }

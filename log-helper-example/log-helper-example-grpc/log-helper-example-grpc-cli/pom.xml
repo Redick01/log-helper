@@ -32,46 +32,46 @@
     
     <build>
         <!-- os系统信息插件, protobuf-maven-plugin需要获取系统信息下载相应的protobuf程序 -->
-        <extensions>
-            <extension>
-                <groupId>kr.motd.maven</groupId>
-                <artifactId>os-maven-plugin</artifactId>
-                <version>1.6.2</version>
-            </extension>
-        </extensions>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.xolstice.maven.plugins</groupId>
-                <artifactId>protobuf-maven-plugin</artifactId>
-                <version>0.6.1</version>
-                
-                <configuration>
-                    <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
-                    <pluginId>grpc-java</pluginId>
-                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.26.0:exe:${os.detected.classifier}</pluginArtifact>
-                    
-                    <!-- proto文件目录 -->
-                    <protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>
-                    <!-- 生成的Java文件目录 -->
-                    <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
-                    <clearOutputDirectory>false</clearOutputDirectory>
-                    <!--<outputDirectory>${project.build.directory}/generated-sources/protobuf</outputDirectory>-->
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>compile-custom</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+<!--        <extensions>-->
+<!--            <extension>-->
+<!--                <groupId>kr.motd.maven</groupId>-->
+<!--                <artifactId>os-maven-plugin</artifactId>-->
+<!--                <version>1.6.2</version>-->
+<!--            </extension>-->
+<!--        </extensions>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <version>${spring.boot.version}</version>-->
+<!--            </plugin>-->
+<!--            -->
+<!--            <plugin>-->
+<!--                <groupId>org.xolstice.maven.plugins</groupId>-->
+<!--                <artifactId>protobuf-maven-plugin</artifactId>-->
+<!--                <version>0.6.1</version>-->
+<!--                -->
+<!--                <configuration>-->
+<!--                    <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>-->
+<!--                    <pluginId>grpc-java</pluginId>-->
+<!--                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.26.0:exe:${os.detected.classifier}</pluginArtifact>-->
+<!--                    -->
+<!--                    &lt;!&ndash; proto文件目录 &ndash;&gt;-->
+<!--                    <protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>-->
+<!--                    &lt;!&ndash; 生成的Java文件目录 &ndash;&gt;-->
+<!--                    <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>-->
+<!--                    <clearOutputDirectory>false</clearOutputDirectory>-->
+<!--                    &lt;!&ndash;<outputDirectory>${project.build.directory}/generated-sources/protobuf</outputDirectory>&ndash;&gt;-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>compile</goal>-->
+<!--                            <goal>compile-custom</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
     </build>
 </project>

@@ -18,7 +18,6 @@
 package com.redick.starter.interceptor;
 
 import com.redick.tracer.Tracer;
-import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 

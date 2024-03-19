@@ -59,7 +59,7 @@ public class DubboTraceIdFilter extends AbstractInterceptor implements Filter {
                 String traceId = RpcContext.getServiceContext().getAttachment(Tracer.TRACE_ID);
                 String spanId = RpcContext.getServiceContext().getAttachment(Tracer.SPAN_ID);
                 String parentId = RpcContext.getServiceContext().getAttachment(Tracer.PARENT_ID);
-                Tracer.trace(traceId, spanId, parentId);
+                mdc(traceId, spanId, parentId);
             }
             return invoker.invoke(invocation);
         } finally {

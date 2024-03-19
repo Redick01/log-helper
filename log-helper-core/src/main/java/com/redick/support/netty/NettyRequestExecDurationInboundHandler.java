@@ -17,6 +17,7 @@
 
 package com.redick.support.netty;
 
+import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -46,12 +47,13 @@ public class NettyRequestExecDurationInboundHandler extends ChannelInboundHandle
                             .and(append(LogUtil.kLOG_KEY_DURATION, duration)),
                     NETTY_INVOKE_OVER);
         }
-        MDC.clear();
+        Tracer.remove();
         ctx.flush();
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        Tracer.remove();
         ctx.close();
     }
 }

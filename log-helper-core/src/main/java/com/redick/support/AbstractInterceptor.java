@@ -24,7 +24,11 @@ import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.skywalking.apm.toolkit.trace.Trace;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.MDC;
+
+import java.util.UUID;
 
 /**
  * @author Redick01
@@ -58,6 +62,23 @@ public abstract class AbstractInterceptor {
      */
     public String parentId() {
         return MDC.get(Tracer.PARENT_ID);
+    }
+
+    @Trace
+    public void mdc(String traceId, String spanId, String parentId) {
+        if (null == traceId) {
+            if (StringUtils.isNotBlank(TraceContext.traceId()) && !Tracer.SKYWALKING_NO_ID.equals(
+                    TraceContext.traceId())) {
+                traceId = TraceContext.traceId();
+            } else {
+                traceId = UUID.randomUUID().toString();
+            }
+        }
+        parentId = null == parentId ? "0" : Integer.parseInt(parentId) + 1 + "";
+        spanId = null == spanId ? "1" : Integer.parseInt(spanId) + 1 + "";
+        MDC.put(Tracer.TRACE_ID, traceId);
+        MDC.put(Tracer.SPAN_ID, spanId);
+        MDC.put(Tracer.PARENT_ID, parentId);
     }
 
     /**

@@ -19,7 +19,6 @@ package com.redick.support.httpclient;
 
 import static com.redick.constant.TraceTagConstant.HTTP_CLIENT_EXEC_AFTER;
 import com.redick.support.AbstractInterceptor;
-import com.redick.util.LogUtil;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpException;

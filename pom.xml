@@ -22,7 +22,7 @@
     <packaging>pom</packaging>
     <name>log-trace-helper-all</name>
     <properties>
-        <revision>1.0.5-RELEASE</revision>
+        <revision>1.0.6-RELEASE</revision>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <logback.version>1.2.3</logback.version>
@@ -343,7 +343,7 @@
                             <Implementation-Title>${project.artifactId}</Implementation-Title>
                             <Implementation-Version>${project.version}</Implementation-Version>
                             <Build-Time>${maven.build.timestamp}</Build-Time>
-                            <Built-By>yanhom</Built-By>
+                            <Built-By>Redick01</Built-By>
                         </manifestEntries>
                     </archive>
                 </configuration>

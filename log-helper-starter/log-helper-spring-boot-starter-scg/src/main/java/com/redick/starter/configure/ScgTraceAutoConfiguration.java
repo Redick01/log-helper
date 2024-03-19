@@ -18,7 +18,6 @@
 package com.redick.starter.configure;
 
 import com.redick.banner.LogHelperBanner;
-import com.redick.starter.filter.RtFilter;
 import com.redick.starter.filter.TracerFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,10 +36,5 @@ public class ScgTraceAutoConfiguration {
     @Bean
     public TracerFilter tracerFilter() {
         return new TracerFilter();
-    }
-
-    @Bean
-    public RtFilter rtFilter() {
-        return new RtFilter();
     }
 }

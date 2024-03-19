@@ -22,7 +22,6 @@ import static com.redick.constant.TraceTagConstant.MOTAN_CALL_BEFORE;
 
 import com.redick.support.AbstractInterceptor;
 import com.redick.tracer.Tracer;
-import com.redick.util.LogUtil;
 import com.weibo.api.motan.common.MotanConstants;
 import com.weibo.api.motan.common.URLParamType;
 import com.weibo.api.motan.core.extension.Activation;
@@ -53,8 +52,7 @@ public class MotanTracerFilter extends AbstractInterceptor implements Filter {
                 String traceId = request.getAttachments().get(Tracer.TRACE_ID);
                 String spanId = request.getAttachments().get(Tracer.SPAN_ID);
                 String parentId = request.getAttachments().get(Tracer.PARENT_ID);
-                Tracer.trace(traceId, spanId, parentId);
-
+                mdc(traceId, spanId, parentId);
             } else {
                 executeBefore(MOTAN_CALL_BEFORE);
                 // consumer set trace info to attachment
