@@ -39,17 +39,20 @@ class TraceIdOkhttp3Interceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         try {
+            val builder = request.newBuilder()
             val traceId = MDC.get(Tracer.TRACE_ID)
             if (StringUtils.isNotBlank(traceId)) {
-                request = request
-                        .newBuilder()
-                        .addHeader(Tracer.TRACE_ID, traceId)
-                        .addHeader(Tracer.SPAN_ID, MDC.get(Tracer.SPAN_ID))
-                        .addHeader(Tracer.PARENT_ID, MDC.get(Tracer.PARENT_ID))
-                        .build()
-            } else {
-                log.info(LogUtil.marker(), "当前线程没有traceId")
+                builder.addHeader(Tracer.TRACE_ID, traceId)
             }
+            val spanId = MDC.get(Tracer.SPAN_ID)
+            if (StringUtils.isNotBlank(spanId)) {
+                builder.addHeader(Tracer.SPAN_ID, spanId)
+            }
+            val parentId = MDC.get(Tracer.PARENT_ID)
+            if (StringUtils.isNotBlank(parentId)) {
+                builder.addHeader(Tracer.PARENT_ID, parentId)
+            }
+            request = builder.build()
         } catch (e: Exception) {
             e.printStackTrace()
         }

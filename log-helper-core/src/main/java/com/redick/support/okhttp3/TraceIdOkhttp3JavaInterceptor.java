@@ -43,17 +43,21 @@ public class TraceIdOkhttp3JavaInterceptor extends AbstractInterceptor implement
     public Response intercept(@NotNull Chain chain) throws IOException {
         Request request = chain.request();
         try {
+            Request.Builder builder = request.newBuilder();
             String traceId = traceId();
             if (StringUtils.isNotBlank(traceId)) {
-                request = request
-                        .newBuilder()
-                        .addHeader(Tracer.TRACE_ID, traceId)
-                        .addHeader(Tracer.SPAN_ID, spanId())
-                        .addHeader(Tracer.PARENT_ID, parentId())
-                        .build();
-            } else {
-                log.info(LogUtil.marker(), "current thread have not the traceId!");
+                builder.addHeader(Tracer.TRACE_ID, traceId);
+
             }
+            String spanId = spanId();
+            if (StringUtils.isNotBlank(spanId)) {
+                builder.addHeader(Tracer.SPAN_ID, spanId);
+            }
+            String parentId = parentId();
+            if (StringUtils.isNotBlank(parentId)) {
+                builder.addHeader(Tracer.PARENT_ID, parentId);
+            }
+            request = builder.build();
         } catch (Exception e) {
             log.error(LogUtil.exceptionMarker(), "Okhttp3 http header set traceId exception!", e);
         }
