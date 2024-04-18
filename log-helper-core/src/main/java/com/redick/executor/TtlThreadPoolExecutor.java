@@ -19,6 +19,7 @@ package com.redick.executor;
 
 import com.alibaba.ttl.TtlCallable;
 import com.alibaba.ttl.TtlRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -61,26 +62,33 @@ public class TtlThreadPoolExecutor extends ThreadPoolExecutor {
     }
 
     @Override
-    public void execute(Runnable command) {
+    public void execute(@NotNull Runnable command) {
         Runnable runnable = TtlRunnable.get(command);
+        assert runnable != null;
         super.execute(runnable);
     }
 
+    @NotNull
     @Override
-    public <T> Future<T> submit(Runnable task, T result) {
+    public <T> Future<T> submit(@NotNull Runnable task, T result) {
         Runnable runnable = TtlRunnable.get(task);
+        assert runnable != null;
         return super.submit(runnable, result);
     }
 
+    @NotNull
     @Override
-    public Future<?> submit(Runnable task) {
+    public Future<?> submit(@NotNull Runnable task) {
         Runnable runnable = TtlRunnable.get(task);
+        assert runnable != null;
         return super.submit(runnable);
     }
 
+    @NotNull
     @Override
-    public <T> Future<T> submit(Callable<T> task) {
+    public <T> Future<T> submit(@NotNull Callable<T> task) {
         Callable<T> command = TtlCallable.get(task);
+        assert command != null;
         return super.submit(command);
     }
 
@@ -96,27 +104,30 @@ public class TtlThreadPoolExecutor extends ThreadPoolExecutor {
         return super.newTaskFor(command);
     }
 
+    @NotNull
     @Override
-    public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
+    public <T> T invokeAny(@NotNull Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
         Collection<? extends Callable<T>> callables = TtlCallable.gets(tasks);
         return super.invokeAny(callables);
     }
 
     @Override
-    public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
+    public <T> T invokeAny(@NotNull Collection<? extends Callable<T>> tasks, long timeout, @NotNull TimeUnit unit)
             throws InterruptedException, ExecutionException, TimeoutException {
         Collection<? extends Callable<T>> callables = TtlCallable.gets(tasks);
         return super.invokeAny(callables, timeout, unit);
     }
 
+    @NotNull
     @Override
-    public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
+    public <T> List<Future<T>> invokeAll(@NotNull Collection<? extends Callable<T>> tasks) throws InterruptedException {
         Collection<? extends Callable<T>> callables = TtlCallable.gets(tasks);
         return super.invokeAll(callables);
     }
 
+    @NotNull
     @Override
-    public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
+    public <T> List<Future<T>> invokeAll(@NotNull Collection<? extends Callable<T>> tasks, long timeout, @NotNull TimeUnit unit)
             throws InterruptedException {
         Collection<? extends Callable<T>> callables = TtlCallable.gets(tasks);
         return super.invokeAll(callables, timeout, unit);

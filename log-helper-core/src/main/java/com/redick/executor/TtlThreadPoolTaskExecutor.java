@@ -42,6 +42,7 @@ public class TtlThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
     @Override
     public @NonNull <T> Future<T> submit(@NonNull Callable<T> task) {
         Callable<T> ttCallable = TtlCallable.get(task);
+        assert ttCallable != null;
         return super.submit(ttCallable);
     }
 
@@ -62,6 +63,7 @@ public class TtlThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
     @Override
     public @NonNull <T> ListenableFuture<T> submitListenable(@NonNull Callable<T> task) {
         Callable<T> ttlCallable = TtlCallable.get(task);
+        assert ttlCallable != null;
         return super.submitListenable(ttlCallable);
     }
 }
