@@ -20,12 +20,9 @@ package com.redick.support.mq.aliyunrocketmq;
 import com.aliyun.openservices.ons.api.Action;
 import com.redick.constant.TraceIdDefine;
 import com.redick.support.mq.MqWrapperBean;
+import com.redick.util.TraceIdUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.skywalking.apm.toolkit.trace.Trace;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.MDC;
-
-import java.util.UUID;
 
 /**
  * @author liupenghui
@@ -39,16 +36,12 @@ public class AliyunMqConsumerProcessor {
      * @param mqConsumer {@link AliyunMqConsumer}
      * @return {@link Action}
      */
-    @Trace
     @SuppressWarnings("all")
     public static Action process(MqWrapperBean mqWrapperBean, AliyunMqConsumer mqConsumer) {
         try {
             String traceId = mqWrapperBean.getTraceId();
             if (StringUtils.isBlank(traceId)) {
-                traceId = TraceContext.traceId();
-                if (StringUtils.isBlank(traceId) || TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
-                    traceId = UUID.randomUUID().toString();
-                }
+                traceId = TraceIdUtil.traceId();
             }
             MDC.put(TraceIdDefine.TRACE_ID, traceId);
             return mqConsumer.consume(mqWrapperBean.getT());

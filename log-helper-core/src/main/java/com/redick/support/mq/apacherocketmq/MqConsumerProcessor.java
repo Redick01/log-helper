@@ -19,13 +19,10 @@ package com.redick.support.mq.apacherocketmq;
 
 import com.redick.constant.TraceIdDefine;
 import com.redick.support.mq.MqWrapperBean;
+import com.redick.util.TraceIdUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.spring.core.RocketMQLocalTransactionState;
-import org.apache.skywalking.apm.toolkit.trace.Trace;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.MDC;
-
-import java.util.UUID;
 
 /**
  * @author liupenghui
@@ -40,15 +37,11 @@ public class MqConsumerProcessor {
      * @param mqWrapperBean {@link MqWrapperBean}
      * @param mqConsumer {@link MqConsumer}
      */
-    @Trace
     public static void process(MqWrapperBean mqWrapperBean, MqConsumer mqConsumer) {
         try {
             String traceId = mqWrapperBean.getTraceId();
             if (StringUtils.isBlank(traceId)) {
-                traceId = TraceContext.traceId();
-                if (StringUtils.isBlank(traceId) || TraceIdDefine.SKYWALKING_NO_ID.equals(TraceContext.traceId())) {
-                    traceId = UUID.randomUUID().toString();
-                }
+                traceId = TraceIdUtil.traceId();
             }
             MDC.put(TraceIdDefine.TRACE_ID, traceId);
             mqConsumer.consume(mqWrapperBean.getT());
@@ -63,16 +56,12 @@ public class MqConsumerProcessor {
      * @param mqConsumer {@link MqConsumer}
      * @return {@link RocketMQLocalTransactionState}
      */
-    @Trace
     public static RocketMQLocalTransactionState processLocalTransaction(MqWrapperBean mqWrapperBean,
                                                                         MqConsumer mqConsumer) {
         try {
             String traceId = mqWrapperBean.getTraceId();
             if (StringUtils.isBlank(traceId)) {
-                traceId = TraceContext.traceId();
-                if (StringUtils.isBlank(traceId)) {
-                    traceId = UUID.randomUUID().toString();
-                }
+                traceId = TraceIdUtil.traceId();
             }
             MDC.put(TraceIdDefine.TRACE_ID, traceId);
             return mqConsumer.localTransactionConsume(mqWrapperBean.getT());

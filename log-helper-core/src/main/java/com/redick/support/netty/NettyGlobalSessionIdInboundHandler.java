@@ -25,7 +25,6 @@ import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.skywalking.apm.toolkit.trace.Trace;
 import org.slf4j.MDC;
 
 import static com.redick.constant.TraceTagConstant.NETTY_INVOKE_START;
@@ -39,7 +38,6 @@ import static com.redick.constant.TraceTagConstant.START_TIME;
 @Slf4j
 public class NettyGlobalSessionIdInboundHandler extends ChannelInboundHandlerAdapter {
 
-    @Trace
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 只处理Http请求

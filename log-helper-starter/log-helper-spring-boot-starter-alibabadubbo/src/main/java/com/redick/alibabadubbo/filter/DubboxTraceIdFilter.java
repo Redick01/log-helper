@@ -27,7 +27,6 @@ import com.redick.tracer.Tracer;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.skywalking.apm.toolkit.trace.Trace;
 import com.alibaba.dubbo.rpc.Filter;
 import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
@@ -43,7 +42,6 @@ import com.alibaba.dubbo.rpc.RpcContext;
 @Slf4j
 public class DubboxTraceIdFilter extends AbstractInterceptor implements Filter {
 
-    @Trace
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         try {

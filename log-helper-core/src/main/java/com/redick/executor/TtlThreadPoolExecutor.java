@@ -106,7 +106,8 @@ public class TtlThreadPoolExecutor extends ThreadPoolExecutor {
 
     @NotNull
     @Override
-    public <T> T invokeAny(@NotNull Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
+    public <T> T invokeAny(@NotNull Collection<? extends Callable<T>> tasks) throws InterruptedException,
+            ExecutionException {
         Collection<? extends Callable<T>> callables = TtlCallable.gets(tasks);
         return super.invokeAny(callables);
     }
@@ -127,7 +128,8 @@ public class TtlThreadPoolExecutor extends ThreadPoolExecutor {
 
     @NotNull
     @Override
-    public <T> List<Future<T>> invokeAll(@NotNull Collection<? extends Callable<T>> tasks, long timeout, @NotNull TimeUnit unit)
+    public <T> List<Future<T>> invokeAll(@NotNull Collection<? extends Callable<T>> tasks, long timeout,
+                                         @NotNull TimeUnit unit)
             throws InterruptedException {
         Collection<? extends Callable<T>> callables = TtlCallable.gets(tasks);
         return super.invokeAll(callables, timeout, unit);

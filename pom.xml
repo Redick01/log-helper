@@ -189,6 +189,12 @@
             <artifactId>apm-toolkit-trace</artifactId>
             <version>${skywalking.trace.version}</version>
         </dependency>
+        <!-- jaeger traceId支持 -->
+        <dependency>
+            <groupId>io.jaegertracing</groupId>
+            <artifactId>jaeger-core</artifactId>
+            <version>1.6.0</version>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -354,6 +360,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>verify</phase>

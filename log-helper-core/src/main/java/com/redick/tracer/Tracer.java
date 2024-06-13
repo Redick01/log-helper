@@ -18,11 +18,9 @@
 package com.redick.tracer;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
-import java.util.UUID;
+
+import com.redick.util.TraceIdUtil;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.skywalking.apm.toolkit.trace.Trace;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.MDC;
 
 /**
@@ -36,8 +34,6 @@ public final class Tracer {
     public static final String SPAN_ID = "spanId";
 
     public static final String PARENT_ID = "parentId";
-
-    public static final String SKYWALKING_NO_ID = "[Ignored Trace]";
 
     private static TransmittableThreadLocal<Tracer> traceThreadLocal = new TransmittableThreadLocal<>();
 
@@ -83,15 +79,9 @@ public final class Tracer {
     /**
      * build span
      */
-    @Trace
     public void buildSpan() {
         if (null == traceId) {
-            if (StringUtils.isNotBlank(TraceContext.traceId()) && !SKYWALKING_NO_ID.equals(
-                    TraceContext.traceId())) {
-                traceId = TraceContext.traceId();
-            } else {
-                traceId = UUID.randomUUID().toString();
-            }
+            traceId = TraceIdUtil.traceId();
         }
         parentId = null == parentId ? 0 : parentId + 1;
         spanId = null == spanId ? 1 : spanId + 1;
