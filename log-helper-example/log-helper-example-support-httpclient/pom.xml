@@ -18,6 +18,9 @@
 
     <artifactId>log-helper-example-support-httpclient</artifactId>
 
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
 
 
     <dependencies>
@@ -83,4 +86,13 @@
 <!--            <scope>provided</scope>-->
 <!--        </dependency>-->
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
