@@ -20,7 +20,9 @@ package org.slf4j;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import org.slf4j.spi.MDCAdapter;
 
+import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +37,9 @@ import java.util.Set;
 public class TtlMDCAdapter implements MDCAdapter {
 
     private final ThreadLocal<Map<String, String>> copyOnInheritThreadLocal = new TransmittableThreadLocal<>();
+
+    private final ThreadLocal<Map<String, Deque<String>>> copyOnInheritDequeThreadLocal =
+            new TransmittableThreadLocal<>();
 
     private static final int WRITE_OPERATION = 1;
     private static final int MAP_COPY_OPERATION = 2;
@@ -143,6 +148,83 @@ public class TtlMDCAdapter implements MDCAdapter {
     public void clear() {
         lastOperation.set(WRITE_OPERATION);
         copyOnInheritThreadLocal.remove();
+        copyOnInheritDequeThreadLocal.remove();
+    }
+
+    /**
+     * push value by key
+     *
+     * @param key key
+     * @param value value
+     */
+    @Override
+    public void pushByKey(String key, String value) {
+        if (key == null) {
+            return;
+        }
+        Map<String, Deque<String>> map = copyOnInheritDequeThreadLocal.get();
+        if (map == null) {
+            map = new HashMap<>();
+            copyOnInheritDequeThreadLocal.set(map);
+        }
+        Deque<String> deque = map.computeIfAbsent(key, k -> new ArrayDeque<>());
+        deque.push(value);
+    }
+
+    /**
+     * pop value by key
+     *
+     * @param key key
+     * @return value
+     */
+    @Override
+    public String popByKey(String key) {
+        String value = null;
+        Map<String, Deque<String>> map = key == null ? null : copyOnInheritDequeThreadLocal.get();
+        if (map != null) {
+            Deque<String> deque = map.get(key);
+            if (deque != null) {
+                value = deque.poll();
+            }
+        }
+        return value;
+    }
+
+    /**
+     * get copy of deque by key
+     *
+     * @param key key
+     * @return deque copy
+     */
+    @Override
+    public Deque<String> getCopyOfDequeByKey(String key) {
+        Deque<String> result = null;
+        Map<String, Deque<String>> map = key == null ? null : copyOnInheritDequeThreadLocal.get();
+        if (map != null) {
+            Deque<String> deque = map.get(key);
+            if (deque != null) {
+                result = new ArrayDeque<>(deque);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * clear deque by key
+     *
+     * @param key key
+     */
+    @Override
+    public void clearDequeByKey(String key) {
+        if (key != null) {
+            Map<String, Deque<String>> map = copyOnInheritDequeThreadLocal.get();
+            if (map != null) {
+                Deque<String> deque = map.get(key);
+                if (deque != null) {
+                    deque.clear();
+                }
+            }
+        }
     }
 
     /**

@@ -1,0 +1,4 @@
+com.redick.starter.configure.SpringRedisAutoConfiguration
+com.redick.starter.configure.JedisAutoConfiguration
+com.redick.starter.configure.LettuceAutoConfiguration
+com.redick.starter.configure.WebMvcConfiguration
