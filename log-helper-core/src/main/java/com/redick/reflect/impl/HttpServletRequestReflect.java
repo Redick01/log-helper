@@ -23,7 +23,7 @@ import com.redick.spi.Join;
 import com.redick.util.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Map;

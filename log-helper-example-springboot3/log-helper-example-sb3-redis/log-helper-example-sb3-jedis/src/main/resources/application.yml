@@ -1,0 +1,6 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: spring-jedis-demo

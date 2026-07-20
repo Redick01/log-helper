@@ -1,0 +1,6 @@
+server:
+  port: 8093
+
+spring:
+  application:
+    name: spring-lettuce-demo
