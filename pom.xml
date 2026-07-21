@@ -25,21 +25,21 @@
         <revision>1.0.6-RELEASE</revision>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <logback.version>1.4.14</logback.version>
+        <logback.version>1.5.34</logback.version>
         <forest.version>1.5.19</forest.version>
         <hutool.version>5.7.16</hutool.version>
-        <spring.version>6.1.14</spring.version>
+        <spring.version>7.0.8</spring.version>
         <skywalking.trace.version>8.3.0</skywalking.trace.version>
-        <logstash.encoder.version>7.4</logstash.encoder.version>
+        <logstash.encoder.version>8.1</logstash.encoder.version>
         <aspect.version>1.9.22</aspect.version>
         <apache.common.lang3.version>3.4</apache.common.lang3.version>
         <fastjson.version>1.2.70</fastjson.version>
-        <lombok.version>1.18.34</lombok.version>
+        <lombok.version>1.18.46</lombok.version>
         <javassist.version>3.24.0-GA</javassist.version>
-        <slf4j.version>2.0.12</slf4j.version>
+        <slf4j.version>2.0.18</slf4j.version>
         <guava.version>31.0.1-jre</guava.version>
-        <spring.boot.version>3.2.12</spring.boot.version>
-        <spring.cloud.version>2023.0.3</spring.cloud.version>
+        <spring.boot.version>4.1.0</spring.boot.version>
+        <spring.cloud.version>2025.1.2</spring.cloud.version>
         <spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
         <alibaba.dubbo.version>2.6.5</alibaba.dubbo.version>
         <apache.dubbo.version>3.0.1</apache.dubbo.version>

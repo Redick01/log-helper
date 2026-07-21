@@ -34,6 +34,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
+import java.util.Collections;
+
 /**
  * @author Redick01
  * 2022/3/26 14:32
@@ -48,7 +50,7 @@ public class OpenFeignConfiguration {
                               LoadBalancerClientFactory loadBalancerClientFactory) {
         return new FeignBlockingLoadBalancerClient(
                 new FeignTraceClientWrapper(new Client.Default(null, null)),
-                loadBalancerClient, loadBalancerClientFactory);
+                loadBalancerClient, loadBalancerClientFactory, Collections.emptyList());
     }
 
     @Bean
@@ -64,6 +66,6 @@ public class OpenFeignConfiguration {
                 new FeignTraceClientWrapper(new Client.Default(null, null)),
                 loadBalancerClient,
                 loadBalancedRetryFactory,
-                loadBalancerClientFactory);
+                loadBalancerClientFactory, Collections.emptyList());
     }
 }

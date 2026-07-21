@@ -21,9 +21,9 @@ import com.alibaba.ttl.TtlCallable;
 import com.alibaba.ttl.TtlRunnable;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
@@ -54,16 +54,16 @@ public class TtlThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
     }
 
     @Override
-    public @NonNull ListenableFuture<?> submitListenable(@NonNull Runnable task) {
+    public @NonNull CompletableFuture<Void> submitCompletable(@NonNull Runnable task) {
         Runnable ttlRunnable = TtlRunnable.get(task);
         assert ttlRunnable != null;
-        return super.submitListenable(ttlRunnable);
+        return super.submitCompletable(ttlRunnable);
     }
 
     @Override
-    public @NonNull <T> ListenableFuture<T> submitListenable(@NonNull Callable<T> task) {
+    public @NonNull <T> CompletableFuture<T> submitCompletable(@NonNull Callable<T> task) {
         Callable<T> ttlCallable = TtlCallable.get(task);
         assert ttlCallable != null;
-        return super.submitListenable(ttlCallable);
+        return super.submitCompletable(ttlCallable);
     }
 }

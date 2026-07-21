@@ -48,7 +48,7 @@ public class TtlMDCAdapter implements MDCAdapter {
 
     static {
         mtcMDCAdapter = new TtlMDCAdapter();
-        MDC.mdcAdapter = mtcMDCAdapter;
+        MDC.setMDCAdapter(mtcMDCAdapter);
     }
 
     public static MDCAdapter getInstance() {
