@@ -69,11 +69,21 @@
 - **支持spring cloud gateway链路追踪和调用耗时计算**
 - **支持OpenFeign调用耗时计算**
 
+###### springboot4分支
+
+- **支持Spring Boot 4.1 / Spring Framework 7（要求JDK 17+），功能与上述版本一致**
+
 &nbsp; &nbsp;
 &nbsp; &nbsp;
 &nbsp; &nbsp;
 
 ## 2 快速开始
+
+**版本说明：**
+
+- `master`分支：基于 Spring Boot 2.x / Spring 5，支持 JDK 8+
+- `springboot3`分支：基于 Spring Boot 3.x / Spring 6，要求 JDK 17+
+- `springboot4`分支：基于 Spring Boot 4.1 / Spring 7，要求 JDK 17+（本分支）
 
 ## 2.1 SpringBoot接入
 
@@ -86,6 +96,8 @@
     <version>最新版本</version>
 </dependency>
 ```
+
+> 注意：Spring Boot 4 已移除`spring-boot-starter-aop`，如业务需要 AOP 支持请改用`spring-boot-starter-aspectj`。
 
 ##### **应用程序启动开启日志自动装配**
 
@@ -173,14 +185,12 @@ http://www.redick.com/schema/logmarker http://www.redick.com/schema/logmarker/lo
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${FILE_LEVEL}</level>
         </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
             <!-- 文件扩展名设置为.zip/.gz后在文件滚动时会自动对旧日志进行压缩 -->
             <FileNamePattern>${LOG_HOME}/${FILE_NAME}.log.%d{yyyyMMdd}.%i.zip</FileNamePattern>
             <!-- 除按日志记录之外，还配置了日志文件不能超过512MB，若超过512MBM，日志文件会以索引0开始，命名日志文件，例如log-error-2013-12-21.0.log -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${FILE_MAX_SIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>${FILE_MAX_SIZE}</maxFileSize>
             <!--日志文件保留天数-->
             <MaxHistory>${FILE_HISTORY}</MaxHistory>
             <totalSizeCap>${FILE_TOTAL_SIZE}</totalSizeCap>
@@ -200,14 +210,12 @@ http://www.redick.com/schema/logmarker http://www.redick.com/schema/logmarker/lo
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${FILE_DEBUG_LEVEL}</level>
         </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
             <!-- 文件扩展名设置为.zip/.gz后在文件滚动时会自动对旧日志进行压缩 -->
             <FileNamePattern>${LOG_HOME}/debug/${FILE_NAME}_debug.log.%d{yyyyMMdd}.%i.zip</FileNamePattern>
             <!-- 除按日志记录之外，还配置了日志文件不能超过512MB，若超过512MBM，日志文件会以索引0开始，命名日志文件，例如log-error-2013-12-21.0.log -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${FILE_DEBUG_MAX_SIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>${FILE_DEBUG_MAX_SIZE}</maxFileSize>
             <!--日志文件保留天数-->
             <MaxHistory>${FILE_DEBUG_HISTORY}</MaxHistory>
             <totalSizeCap>${FILE_DEBUG_TOTAL_SIZE}</totalSizeCap>
@@ -227,14 +235,12 @@ http://www.redick.com/schema/logmarker http://www.redick.com/schema/logmarker/lo
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>${FILE_ERROR_LEVEL}</level>
         </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
             <!-- 文件扩展名设置为.zip/.gz后在文件滚动时会自动对旧日志进行压缩 -->
             <FileNamePattern>${LOG_HOME}/error/${FILE_NAME}_error.log.%d{yyyyMMdd}.%i.zip</FileNamePattern>
             <!-- 除按日志记录之外，还配置了日志文件不能超过512MB，若超过512MBM，日志文件会以索引0开始，命名日志文件，例如log-error-2013-12-21.0.log -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${FILE_ERROR_MAX_SIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>${FILE_ERROR_MAX_SIZE}</maxFileSize>
             <!--日志文件保留天数-->
             <MaxHistory>${FILE_ERROR_HISTORY}</MaxHistory>
             <totalSizeCap>${FILE_ERROR_TOTAL_SIZE}</totalSizeCap>
@@ -525,7 +531,7 @@ public class TestController {
 
 HttpClient，OkHttp，RestTemplate支持traceId需要代码入侵，具体实现方案是对HttpClient添加拦截器，拦截器的作用是消费者将traceId放到Http Header中，生产者从Http Header中获取traceId。
 
-使用方式参数[示例](https://github.com/Redick01/log-helper/tree/master/log-helper-example/log-helper-example-support-httpclient)
+使用方式参数[示例](https://github.com/Redick01/log-helper/tree/springboot4/log-helper-example-springboot3/log-helper-example-sb3-support-httpclient)
 
 &nbsp; &nbsp;
 &nbsp; &nbsp;
@@ -676,9 +682,11 @@ spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&cha
             <dependency>
                 <groupId>io.github.redick01</groupId>
                 <artifactId>log-helper-spring-boot-starter-scg</artifactId>
-                <version>1.0.5-RELEASE</version>
+                <version>最新版本</version>
             </dependency>
 ```
+
+> 注意：Spring Cloud 2025.1.x（适配 Spring Boot 4.1）中 WebFlux 版网关的 starter 已更名为`spring-cloud-starter-gateway-server-webflux`。
 
 参考log-helper-example-motan示例程序
 
@@ -698,7 +706,7 @@ spring.datasource.url=jdbc:mysql://127.0.0.1:3316/log-helper?useUnicode=true&cha
 
 ## 5 详细使用示例
 
-参考[详细使用示例](https://github.com/Redick01/log-helper/tree/master/log-helper-example)
+参考[详细使用示例](https://github.com/Redick01/log-helper/tree/springboot4/log-helper-example-springboot3)（Spring Boot 2.x示例请参考master分支的log-helper-example）
 
 
 ## 6 结合ELK系统效果
