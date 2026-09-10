@@ -10,7 +10,7 @@ spring:
         definition: producer; consumer
       rocketmq:
         binder:
-          name-server: 172.17.10.179:9876
+          name-server: 127.0.0.1:9876
         bindings:
           producer-out-0:
             producer:
